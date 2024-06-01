@@ -1,4 +1,6 @@
-﻿    namespace Core.Entities
+﻿using Core.Entities;
+
+namespace Domain.Entities
 {
     public class Title : BaseEntity
     {
