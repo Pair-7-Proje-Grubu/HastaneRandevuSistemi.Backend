@@ -1,6 +1,6 @@
 ﻿namespace Core.Entities
 {
-    public abstract class BaseEntity
+    public class BaseEntity
     {
         public int Id { get; set; }
         public DateTime? CreatedDate { get; set; }
