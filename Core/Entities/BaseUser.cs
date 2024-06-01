@@ -1,6 +1,6 @@
 ﻿namespace Core.Entities
 {
-    public abstract class BaseUser : BaseEntity
+    public  class BaseUser : BaseEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
