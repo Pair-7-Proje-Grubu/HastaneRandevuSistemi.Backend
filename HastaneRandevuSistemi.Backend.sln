@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{A050C435-31C1-4ABB-BF66-F4C3BD4EE04E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{E9490698-74CC-47A8-A2AA-65BB0647A95A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Persistence\Persistence.csproj", "{E9490698-74CC-47A8-A2AA-65BB0647A95A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{B7CF31F6-9853-4729-A28E-1018A4E5EA02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{B7CF31F6-9853-4729-A28E-1018A4E5EA02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{4716B36D-BEE9-4472-A7FC-D8982C810492}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{B7CF31F6-9853-4729-A28E-1018A4E5EA02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7CF31F6-9853-4729-A28E-1018A4E5EA02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7CF31F6-9853-4729-A28E-1018A4E5EA02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4716B36D-BEE9-4472-A7FC-D8982C810492}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4716B36D-BEE9-4472-A7FC-D8982C810492}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4716B36D-BEE9-4472-A7FC-D8982C810492}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4716B36D-BEE9-4472-A7FC-D8982C810492}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
