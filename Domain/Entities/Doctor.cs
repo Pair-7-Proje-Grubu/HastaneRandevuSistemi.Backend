@@ -11,9 +11,7 @@ namespace Domain.Entities
         public virtual Title Title { get; set; }
         public virtual Clinic Clinic { get; set; }
         public virtual OfficeLocation OfficeLocation { get; set; }
-
-        //TODO
-        public virtual ICollection<DoctorCalender> DoctorCalenders { get; set; }
+        public virtual ICollection<NoWorkHour> NoWorkHours { get; set; }
 
     }
 }

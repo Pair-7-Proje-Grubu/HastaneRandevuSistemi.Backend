@@ -11,10 +11,17 @@ namespace Domain.Entities
     {
         public int PatientId { get; set; }
         public int DoctorId { get; set; }
-
+        public DateTime DateTime { get; set; }
+        public CancelStatus isCancelStatus { get; set; } = CancelStatus.NoCancel;
         public virtual Patient Patient { get; set; }
         public virtual Doctor Doctor { get; set; }
+       
 
-
+    }
+    public enum CancelStatus
+    {
+        NoCancel = 0,
+        FromDoctor = 1,
+        FromPatient = 2,
     }
 }
