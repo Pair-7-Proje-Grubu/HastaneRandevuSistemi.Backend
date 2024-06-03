@@ -1,5 +1,6 @@
 ﻿using Core.DataAccess;
 using Domain.Entities;
+using Persistence.Contexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,11 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories
 {
-    public interface IAppointmentRepository : IAsyncRepository<Appointment>, IRepository<Appointment>
+    public class RoomRepository : EfRepositoryBase<Room, HRSDbContext>, IRoomRepository
     {
+        public RoomRepository(HRSDbContext context) : base(context)
+        {
+        }
     }
-    
+
 }
