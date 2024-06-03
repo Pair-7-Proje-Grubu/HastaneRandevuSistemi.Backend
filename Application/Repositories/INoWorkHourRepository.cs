@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories
 {
-    public interface INoWorkHourRepository : IAsyncRepository<NoWorkHour>, IRepository<Patient>
+    public interface INoWorkHourRepository : IAsyncRepository<NoWorkHour>, IRepository<NoWorkHour>
     {
     }
 }
