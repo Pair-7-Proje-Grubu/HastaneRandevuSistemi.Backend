@@ -8,17 +8,18 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application
+namespace Persistence
 {
     public static class PersistenceServiceRegistration
     {
-       public static IServiceCollection AddPersistenceServices(this IServiceCollection services)
+        public static IServiceCollection AddPersistenceServices(this IServiceCollection services)
         {
+            services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddDbContext<HRSDbContext>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
 
             return services;
         }
-        
+
     }
 }
