@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -12,8 +13,8 @@ namespace Core.DataAccess
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
-        Task<T> GetAsync(Expression<Func<T, bool>> filter);
-        Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null);
+        Task<T?> GetAsync(Expression<Func<T, bool>> predicate);
+        Task<List<T>> GetListAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
 
     }
 }

@@ -14,6 +14,7 @@ namespace Application.Repositories
     {
         public DoctorRepository(HRSDbContext context) : base(context)
         {
+
         }
     }
 
