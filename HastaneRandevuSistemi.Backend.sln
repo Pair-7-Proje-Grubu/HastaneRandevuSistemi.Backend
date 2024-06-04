@@ -10,8 +10,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Persistence\Persistence.csproj", "{E9490698-74CC-47A8-A2AA-65BB0647A95A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{B7CF31F6-9853-4729-A28E-1018A4E5EA02}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2AB27B1D-4862-4391-BF8F-A210F192D42C} = {2AB27B1D-4862-4391-BF8F-A210F192D42C}
+		{4716B36D-BEE9-4472-A7FC-D8982C810492} = {4716B36D-BEE9-4472-A7FC-D8982C810492}
+		{A050C435-31C1-4ABB-BF66-F4C3BD4EE04E} = {A050C435-31C1-4ABB-BF66-F4C3BD4EE04E}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{4716B36D-BEE9-4472-A7FC-D8982C810492}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{4716B36D-BEE9-4472-A7FC-D8982C810492}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

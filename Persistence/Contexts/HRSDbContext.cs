@@ -24,7 +24,7 @@ namespace Persistence.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-3CUTFEI; Database=HastaneRandevuSistemi; Trusted_Connection=True; TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-SRJHPCC; Database=HastaneRandevuSistemi; Trusted_Connection=True; TrustServerCertificate=True;");
             base.OnConfiguring(optionsBuilder);
         }
 
