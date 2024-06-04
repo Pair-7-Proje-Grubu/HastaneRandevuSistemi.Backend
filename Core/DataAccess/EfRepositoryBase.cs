@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,9 +38,10 @@ namespace Core.DataAccess
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(TEntity entity)
+        public async Task DeleteAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            context.Remove(entity);
+            await context.SaveChangesAsync();   
         }
 
         public TEntity Get(Expression<Func<TEntity, bool>> filter)
@@ -47,21 +49,31 @@ namespace Core.DataAccess
             throw new NotImplementedException();
         }
 
-        public List<TEntity> GetAll(Expression<Func<TEntity, bool>>? filter = null)
+     
+        public List<TEntity> GetList(Expression<Func<TEntity, bool>>? filter = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? filter = null)
+        public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await context.Set<TEntity>().FirstOrDefaultAsync(predicate);
+
         }
 
-        public Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter)
+        public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
-            throw new NotImplementedException();
+            IQueryable<TEntity> data = context.Set<TEntity>();
+
+            if (predicate != null)
+                data = data.Where(predicate);
+            if (include != null)
+                data = include(data);
+
+            return await data.ToListAsync();
         }
 
+      
         public void Update(TEntity entity)
         {
             throw new NotImplementedException();
@@ -71,5 +83,6 @@ namespace Core.DataAccess
         {
             throw new NotImplementedException();
         }
+
     }
 }
