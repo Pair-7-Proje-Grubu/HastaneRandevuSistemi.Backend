@@ -12,7 +12,6 @@ namespace Domain.Entities
         public BloodType BloodType { get; set; }
         public string EmergencyContact { get; set; }
         public int AllergyId { get; set; }
-
         public virtual ICollection<Allergy> Allergies { get; set; }
 
     }

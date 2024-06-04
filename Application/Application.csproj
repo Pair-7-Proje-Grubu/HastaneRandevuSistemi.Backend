@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Auth\MappingProfiles\" />
+    <Folder Include="Features\Appointments\Commands\Delete\" />
+    <Folder Include="Features\Appointments\Queries\" />
+    <Folder Include="Services\AppointmentService\" />
   </ItemGroup>
 
 </Project>

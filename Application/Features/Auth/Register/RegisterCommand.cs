@@ -1,7 +1,12 @@
-﻿using MediatR;
+﻿using Application.Repositories;
+using AutoMapper;
+using Core.Utilities;
+using Domain.Entities;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,10 +24,31 @@ namespace Application.Features.Auth.Register
 
         public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
         {
-            private readonly IRequestHandler<RegisterCommand> _handler;
-            public Task Handle(RegisterCommand request, CancellationToken cancellationToken)
+            private readonly IMapper _mapper;
+            private readonly IPatientRepository _patientRepository;
+
+            public RegisterCommandHandler(IMapper mapper, IPatientRepository patientRepository)
             {
-                throw new NotImplementedException();
+                _mapper = mapper;
+                _patientRepository = patientRepository;
+            }
+            public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
+            {
+                Patient? patientWithSameEmail = await _patientRepository.GetAsync(p => p.Email == request.Email);
+                if(patientWithSameEmail is not null)
+                {
+                    throw new Exception("Email adresi ile daha önceden sisteme kayıt yapılmış");
+                }
+
+                Patient newPatient = _mapper.Map<Patient>(request);
+
+                byte[] passwordSalt, passwordHash;
+
+                HashingHelper.CreatePasswordHash(request.Password, out passwordSalt, out passwordHash);
+                newPatient.PasswordSalt = passwordSalt;
+                newPatient.PasswordHash = passwordHash;
+
+                await _patientRepository.AddAsync(newPatient);
             }
         }
 
