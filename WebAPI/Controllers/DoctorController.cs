@@ -1,4 +1,5 @@
 ﻿using Application.Features.Doctors.Commands.CreateDoctor;
+using Application.Features.Doctors.Commands.UpdateDoctor;
 using Application.Features.Doctors.Queries.GetByIdDoctor;
 using Application.Features.Doctors.Queries.GetListDoctor;
 using MediatR;
@@ -10,15 +11,8 @@ namespace WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class DoctorController : ControllerBase
+    public class DoctorController : BaseController
     {
-
-        private readonly IMediator _mediator;
-
-        public DoctorController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
 
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] CreateDoctorCommand command)
@@ -37,7 +31,7 @@ namespace WebAPI.Controllers
 
 
         [HttpPost("Update")]
-        public async Task<IActionResult> Update([FromBody] CreateDoctorCommand command)
+        public async Task<IActionResult> Update([FromBody] UpdateDoctorCommand command)
         {
             await _mediator.Send(command);
             return Ok();

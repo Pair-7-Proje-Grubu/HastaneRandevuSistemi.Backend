@@ -79,9 +79,10 @@ namespace Core.DataAccess
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            context.Update(entity);
+            await context.SaveChangesAsync();
         }
 
     }

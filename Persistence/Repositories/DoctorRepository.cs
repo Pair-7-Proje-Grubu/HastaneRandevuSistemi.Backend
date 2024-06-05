@@ -1,4 +1,5 @@
-﻿using Core.DataAccess;
+﻿using Application.Repositories;
+using Core.DataAccess;
 using Core.Entities;
 using Domain.Entities;
 using Persistence.Contexts;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Repositories
+namespace Persistence.Repositories
 {
     public class DoctorRepository : EfRepositoryBase<Doctor, HRSDbContext>, IDoctorRepository
     {
