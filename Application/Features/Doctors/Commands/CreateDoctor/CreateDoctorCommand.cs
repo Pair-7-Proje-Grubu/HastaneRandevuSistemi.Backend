@@ -17,10 +17,7 @@ namespace Application.Features.Doctors.Commands.CreateDoctor
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        [JsonIgnore]
-        public byte[]? PasswordSalt { get; set; }
-        [JsonIgnore]
-        public byte[]? PasswordHash { get; set; }
+        public string Password { get; set; }
         public DateTime BirthDate { get; set; }
         public char Gender { get; set; }
         public int TitleId { get; set; }
