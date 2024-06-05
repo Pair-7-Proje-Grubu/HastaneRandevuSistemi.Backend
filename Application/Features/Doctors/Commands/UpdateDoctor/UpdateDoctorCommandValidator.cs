@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Doctors.Commands.CreateDoctor
+namespace Application.Features.Doctors.Commands.UpdateDoctor
 {
-    public class CreateDoctorResponse
+    internal class UpdateDoctorCommandValidator
     {
-
     }
 }
