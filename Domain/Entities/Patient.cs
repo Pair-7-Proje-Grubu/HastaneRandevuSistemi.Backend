@@ -9,10 +9,10 @@ namespace Domain.Entities
 {
     public class Patient : BaseUser
     {
-        public BloodType BloodType { get; set; }
-        public string EmergencyContact { get; set; }
-        public int AllergyId { get; set; }
+        public BloodType? BloodType { get; set; }
+        public string? EmergencyContact { get; set; }
         public virtual ICollection<Allergy> Allergies { get; set; }
+        public virtual ICollection<Appointment> Appointments { get; set; }
 
     }
 }

@@ -12,8 +12,8 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(HRSDbContext))]
-    [Migration("20240603171558_deneme")]
-    partial class deneme
+    [Migration("20240606174700_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AllergyPatient", b =>
+                {
+                    b.Property<int>("AllergiesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AllergiesId", "PatientsId");
+
+                    b.HasIndex("PatientsId");
+
+                    b.ToTable("AllergyPatient");
+                });
 
             modelBuilder.Entity("Core.Entities.BaseUser", b =>
                 {
@@ -76,6 +91,70 @@ namespace Persistence.Migrations
                     b.ToTable("Users", (string)null);
 
                     b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Allergy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Allergies");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("isCancelStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("Domain.Entities.Block", b =>
@@ -206,7 +285,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("DoctorId");
 
-                    b.ToTable("NoWorkHour");
+                    b.ToTable("NoWorkHours");
                 });
 
             modelBuilder.Entity("Domain.Entities.OfficeLocation", b =>
@@ -260,6 +339,37 @@ namespace Persistence.Migrations
                             FloorId = 1,
                             RoomId = 2
                         });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Report", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AppointmentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId");
+
+                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("Domain.Entities.Room", b =>
@@ -343,10 +453,10 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            BirthDate = new DateTime(2024, 6, 3, 20, 15, 58, 237, DateTimeKind.Local).AddTicks(1909),
+                            BirthDate = new DateTime(2024, 6, 6, 20, 47, 0, 384, DateTimeKind.Local).AddTicks(6562),
                             Email = "testAdmin@hrs.com",
-                            FirstName = "test",
-                            Gender = "B",
+                            FirstName = "Test",
+                            Gender = "M",
                             LastName = "Admin",
                             Phone = "0500000000"
                         });
@@ -374,21 +484,53 @@ namespace Persistence.Migrations
                     b.HasIndex("TitleId");
 
                     b.ToTable("Doctors", (string)null);
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 2,
-                            BirthDate = new DateTime(2024, 6, 3, 20, 15, 58, 237, DateTimeKind.Local).AddTicks(1925),
-                            Email = "testDoctor@hrs.com",
-                            FirstName = "test",
-                            Gender = "B",
-                            LastName = "Doctor",
-                            Phone = "0500000000",
-                            ClinicId = 1,
-                            OfficeLocationId = 2,
-                            TitleId = 1
-                        });
+            modelBuilder.Entity("Domain.Entities.Patient", b =>
+                {
+                    b.HasBaseType("Core.Entities.BaseUser");
+
+                    b.Property<int?>("BloodType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmergencyContact")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Patients", (string)null);
+                });
+
+            modelBuilder.Entity("AllergyPatient", b =>
+                {
+                    b.HasOne("Domain.Entities.Allergy", null)
+                        .WithMany()
+                        .HasForeignKey("AllergiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Patient", null)
+                        .WithMany()
+                        .HasForeignKey("PatientsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Appointment", b =>
+                {
+                    b.HasOne("Domain.Entities.Doctor", "Doctor")
+                        .WithMany("Appointments")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Patient", "Patient")
+                        .WithMany("Appointments")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("Domain.Entities.NoWorkHour", b =>
@@ -427,6 +569,17 @@ namespace Persistence.Migrations
                     b.Navigation("Floor");
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Report", b =>
+                {
+                    b.HasOne("Domain.Entities.Appointment", "Appointment")
+                        .WithMany()
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Appointment");
                 });
 
             modelBuilder.Entity("Domain.Entities.Admin", b =>
@@ -471,6 +624,15 @@ namespace Persistence.Migrations
                     b.Navigation("Title");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Patient", b =>
+                {
+                    b.HasOne("Core.Entities.BaseUser", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.Patient", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Entities.Block", b =>
                 {
                     b.Navigation("OfficeLocations");
@@ -504,7 +666,14 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Doctor", b =>
                 {
+                    b.Navigation("Appointments");
+
                     b.Navigation("NoWorkHours");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Patient", b =>
+                {
+                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }
