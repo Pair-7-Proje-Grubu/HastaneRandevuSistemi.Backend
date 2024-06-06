@@ -21,6 +21,10 @@ namespace WebAPI.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CreateNoWorkHourCommand command)
         {
+            // Yeni eklendi.
+            //var response = await _mediator.Send(command);
+            //return Ok(response);
+
             await _mediator.Send(command);
             return Ok();
         }
