@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.NoWorkHours.Queries.GetList
 {
-    public class GetListQuery : IRequest<List<GetAllNoWorkHourResponse>>
+    public class GetListQuery : IRequest<List<GetListNoWorkHourResponse>>
     {
         public int Page { get; set; }
         public int PageSize { get; set; }
@@ -18,7 +18,7 @@ namespace Application.Features.NoWorkHours.Queries.GetList
 
         public string[] RequiredRoles => ["NoWorkHour.Add", "NoWorkHour.Update"];
 
-        public class GetListQueryHandler : IRequestHandler<GetListQuery, List<GetAllNoWorkHourResponse>>
+        public class GetListQueryHandler : IRequestHandler<GetListQuery, List<GetListNoWorkHourResponse>>
         {
             private readonly INoWorkHourRepository _noWorkHourRepository;
             private readonly IMapper _mapper;
@@ -29,11 +29,11 @@ namespace Application.Features.NoWorkHours.Queries.GetList
                 _mapper = mapper;
             }
 
-            public async Task<List<GetAllNoWorkHourResponse>> Handle(GetListQuery request, CancellationToken cancellationToken)
+            public async Task<List<GetListNoWorkHourResponse>> Handle(GetListQuery request, CancellationToken cancellationToken)
             {
-                List<NoWorkHour> noWorkHours = await _noWorkHourRepository.GetAllAsync();
+                List<NoWorkHour> noWorkHours = await _noWorkHourRepository.GetListAsync();
 
-                List<GetAllNoWorkHourResponse> response = _mapper.Map<List<GetAllNoWorkHourResponse>>(noWorkHours);
+                List<GetListNoWorkHourResponse> response = _mapper.Map<List<GetListNoWorkHourResponse>>(noWorkHours);
 
                 return response;
             }

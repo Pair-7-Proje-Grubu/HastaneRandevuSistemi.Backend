@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Reports.Profiles
+namespace Application.Features.Reports.MappingProfiles
 {
     public class ReportMappingProfiles : Profile
     {
@@ -22,7 +22,7 @@ namespace Application.Features.Reports.Profiles
             CreateMap<Report, UpdateReportCommand>().ReverseMap();
             CreateMap<Report, UpdateReportResponse>().ReverseMap();
 
-            CreateMap<Report, GetAllReportResponse>().ReverseMap();
+            CreateMap<Report, GetListReportResponse>().ReverseMap();
             CreateMap<Report, GetByIdReportResponse>().ReverseMap();
         }
     }
