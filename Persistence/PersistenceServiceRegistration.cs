@@ -25,6 +25,8 @@ namespace Persistence
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<INoWorkHourRepository, NoWorkHourRepository>();
+            services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
+            services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
 
 
             return services;

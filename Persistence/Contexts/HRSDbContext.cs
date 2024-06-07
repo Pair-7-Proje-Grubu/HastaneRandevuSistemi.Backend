@@ -31,7 +31,7 @@ namespace Persistence.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-RH2IO8U\\SQLEXPRESS; Database=HastaneRandevuSistemi; Trusted_Connection=True; TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-3CUTFEI; Database=HastaneRandevuSistemi; Trusted_Connection=True; TrustServerCertificate=True;");
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -67,7 +67,7 @@ namespace Persistence.Contexts
 
             foreach (var entityEntry in entries)
             {
-                ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.UtcNow;
+                ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.Now;
             }
 
             return base.SaveChanges();
@@ -80,7 +80,7 @@ namespace Persistence.Contexts
 
             foreach (var entityEntry in entries)
             {
-                ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.UtcNow;
+                ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.Now;
             }
 
             return base.SaveChangesAsync(cancellationToken);

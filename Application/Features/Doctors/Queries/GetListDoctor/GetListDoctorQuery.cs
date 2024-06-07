@@ -1,6 +1,7 @@
 ﻿using Application.Features.Doctors.Commands.CreateDoctor;
 using Application.Repositories;
 using AutoMapper;
+using Core.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -13,6 +14,8 @@ namespace Application.Features.Doctors.Queries.GetListDoctor
 {
     public class GetListDoctorQuery : IRequest<GetListDoctorResponse>
     {
+
+
         public class GetListDoctorQueryHandler : IRequestHandler<GetListDoctorQuery, GetListDoctorResponse>
         {
 

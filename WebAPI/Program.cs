@@ -4,7 +4,9 @@ using Core.Utilities.Encryption;
 using Core.Utilities.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Persistence;
+using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 
@@ -19,10 +21,6 @@ builder.Services.AddSwaggerGen();
 
 TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddPersistenceServices();
-builder.Services.AddApplicationServices();
-builder.Services.AddCoreServices(tokenOptions);
 
 
 //string? securityKey = builder.Configuration.GetSection("TokenOptions").GetValue<string>("SecurityKey");
@@ -43,6 +41,40 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+#region swagger iþlemleri
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Description = "Bearer Authentication with JWT Token",
+        Type = SecuritySchemeType.Http
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            new List<string>()
+        }
+    });
+});
+
+#endregion
+
+builder.Services.AddPersistenceServices();
+builder.Services.AddApplicationServices();
+builder.Services.AddCoreServices(tokenOptions);
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -50,7 +82,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    });
 }
 
 

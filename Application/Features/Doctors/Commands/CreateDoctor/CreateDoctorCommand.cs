@@ -25,7 +25,7 @@ namespace Application.Features.Doctors.Commands.CreateDoctor
         public int ClinicId { get; set; }
         public int OfficeLocationId { get; set; }
 
-        public string[] RequiredRoles => throw new NotImplementedException();
+        public string[] RequiredRoles => ["Doctor.Add"];
 
         public class CreateDoctorCommandHandler : IRequestHandler<CreateDoctorCommand, CreateDoctorResponse>
         {
