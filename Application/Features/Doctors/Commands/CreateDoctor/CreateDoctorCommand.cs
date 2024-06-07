@@ -36,7 +36,6 @@ namespace Application.Features.Doctors.Commands.CreateDoctor
                 _mapper = mapper;
             }
 
-
             public async Task<CreateDoctorResponse> Handle(CreateDoctorCommand request, CancellationToken cancellationToken)
             {
                 Doctor doctor = _mapper.Map<Doctor>(request);

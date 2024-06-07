@@ -24,7 +24,6 @@ builder.Services.AddPersistenceServices();
 builder.Services.AddApplicationServices();
 builder.Services.AddCoreServices(tokenOptions);
 
-var app = builder.Build();
 
 //string? securityKey = builder.Configuration.GetSection("TokenOptions").GetValue<string>("SecurityKey");
 
@@ -44,12 +43,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+
+var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 
 app.UseHttpsRedirection();
 
