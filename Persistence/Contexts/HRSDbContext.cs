@@ -26,6 +26,8 @@ namespace Persistence.Contexts
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<NoWorkHour> NoWorkHours { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<Domain.Entities.OperationClaim> OperationClaims { get; set; }
+        public DbSet<Domain.Entities.UserOperationClaim> UserOperationClaims { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -57,6 +59,31 @@ namespace Persistence.Contexts
             SeedData.Initialize(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
+        }
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added && e.Entity is BaseEntity);
+
+            foreach (var entityEntry in entries)
+            {
+                ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.UtcNow;
+            }
+
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added && e.Entity is BaseEntity);
+
+            foreach (var entityEntry in entries)
+            {
+                ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.UtcNow;
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
         }
 
     }
