@@ -13,5 +13,13 @@ namespace WebAPI.Controllers
             CreateAppointmentResponse response = await _mediator.Send(command);
             return Ok(response);
         }
+
+
+        [HttpPost("GetListAvailableAppointments")] //GetListAvailableAppointments
+        public async Task<IActionResult> GetListAvailable([FromBody] GetListAvailableAppointmentCommand command)
+        {
+            CreateAppointmentResponse response = await _mediator.Send(command);
+            return Ok(response);
+        }
     }
 }

@@ -399,6 +399,7 @@ namespace Persistence.Migrations
               values: new object[] { 1 });
 
             //------------------------------------------------------
+
             migrationBuilder.CreateIndex(
                 name: "IX_AllergyPatient_PatientsId",
                 table: "AllergyPatient",
