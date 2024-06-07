@@ -23,6 +23,8 @@ namespace Persistence.Contexts
             OfficeLocation officeLocation2 = new OfficeLocation() { Id = 2, BlockId = 1, FloorId = 1, RoomId = 2 };
             Clinic clinic = new Clinic() { Id = 1, Name = "Ortopedi", PhoneNumber = "0500000000" };
 
+         
+
 
             Admin admin = new Admin()
             {
@@ -45,6 +47,16 @@ namespace Persistence.Contexts
             modelBuilder.Entity<OfficeLocation>().HasData(officeLocation);
             modelBuilder.Entity<OfficeLocation>().HasData(officeLocation2);
             modelBuilder.Entity<Clinic>().HasData(clinic);
+            modelBuilder.Entity<Domain.Entities.OperationClaim>()
+                .HasData(new Domain.Entities.OperationClaim() { Id = 1, Name = "Patient" },
+                         new Domain.Entities.OperationClaim() { Id = 2, Name = "Doctor" },
+                         new Domain.Entities.OperationClaim() { Id = 3, Name = "Admin" });
+            modelBuilder.Entity<Domain.Entities.UserOperationClaim>().HasData(new Domain.Entities.UserOperationClaim()
+            {
+                Id = 1,
+                UserId = 1,
+                OperationClaimId = 3
+            });
 
             modelBuilder.Entity<Admin>().HasData(admin);
         }

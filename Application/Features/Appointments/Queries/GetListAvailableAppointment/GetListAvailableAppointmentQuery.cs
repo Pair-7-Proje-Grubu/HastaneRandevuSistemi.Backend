@@ -29,7 +29,7 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                 GetListDoctorResponse response = new GetListDoctorResponse();
                 response.Doctors = await _doctorRepository.GetListAsync();
 
-                return response;
+                return null;
             }
         }
     }

@@ -22,11 +22,13 @@ namespace Application.Features.Auth.Login
         {
             private readonly IPatientRepository _patientRepository;
             private readonly ITokenHelper _tokenHelper;
+            private readonly IUserOperationClaimRepository _userOperationClaimRepository;
 
-            public LoginCommandHandler(IPatientRepository patientRepository, ITokenHelper tokenHelper)
+            public LoginCommandHandler(IPatientRepository patientRepository, ITokenHelper tokenHelper, IUserOperationClaimRepository userOperationClaimRepository)
             {
                 _patientRepository = patientRepository;
                 _tokenHelper = tokenHelper;
+                _userOperationClaimRepository = userOperationClaimRepository;
             }
 
             public async Task<AccessToken> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -45,7 +47,10 @@ namespace Application.Features.Auth.Login
                     throw new Exception("Giriş Başarısız");
                 }
 
-                return _tokenHelper.CreateToken(patient);
+                List<Domain.Entities.UserOperationClaim> userOperationClaims = await _userOperationClaimRepository
+                    .GetListAsync(i => i.UserId == patient.Id, include: i => i.Include(i => i.OperationClaim));
+
+                return _tokenHelper.CreateToken(patient, userOperationClaims.Select(i => (Core.Entities.OperationClaim)i.OperationClaim).ToList());
             }
         }
     }

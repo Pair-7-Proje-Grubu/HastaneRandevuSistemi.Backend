@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Doctors.Commands.CreateDoctor
 {
-    public class CreateDoctorCommand : IRequest<CreateDoctorResponse>
+    public class CreateDoctorCommand : IRequest<CreateDoctorResponse>, ISecuredRequest
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -23,6 +24,8 @@ namespace Application.Features.Doctors.Commands.CreateDoctor
         public int TitleId { get; set; }
         public int ClinicId { get; set; }
         public int OfficeLocationId { get; set; }
+
+        public string[] RequiredRoles => throw new NotImplementedException();
 
         public class CreateDoctorCommandHandler : IRequestHandler<CreateDoctorCommand, CreateDoctorResponse>
         {

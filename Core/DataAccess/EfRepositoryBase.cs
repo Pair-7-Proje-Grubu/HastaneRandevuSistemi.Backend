@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Core.DataAccess
 {
     public class EfRepositoryBase<TEntity, TContext> : IRepository<TEntity>, IAsyncRepository<TEntity>
@@ -44,20 +45,37 @@ namespace Core.DataAccess
             await context.SaveChangesAsync();   
         }
 
-        public TEntity Get(Expression<Func<TEntity, bool>> filter)
+        public TEntity Get(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
-            throw new NotImplementedException();
+            IQueryable<TEntity> data = context.Set<TEntity>();
+
+            if (include != null)
+                data = include(data);
+
+            return data.FirstOrDefault(filter);
         }
 
      
-        public List<TEntity> GetList(Expression<Func<TEntity, bool>>? filter = null)
+        public List<TEntity> GetList(Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
-            throw new NotImplementedException();
+            IQueryable<TEntity> data = context.Set<TEntity>();
+
+            if (filter != null)
+                data = data.Where(filter);
+            if (include != null)
+                data = include(data);
+
+            return data.ToList();
         }
 
-        public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
-            return await context.Set<TEntity>().FirstOrDefaultAsync(predicate);
+            IQueryable<TEntity> data = context.Set<TEntity>();
+
+            if (include != null)
+                data = include(data);
+
+            return await data.FirstOrDefaultAsync(predicate);
 
         }
 
