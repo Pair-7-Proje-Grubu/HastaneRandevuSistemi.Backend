@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Utilities;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,10 @@ namespace Application.Features.Auth.Register
             }
             public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
+
+                //IValidator<RegisterCommand> validator = new RegisterCommandValidator();
+                //validator.ValidateAndThrow(request);
+
                 Patient? patientWithSameEmail = await _patientRepository.GetAsync(p => p.Email == request.Email);
                 if(patientWithSameEmail is not null)
                 {

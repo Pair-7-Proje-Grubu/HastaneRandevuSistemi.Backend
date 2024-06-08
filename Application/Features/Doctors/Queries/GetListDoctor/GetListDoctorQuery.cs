@@ -1,7 +1,7 @@
 ﻿using Application.Features.Doctors.Commands.CreateDoctor;
 using Application.Repositories;
 using AutoMapper;
-using Core.Pipelines.Authorization;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
