@@ -1,6 +1,4 @@
-﻿
-using Application.Features.Titles.Commands.Queries.GetByIdTitle;
-using Application.Repositories;
+﻿using Application.Repositories;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;

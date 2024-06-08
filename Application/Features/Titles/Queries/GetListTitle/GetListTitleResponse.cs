@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Clinics.Commands.Queries.GetByIdClinic
+
+namespace Application.Features.Titles.Queries.GetListTitle
 {
-    public class GetByIdClinicResponse
+    public class GetListTitleResponse
     {
-        public Clinic? Clinic { get; set; }
+        public List<Title> Titles { get; set; }
+
     }
 }

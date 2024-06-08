@@ -1,4 +1,4 @@
-﻿using Application.Features.Titles.Commands.Queries.GetByIdTitle;
+﻿using Application.Features.Titles.Queries.GetByIdTitle;
 using Application.Features.Titles.Commands.Delete;
 using Application.Features.Titles.Commands.Create;
 using Application.Repositories;
@@ -6,9 +6,9 @@ using Core.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Application.Features.Doctors.Queries.GetByIdDoctor;
-using Application.Features.Titles.Commands.Queries.GetListTitle;
-using Application.Features.Titles.Queries.GetByIdTitle;
+using Application.Features.Titles.Queries.GetListTitle;
+using Application.Features.Titles.Commands.Update;
+
 
 namespace WebAPI.Controllers
 {
@@ -43,6 +43,13 @@ namespace WebAPI.Controllers
 
         [HttpPost("Delete")]
         public async Task<IActionResult> Delete([FromBody] DeleteTitleCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update([FromBody] UpdateTitleCommand command)
         {
             await _mediator.Send(command);
             return Ok();

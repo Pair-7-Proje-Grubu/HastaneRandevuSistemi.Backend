@@ -7,8 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Features.Clinics.Queries.GetListClinic;
 
-namespace Application.Features.Clinics.Commands.Queries.GetListClinic
+namespace Application.Features.Clinics.Queries.GetListClinic
 {
     public class GetListClinicQuery : IRequest<GetListClinicResponse>
     {
