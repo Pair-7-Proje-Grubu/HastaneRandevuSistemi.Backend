@@ -1,5 +1,5 @@
 ﻿
-using Application.Features.Clinics.Commands.Queries.GetByIdClinic;
+using Application.Features.Clinics.Queries.GetByIdClinic;
 using Application.Repositories;
 using AutoMapper;
 using Domain.Entities;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 
 
-namespace Application.Features.Clinics.Commands.Queries.GetByIdClinic
+namespace Application.Features.Clinics.Queries.GetByIdClinic
 {
     public class GetByIdClinicQuery : IRequest<GetByIdClinicResponse>
     {

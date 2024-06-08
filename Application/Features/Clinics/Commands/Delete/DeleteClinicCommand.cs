@@ -30,7 +30,7 @@ namespace Application.Features.Clinics.Commands.Delete
                 Clinic? clinic = _mapper.Map<Clinic>(request);
 
                 if (clinic is null)
-                    throw new Exception("Silinecek klinik bulunmadı.");
+                    throw new Exception("Böyle bir klinik bulunamadı.");
 
                 await _clinicRepository.DeleteAsync(clinic);
             }

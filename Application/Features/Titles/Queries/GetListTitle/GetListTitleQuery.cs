@@ -1,6 +1,4 @@
-﻿using Application.Features.Titles.Commands.Queries.GetListTitle;
-using Application.Features.Titles.Commands.Create;
-using Application.Repositories;
+﻿using Application.Repositories;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
@@ -10,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Titles.Commands.Queries.GetListTitle
+namespace Application.Features.Titles.Queries.GetListTitle
 {
     public class GetListTitleQuery : IRequest<GetListTitleResponse>
     { 

@@ -1,16 +1,13 @@
 ﻿using Application.Features.Clinics.Commands.Create;
 using Application.Features.Clinics.Commands.Delete;
-using Application.Features.Titles.Commands.Create;
-using Application.Features.Titles.Commands.Queries.GetByIdTitle;
-using Application.Features.Titles.Queries.GetByIdTitle;
 using Application.Repositories;
 using Core.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Application.Features.Clinics.Commands.Queries.GetByIdClinic;
-using Application.Features.Titles.Commands.Queries.GetListTitle;
-using Application.Features.Clinics.Commands.Queries.GetListClinic;
+using Application.Features.Clinics.Queries.GetByIdClinic;
+using Application.Features.Clinics.Queries.GetListClinic;
+using Application.Features.Clinics.Commands.Update;
 namespace WebAPI.Controllers
 
 {
@@ -43,6 +40,13 @@ namespace WebAPI.Controllers
 
         [HttpPost("Delete")]
         public async Task<IActionResult> Delete([FromBody] DeleteClinicCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update([FromBody] UpdateClinicCommand command)
         {
             await _mediator.Send(command);
             return Ok();

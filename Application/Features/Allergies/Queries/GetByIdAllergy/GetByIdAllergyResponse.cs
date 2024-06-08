@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Titles.Commands.Queries.GetByIdTitle
+namespace Application.Features.Allergies.Queries.GetByIdAllergy
 {
-    public class GetByIdTitleResponse
+    public class GetByIdAllergyResponse
     {
-        public Title? Title { get; set; }
+        public Allergy? Allergy { get; set; }
     }
 }
