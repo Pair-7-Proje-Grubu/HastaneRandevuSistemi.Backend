@@ -19,7 +19,7 @@ namespace Application.Features.Auth.Register
                     .Length(2, 50).WithMessage(ValidationMessages.Length)
                     .Matches("^[a-zA-Z]+$").WithMessage(ValidationMessages.OnlyLetters).WithName("Ad");
                 }).WithName("Ad");
-                
+
 
             RuleFor(r => r.LastName).NotEmpty().WithMessage(ValidationMessages.Required).WithName("Soyad")
                 .Length(2, 50).WithMessage(ValidationMessages.Length).WithName("Soyad")

@@ -24,7 +24,7 @@ namespace Core.Utilities.JWT
         {
             _tokenOptions = tokenOptions;
         }
-        public AccessToken CreateToken(BaseUser user, List<OperationClaim> operationClaims)
+        public AccessToken CreateToken(BaseUser user, List<BaseOperationClaim> operationClaims)
         {
             //TokenOptions tokenOptions = _configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -48,7 +48,6 @@ namespace Core.Utilities.JWT
         {
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-            claims.Add(new Claim(ClaimTypes.Name, user.FirstName));
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
 
             foreach (var operationClaim in operationClaims)

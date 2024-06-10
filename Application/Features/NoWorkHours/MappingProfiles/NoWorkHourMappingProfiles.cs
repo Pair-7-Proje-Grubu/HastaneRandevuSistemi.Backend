@@ -1,5 +1,6 @@
 ﻿using Application.Features.NoWorkHours.Commands.Create;
 using Application.Features.NoWorkHours.Commands.Update;
+using Application.Features.NoWorkHours.Dtos;
 using Application.Features.NoWorkHours.Queries.GetById;
 using Application.Features.NoWorkHours.Queries.GetList;
 using AutoMapper;
@@ -16,7 +17,7 @@ namespace Application.Features.NoWorkHours.MappingProfiles
     {
         public NoWorkHourMappingProfiles()
         {
-            CreateMap<NoWorkHour, CreateNoWorkHourCommand>().ReverseMap();
+            CreateMap<NoWorkHour, NoWorkHourDto>().ReverseMap();
             CreateMap<NoWorkHour, CreateNoWorkHourResponse>().ReverseMap();
 
             CreateMap<NoWorkHour, UpdateNoWorkHourCommand>().ReverseMap();

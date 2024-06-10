@@ -13,6 +13,7 @@ namespace Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+          
             migrationBuilder.CreateTable(
                 name: "Allergies",
                 columns: table => new
@@ -53,6 +54,7 @@ namespace Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AppointmentDuration = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -76,6 +78,59 @@ namespace Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Floors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NoWorkHours",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NoWorkHours", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OperationClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OperationClaims", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Patients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BloodType = table.Column<int>(type: "int", nullable: true),
+                    EmergencyContact = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Patients", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -116,21 +171,87 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkingTimes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    StartBreakTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    EndBreakTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_WorkingTimes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppointmentDurationHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClinicId = table.Column<int>(type: "int", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppointmentDurationHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppointmentDurationHistory_Clinics_ClinicId",
+                        column: x => x.ClinicId,
+                        principalTable: "Clinics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AllergyPatient",
+                columns: table => new
+                {
+                    AllergiesId = table.Column<int>(type: "int", nullable: false),
+                    PatientsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AllergyPatient", x => new { x.AllergiesId, x.PatientsId });
+                    table.ForeignKey(
+                        name: "FK_AllergyPatient_Allergies_AllergiesId",
+                        column: x => x.AllergiesId,
+                        principalTable: "Allergies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AllergyPatient_Patients_PatientsId",
+                        column: x => x.PatientsId,
+                        principalTable: "Patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,19 +308,29 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Patients",
+                name: "UserOperationClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    BloodType = table.Column<int>(type: "int", nullable: true),
-                    EmergencyContact = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    OperationClaimId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Patients", x => x.Id);
+                    table.PrimaryKey("PK_UserOperationClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Patients_Users_Id",
-                        column: x => x.Id,
+                        name: "FK_UserOperationClaims_OperationClaims_OperationClaimId",
+                        column: x => x.OperationClaimId,
+                        principalTable: "OperationClaims",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserOperationClaims_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -244,30 +375,6 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AllergyPatient",
-                columns: table => new
-                {
-                    AllergiesId = table.Column<int>(type: "int", nullable: false),
-                    PatientsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AllergyPatient", x => new { x.AllergiesId, x.PatientsId });
-                    table.ForeignKey(
-                        name: "FK_AllergyPatient_Allergies_AllergiesId",
-                        column: x => x.AllergiesId,
-                        principalTable: "Allergies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AllergyPatient_Patients_PatientsId",
-                        column: x => x.PatientsId,
-                        principalTable: "Patients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Appointments",
                 columns: table => new
                 {
@@ -299,23 +406,25 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "NoWorkHours",
+                name: "DoctorNoWorkHour",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     DoctorId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    NoWorkHoursId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NoWorkHours", x => x.Id);
+                    table.PrimaryKey("PK_DoctorNoWorkHour", x => new { x.DoctorId, x.NoWorkHoursId });
                     table.ForeignKey(
-                        name: "FK_NoWorkHours_Doctors_DoctorId",
+                        name: "FK_DoctorNoWorkHour_Doctors_DoctorId",
                         column: x => x.DoctorId,
                         principalTable: "Doctors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DoctorNoWorkHour_NoWorkHours_NoWorkHoursId",
+                        column: x => x.NoWorkHoursId,
+                        principalTable: "NoWorkHours",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -350,13 +459,23 @@ namespace Persistence.Migrations
 
             migrationBuilder.InsertData(
                 table: "Clinics",
-                columns: new[] { "Id", "CreatedDate", "DeletedDate", "Name", "PhoneNumber", "UpdatedDate" },
-                values: new object[] { 1, null, null, "Ortopedi", "0500000000", null });
+                columns: new[] { "Id", "AppointmentDuration", "CreatedDate", "DeletedDate", "Name", "PhoneNumber", "UpdatedDate" },
+                values: new object[] { 1, 0, null, null, "Ortopedi", "0500000000", null });
 
             migrationBuilder.InsertData(
                 table: "Floors",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "No", "UpdatedDate" },
                 values: new object[] { 1, null, null, "Zemin", null });
+
+            migrationBuilder.InsertData(
+                table: "OperationClaims",
+                columns: new[] { "Id", "CreatedDate", "DeletedDate", "Name", "UpdatedDate" },
+                values: new object[,]
+                {
+                    { 1, null, null, "Patient", null },
+                    { 2, null, null, "Doctor", null },
+                    { 3, null, null, "Admin", null }
+                });
 
             migrationBuilder.InsertData(
                 table: "Rooms",
@@ -375,7 +494,12 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "BirthDate", "CreatedDate", "DeletedDate", "Email", "FirstName", "Gender", "LastName", "PasswordHash", "PasswordSalt", "Phone", "UpdatedDate" },
-                values: new object[] { 1, new DateTime(2024, 6, 6, 20, 47, 0, 384, DateTimeKind.Local).AddTicks(6562), null, null, "testAdmin@hrs.com", "Test", "M", "Admin", null, null, "0500000000", null });
+                values: new object[] { 1, new DateTime(2024, 6, 10, 16, 39, 9, 52, DateTimeKind.Local).AddTicks(7607), null, null, "testAdmin@hrs.com", "Test", "M", "Admin", null, null, "0500000000", null });
+
+            migrationBuilder.InsertData(
+                table: "WorkingTimes",
+                columns: new[] { "Id", "CreatedDate", "DeletedDate", "EndBreakTime", "EndTime", "StartBreakTime", "StartTime", "UpdatedDate" },
+                values: new object[] { 1, null, null, new TimeSpan(0, 13, 0, 0, 0), new TimeSpan(0, 17, 0, 0, 0), new TimeSpan(0, 12, 0, 0, 0), new TimeSpan(0, 8, 30, 0, 0), null });
 
             migrationBuilder.InsertData(
                 table: "Admins",
@@ -391,19 +515,20 @@ namespace Persistence.Migrations
                     { 2, 1, null, null, 1, 2, null }
                 });
 
-            //SPECIAL SECTION---------------------------------------
-
             migrationBuilder.InsertData(
-              table: "Patients",
-              columns: new[] { "Id" },
-              values: new object[] { 1 });
-
-            //------------------------------------------------------
+                table: "UserOperationClaims",
+                columns: new[] { "Id", "CreatedDate", "DeletedDate", "OperationClaimId", "UpdatedDate", "UserId" },
+                values: new object[] { 1, null, null, 3, null, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AllergyPatient_PatientsId",
                 table: "AllergyPatient",
                 column: "PatientsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentDurationHistory_ClinicId",
+                table: "AppointmentDurationHistory",
+                column: "ClinicId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_DoctorId",
@@ -414,6 +539,11 @@ namespace Persistence.Migrations
                 name: "IX_Appointments_PatientId",
                 table: "Appointments",
                 column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DoctorNoWorkHour_NoWorkHoursId",
+                table: "DoctorNoWorkHour",
+                column: "NoWorkHoursId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Doctors_ClinicId",
@@ -431,11 +561,6 @@ namespace Persistence.Migrations
                 name: "IX_Doctors_TitleId",
                 table: "Doctors",
                 column: "TitleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_NoWorkHours_DoctorId",
-                table: "NoWorkHours",
-                column: "DoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OfficeLocations_BlockId",
@@ -456,6 +581,26 @@ namespace Persistence.Migrations
                 name: "IX_Reports_AppointmentId",
                 table: "Reports",
                 column: "AppointmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserOperationClaims_OperationClaimId",
+                table: "UserOperationClaims",
+                column: "OperationClaimId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserOperationClaims_UserId",
+                table: "UserOperationClaims",
+                column: "UserId");
+
+            //SPECIAL SECTION---------------------------------------
+
+            migrationBuilder.InsertData(
+              table: "Patients",
+              columns: new[] { "Id","Email" },
+              values: new object[] { 1,"test@hrs.com" });
+
+            //------------------------------------------------------
+
         }
 
         /// <inheritdoc />
@@ -468,16 +613,31 @@ namespace Persistence.Migrations
                 name: "AllergyPatient");
 
             migrationBuilder.DropTable(
-                name: "NoWorkHours");
+                name: "AppointmentDurationHistory");
+
+            migrationBuilder.DropTable(
+                name: "DoctorNoWorkHour");
 
             migrationBuilder.DropTable(
                 name: "Reports");
 
             migrationBuilder.DropTable(
+                name: "UserOperationClaims");
+
+            migrationBuilder.DropTable(
+                name: "WorkingTimes");
+
+            migrationBuilder.DropTable(
                 name: "Allergies");
 
             migrationBuilder.DropTable(
+                name: "NoWorkHours");
+
+            migrationBuilder.DropTable(
                 name: "Appointments");
+
+            migrationBuilder.DropTable(
+                name: "OperationClaims");
 
             migrationBuilder.DropTable(
                 name: "Doctors");

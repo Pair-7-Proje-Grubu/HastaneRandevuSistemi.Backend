@@ -1,17 +1,15 @@
-﻿using Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Application.Features.NoWorkHours.Dtos
 {
-    public class NoWorkHour : BaseEntity
+    public class NoWorkHourDto 
     {
-        public int Id { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public virtual ICollection<Doctor> Doctor { get; set; }
+        public bool isFullDay { get; set; } = false;
     }
 }

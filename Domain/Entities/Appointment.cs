@@ -13,6 +13,8 @@ namespace Domain.Entities
         public int DoctorId { get; set; }
         public DateTime DateTime { get; set; }
         public CancelStatus isCancelStatus { get; set; } = CancelStatus.NoCancel;
+
+
         public virtual Patient Patient { get; set; }
         public virtual Doctor Doctor { get; set; }
        

@@ -15,6 +15,7 @@ namespace Application.Features.Clinics.Commands.Create
     {
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
+        public int AppointmentDuration { get; set; }
 
 
         public class CreateClinicCommandHandler : IRequestHandler<CreateClinicCommand, CreateClinicResponse>
@@ -33,7 +34,7 @@ namespace Application.Features.Clinics.Commands.Create
             {
                 Clinic clinic = _mapper.Map<Clinic>(request);
                 await _clinicRepository.AddAsync(clinic);
-                return new CreateClinicResponse() { Id = clinic.Id, Name = clinic.Name, PhoneNumber = clinic.PhoneNumber };
+                return new CreateClinicResponse() { Id = clinic.Id, Name = clinic.Name, PhoneNumber = clinic.PhoneNumber, AppointmentDuration= clinic.AppointmentDuration };
 
             }
 

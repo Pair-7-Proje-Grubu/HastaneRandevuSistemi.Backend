@@ -1,11 +1,14 @@
-﻿using Application.Repositories;
+﻿using Application.Features.NoWorkHours.Dtos;
+using Application.Repositories;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,37 +16,33 @@ namespace Application.Features.NoWorkHours.Commands.Create
 {
     public class CreateNoWorkHourCommand : IRequest<CreateNoWorkHourResponse>
     {
-        // public DateTime DateTime { get; set; }
-
-        public int DoctorId { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public bool IsFullDay { get; set; }
+        public List<NoWorkHourDto> NoWorkHours { get; set; }
 
         public class CreateNoWorkHourCommandHandler : IRequestHandler<CreateNoWorkHourCommand, CreateNoWorkHourResponse>
         {
             private readonly INoWorkHourRepository _noWorkHourRepository;
             private readonly IMapper _mapper;
+            private readonly IHttpContextAccessor _httpContextAccessor;
 
-            public CreateNoWorkHourCommandHandler(INoWorkHourRepository noWorkHourRepository, IMapper mapper) 
+            public CreateNoWorkHourCommandHandler(INoWorkHourRepository noWorkHourRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor) 
             {
                 _noWorkHourRepository = noWorkHourRepository;
                 _mapper = mapper;
-            }
+                _httpContextAccessor = httpContextAccessor;
 
+            }
+    
             public async Task<CreateNoWorkHourResponse> Handle(CreateNoWorkHourCommand request, CancellationToken cancellationToken)
             {
-                //NoWorkHour noWorkHour = _mapper.Map<NoWorkHour>(request);
+               string userId = _httpContextAccessor.HttpContext.User.Claims.Single(i => i.Type == ClaimTypes.NameIdentifier).Value;
 
-                //await _noWorkHourRepository.AddAsync(noWorkHour);
+                
 
-                //return new CreateNoWorkHourResponse() { Id = noWorkHour.Id, DateTime = noWorkHour.DateTime };
+                List<NoWorkHour> noWorkHours = _mapper.Map<List<NoWorkHour>>(request.NoWorkHours);
 
-                var noWorkHour = _mapper.Map<NoWorkHour>(request);
 
-                await _noWorkHourRepository.AddAsync(noWorkHour);
-
-                var response = _mapper.Map<CreateNoWorkHourResponse>(noWorkHour);
+                await _noWorkHourRepository.AddRangeAsync(noWorkHours);
+                var response = _mapper.Map<CreateNoWorkHourResponse>(noWorkHours);
 
                 return response;
             }

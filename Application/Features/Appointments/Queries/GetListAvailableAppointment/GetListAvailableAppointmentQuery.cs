@@ -23,11 +23,10 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                 _doctorRepository = doctorRepository;
             }
 
-
             public async Task<GetListAvailableAppointmentResponse> Handle(GetListAvailableAppointmentQuery request, CancellationToken cancellationToken)
             {
-                GetListDoctorResponse response = new GetListDoctorResponse();
-                response.Doctors = await _doctorRepository.GetListAsync();
+                GetListAvailableAppointmentResponse response = new GetListAvailableAppointmentResponse();
+                //response. = await _doctorRepository.GetListAsync();
 
                 return null;
             }
