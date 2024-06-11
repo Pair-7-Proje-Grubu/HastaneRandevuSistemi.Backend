@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Patient : BaseUser
+    public class Patient : User
     {
         public BloodType? BloodType { get; set; }
         public string? EmergencyContact { get; set; }

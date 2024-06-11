@@ -17,10 +17,12 @@ namespace Application.Features.Appointments.Queries.GetListAppointment
         {
 
             private readonly IDoctorRepository _doctorRepository;
+            private readonly IMapper _mapper;
 
             public GetListAppointmentQueryHandler(IDoctorRepository doctorRepository, IMapper mapper)
             {
                 _doctorRepository = doctorRepository;
+                _mapper = mapper;
             }
 
 

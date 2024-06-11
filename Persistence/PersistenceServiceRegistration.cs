@@ -15,7 +15,6 @@ namespace Persistence
     {
         public static IServiceCollection AddPersistenceServices(this IServiceCollection services)
         {
-            services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddDbContext<HRSDbContext>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
@@ -27,6 +26,7 @@ namespace Persistence
             services.AddScoped<INoWorkHourRepository, NoWorkHourRepository>();
             services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
             services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
+            services.AddScoped<IWorkingTimeRepository, WorkingTimeRepository>();
 
 
             return services;
