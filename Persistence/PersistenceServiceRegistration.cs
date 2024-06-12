@@ -27,7 +27,10 @@ namespace Persistence
             services.AddScoped<INoWorkHourRepository, NoWorkHourRepository>();
             services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
             services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
-
+            services.AddScoped<IBlockRepository, BlockRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IFloorRepository, FloorRepository>();
+            services.AddScoped<IOfficeLocationRepository, OfficeLocationRepository>();
 
             return services;
         }
