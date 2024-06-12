@@ -31,16 +31,9 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
 
             public async Task<GetListAvailableAppointmentResponse> Handle(GetListAvailableAppointmentQuery request, CancellationToken cancellationToken)
             {
-                //Clinic? clinic = await _clinicRepository.GetAsync(c => c.Id == request.ClinicId);
-
                 List<Doctor> doctors = await _doctorRepository.GetListAsync(d => d.ClinicId == request.ClinicId, include: d => d.Include(d => d.DoctorNoWorkHours).ThenInclude(d => d.NoWorkHour));
 
                 WorkingTime workingTime = (await _workingTimeRepository.GetListAsync()).MaxBy(x => x.CreatedDate);
-
-                //Start => 09.00 End => 17.00 Break => 12.00-13.00
-                //NoWorkStart => 13.00 End => 15.00
-
-                
 
                 List<GetListAvailableDto> responseDtos = new List<GetListAvailableDto>();
 
@@ -53,11 +46,41 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                     for (int i = 0; i < dayLimit; i++)
                     {
                         List<DateRange> ranges = new List<DateRange>();
-                        DoctorNoWorkHour? doctorNoWorkHour = doctor.DoctorNoWorkHours.FirstOrDefault(d => d.NoWorkHour.StartDate.Date == DateTime.Now.AddDays(i).Date);
-                        if (doctorNoWorkHour != null)
+                        List<DoctorNoWorkHour>? doctorNoWorkHours = doctor.DoctorNoWorkHours.Where(d => d.NoWorkHour.StartDate.Date == DateTime.Now.AddDays(i).Date).ToList();
+
+                        //if (doctorNoWorkHours.Count > 1)
+                        //{
+
+                        //    ranges.Add(new DateRange() { StartTime = workingTime.StartTime, EndTime = doctorNoWorkHours[0].NoWorkHour.StartDate.TimeOfDay });
+                        //    ranges.Add(new DateRange() { StartTime = doctorNoWorkHours[0].NoWorkHour.EndDate.TimeOfDay, EndTime = doctorNoWorkHours[1].NoWorkHour.StartDate.TimeOfDay });
+                        //    ranges.Add(new DateRange() { StartTime = doctorNoWorkHours[1].NoWorkHour.EndDate.TimeOfDay, EndTime = workingTime.EndTime });
+
+                        //}
+
+                        if (doctorNoWorkHours.Count > 1)
                         {
-                            ranges.Add(new DateRange() { StartTime = workingTime.StartTime, EndTime = doctorNoWorkHour.NoWorkHour.StartDate.TimeOfDay });
-                            ranges.Add(new DateRange() { StartTime = doctorNoWorkHour.NoWorkHour.EndDate.TimeOfDay, EndTime = workingTime.EndTime });
+                            TimeSpan currentStartTime = workingTime.StartTime;
+                            foreach (var doctorNoWorkHour in doctorNoWorkHours)
+                            {
+                                ranges.Add(new DateRange()
+                                {
+                                    StartTime = currentStartTime,
+                                    EndTime = doctorNoWorkHour.NoWorkHour.StartDate.TimeOfDay
+                                });
+
+                                currentStartTime = doctorNoWorkHour.NoWorkHour.EndDate.TimeOfDay;
+                            }
+                            ranges.Add(new DateRange()
+                            {
+                                StartTime = currentStartTime,
+                                EndTime = workingTime.EndTime
+                            });
+                        }
+
+                        else if(doctorNoWorkHours.Count == 1)
+                        {
+                            ranges.Add(new DateRange() { StartTime = workingTime.StartTime, EndTime = doctorNoWorkHours[0].NoWorkHour.StartDate.TimeOfDay });
+                            ranges.Add(new DateRange() { StartTime = doctorNoWorkHours[0].NoWorkHour.EndDate.TimeOfDay, EndTime = workingTime.EndTime });
                         }
                         else
                         {
