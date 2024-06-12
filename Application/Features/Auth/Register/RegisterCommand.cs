@@ -1,7 +1,9 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Appointments.Commands.Create;
+using Application.Repositories;
 using AutoMapper;
 using Core.Utilities;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Auth.Register
 {
-    public class RegisterCommand : IRequest
+    public class RegisterCommand : IRequest<RegisterResponse>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -22,7 +24,7 @@ namespace Application.Features.Auth.Register
         public DateTime BirthDate { get; set; }
         public char Gender { get; set; }
 
-        public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
+        public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
         {
             private readonly IMapper _mapper;
             private readonly IPatientRepository _patientRepository;
@@ -32,8 +34,12 @@ namespace Application.Features.Auth.Register
                 _mapper = mapper;
                 _patientRepository = patientRepository;
             }
-            public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
+            public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
+
+                //IValidator<RegisterCommand> validator = new RegisterCommandValidator();
+                //validator.ValidateAndThrow(request);
+
                 Patient? patientWithSameEmail = await _patientRepository.GetAsync(p => p.Email == request.Email);
                 if(patientWithSameEmail is not null)
                 {
@@ -49,6 +55,8 @@ namespace Application.Features.Auth.Register
                 newPatient.PasswordHash = passwordHash;
 
                 await _patientRepository.AddAsync(newPatient);
+
+                return new RegisterResponse();
             }
         }
 

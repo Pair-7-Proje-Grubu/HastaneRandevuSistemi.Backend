@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Admin : BaseUser 
+    public class Admin : User 
     {
     }
 }

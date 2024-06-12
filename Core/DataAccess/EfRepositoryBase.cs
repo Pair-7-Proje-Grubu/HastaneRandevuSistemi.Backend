@@ -34,6 +34,12 @@ namespace Core.DataAccess
             await context.SaveChangesAsync();
         }
 
+        public async Task AddRangeAsync(ICollection<TEntity> entity)
+        {
+            await context.AddRangeAsync(entity);
+            await context.SaveChangesAsync();
+        }
+
         public void Delete(TEntity entity)
         {
             throw new NotImplementedException();

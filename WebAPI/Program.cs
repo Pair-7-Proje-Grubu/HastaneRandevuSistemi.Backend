@@ -1,5 +1,7 @@
 using Application;
 using Core;
+using Core.CrossCuttingConcerns.Exceptions;
+using Core.CrossCuttingConcerns.Exceptions.Extensions;
 using Core.Utilities.Encryption;
 using Core.Utilities.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,14 +19,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
+builder.Services.AddHttpContextAccessor();
 
 
 //string? securityKey = builder.Configuration.GetSection("TokenOptions").GetValue<string>("SecurityKey");
-
+builder.Services.AddApplicationServices();
+builder.Services.AddPersistenceServices();
+builder.Services.AddCoreServices(tokenOptions);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -71,10 +75,7 @@ builder.Services.AddSwaggerGen(options =>
 
 #endregion
 
-builder.Services.AddPersistenceServices();
-builder.Services.AddApplicationServices();
-builder.Services.AddCoreServices(tokenOptions);
-builder.Services.AddHttpContextAccessor();
+
 
 var app = builder.Build();
 
@@ -88,7 +89,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.ConfigureExceptionMiddlewareExtensions();
 
+//app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

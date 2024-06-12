@@ -1,7 +1,7 @@
 ﻿using Application.Features.Doctors.Commands.CreateDoctor;
 using Application.Repositories;
 using AutoMapper;
-using Core.Pipelines.Authorization;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -12,25 +12,27 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Doctors.Queries.GetListDoctor
 {
-    public class GetListDoctorQuery : IRequest<GetListDoctorResponse>
+    public class GetListDoctorQuery : IRequest<GetListDoctorResponse>, ISecuredRequest
     {
-
+        public string[] RequiredRoles => ["Appointment.Get"];
 
         public class GetListDoctorQueryHandler : IRequestHandler<GetListDoctorQuery, GetListDoctorResponse>
         {
 
-            private readonly IDoctorRepository _doctorRepository;
+            private readonly IAppointmentRepository _appointmentRepository;
 
-            public GetListDoctorQueryHandler(IDoctorRepository doctorRepository, IMapper mapper)
+            public GetListDoctorQueryHandler(IAppointmentRepository appointmentRepository, IMapper mapper)
             {
-                _doctorRepository = doctorRepository;
+                _appointmentRepository = appointmentRepository;
             }
 
 
             public async Task<GetListDoctorResponse> Handle(GetListDoctorQuery request, CancellationToken cancellationToken)
             {
+
                 GetListDoctorResponse response = new GetListDoctorResponse();
-                response.Doctors = await _doctorRepository.GetListAsync();
+                await _appointmentRepository.GetListAsync();
+
                 return response;
             }
         }

@@ -1,4 +1,6 @@
-﻿using Core.Pipelines.Authorization;
+﻿using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Validation;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,11 +17,14 @@ namespace Application
         {
             services.AddMediatR(configuration =>
             {
-                configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());     
                 configuration.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
+                configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
+
             });
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             return services;
         }

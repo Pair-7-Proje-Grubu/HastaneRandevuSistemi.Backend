@@ -1,4 +1,6 @@
 ﻿using Application.Features.Appointments.Commands.Create;
+using Application.Features.Appointments.Queries.GetListAppointment;
+using Application.Features.Appointments.Queries.GetListAvailableAppointment;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -7,7 +9,7 @@ namespace WebAPI.Controllers
     {
 
 
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<IActionResult> Create([FromBody] CreateAppointmentCommand command)
         {
             CreateAppointmentResponse response = await _mediator.Send(command);
@@ -15,11 +17,18 @@ namespace WebAPI.Controllers
         }
 
 
-        //[HttpPost("GetListAvailableAppointments")] //GetListAvailableAppointments
-        //public async Task<IActionResult> GetListAvailable([FromBody] GetListAvailableAppointmentCommand command)
-        //{
-        //    CreateAppointmentResponse response = await _mediator.Send(command);
-        //    return Ok(response);
-        //}
+        [HttpPost("List")]
+        public async Task<IActionResult> GetList([FromBody] GetListAppointmentQuery command)
+        {
+            GetListAppointmentResponse response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("GetListAvailableAppointments")] //GetListAvailableAppointments
+        public async Task<IActionResult> GetListAvailable([FromBody] GetListAvailableAppointmentQuery query)
+        {
+            GetListAvailableAppointmentResponse response = await _mediator.Send(query);
+            return Ok(response);
+        }
     }
 }

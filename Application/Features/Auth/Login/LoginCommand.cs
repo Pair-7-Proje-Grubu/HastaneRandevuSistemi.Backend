@@ -47,10 +47,10 @@ namespace Application.Features.Auth.Login
                     throw new Exception("Giriş Başarısız");
                 }
 
-                List<Domain.Entities.UserOperationClaim> userOperationClaims = await _userOperationClaimRepository
+                List<UserOperationClaim> userOperationClaims = await _userOperationClaimRepository
                     .GetListAsync(i => i.UserId == patient.Id, include: i => i.Include(i => i.OperationClaim));
 
-                return _tokenHelper.CreateToken(patient, userOperationClaims.Select(i => (Core.Entities.OperationClaim)i.OperationClaim).ToList());
+                return _tokenHelper.CreateToken(patient, userOperationClaims.Select(i => (BaseOperationClaim)i.OperationClaim).ToList());
             }
         }
     }

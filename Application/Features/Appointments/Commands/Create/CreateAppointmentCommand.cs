@@ -29,6 +29,7 @@ namespace Application.Features.Appointments.Commands.Create
             }
             public async Task<CreateAppointmentResponse> Handle(CreateAppointmentCommand request, CancellationToken cancellationToken)
             {
+
                 Appointment appointment = _mapper.Map<Appointment>(request);
 
                 if(appointment.isCancelStatus is CancelStatus.NoCancel)

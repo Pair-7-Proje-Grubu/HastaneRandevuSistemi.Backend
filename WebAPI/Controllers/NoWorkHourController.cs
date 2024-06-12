@@ -9,22 +9,11 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NoWorkHourController : ControllerBase
+    public class NoWorkHourController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public NoWorkHourController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CreateNoWorkHourCommand command)
         {
-            // Yeni eklendi.
-            //var response = await _mediator.Send(command);
-            //return Ok(response);
-
             await _mediator.Send(command);
             return Ok();
         }

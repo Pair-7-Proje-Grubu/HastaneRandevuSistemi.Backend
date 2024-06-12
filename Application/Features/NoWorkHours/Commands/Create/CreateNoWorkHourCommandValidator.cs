@@ -11,10 +11,10 @@ namespace Application.Features.NoWorkHours.Commands.Create
     {
         public CreateNoWorkHourCommandValidator()
         {
-            RuleFor(p => p.StartDate)
-                .NotEmpty().WithMessage("DateTime is required.")
-                .NotNull()
-                .LessThan(DateTime.Now).WithMessage("{PropertyName} should be less than today.");
+            //RuleFor(p => p.StartDate)
+            //    .NotEmpty().WithMessage("DateTime is required.")
+            //    .NotNull()
+            //    .LessThan(DateTime.Now).WithMessage("{PropertyName} should be less than today.");
         }
     }
 }

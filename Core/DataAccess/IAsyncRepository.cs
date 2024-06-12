@@ -11,6 +11,7 @@ namespace Core.DataAccess
     public interface IAsyncRepository<T>
     {
         Task AddAsync(T entity);
+        Task AddRangeAsync(ICollection<T> entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task<T?> GetAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);

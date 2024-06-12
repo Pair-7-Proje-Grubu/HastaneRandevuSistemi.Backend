@@ -37,59 +37,6 @@ namespace Persistence.Migrations
                     b.ToTable("AllergyPatient");
                 });
 
-            modelBuilder.Entity("Core.Entities.BaseUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("PasswordHash")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users", (string)null);
-
-                    b.UseTptMappingStrategy();
-                });
-
             modelBuilder.Entity("Domain.Entities.Allergy", b =>
                 {
                     b.Property<int>("Id")
@@ -195,6 +142,9 @@ namespace Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AppointmentDuration")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -220,9 +170,42 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
+                            AppointmentDuration = 0,
                             Name = "Ortopedi",
                             PhoneNumber = "0500000000"
                         });
+                });
+
+            modelBuilder.Entity("Domain.Entities.DoctorNoWorkHour", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NoWorkHourId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("NoWorkHourId");
+
+                    b.ToTable("DoctorNoWorkHour");
                 });
 
             modelBuilder.Entity("Domain.Entities.Floor", b =>
@@ -272,14 +255,8 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsFullDay")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -288,8 +265,6 @@ namespace Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
 
                     b.ToTable("NoWorkHours");
                 });
@@ -347,6 +322,36 @@ namespace Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Entities.OldAppointmentDuration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClinicId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClinicId");
+
+                    b.ToTable("AppointmentDurationHistory");
+                });
+
             modelBuilder.Entity("Domain.Entities.OperationClaim", b =>
                 {
                     b.Property<int>("Id")
@@ -365,15 +370,10 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OperationClaimId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OperationClaimId");
 
                     b.ToTable("OperationClaims");
 
@@ -497,6 +497,59 @@ namespace Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
+
+                    b.UseTptMappingStrategy();
+                });
+
             modelBuilder.Entity("Domain.Entities.UserOperationClaim", b =>
                 {
                     b.Property<int>("Id")
@@ -537,9 +590,53 @@ namespace Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Entities.WorkingTime", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("EndBreakTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("StartBreakTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkingTimes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EndBreakTime = new TimeSpan(0, 13, 0, 0, 0),
+                            EndTime = new TimeSpan(0, 17, 0, 0, 0),
+                            StartBreakTime = new TimeSpan(0, 12, 0, 0, 0),
+                            StartTime = new TimeSpan(0, 8, 30, 0, 0)
+                        });
+                });
+
             modelBuilder.Entity("Domain.Entities.Admin", b =>
                 {
-                    b.HasBaseType("Core.Entities.BaseUser");
+                    b.HasBaseType("Domain.Entities.User");
 
                     b.ToTable("Admins", (string)null);
 
@@ -547,7 +644,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            BirthDate = new DateTime(2024, 6, 7, 14, 50, 47, 467, DateTimeKind.Local).AddTicks(2228),
+                            BirthDate = new DateTime(2024, 6, 11, 23, 59, 6, 108, DateTimeKind.Local).AddTicks(5070),
                             Email = "testAdmin@hrs.com",
                             FirstName = "Test",
                             Gender = "M",
@@ -558,7 +655,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Doctor", b =>
                 {
-                    b.HasBaseType("Core.Entities.BaseUser");
+                    b.HasBaseType("Domain.Entities.User");
 
                     b.Property<int>("ClinicId")
                         .HasColumnType("int");
@@ -582,7 +679,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Patient", b =>
                 {
-                    b.HasBaseType("Core.Entities.BaseUser");
+                    b.HasBaseType("Domain.Entities.User");
 
                     b.Property<int?>("BloodType")
                         .HasColumnType("int");
@@ -627,15 +724,23 @@ namespace Persistence.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("Domain.Entities.NoWorkHour", b =>
+            modelBuilder.Entity("Domain.Entities.DoctorNoWorkHour", b =>
                 {
                     b.HasOne("Domain.Entities.Doctor", "Doctor")
-                        .WithMany("NoWorkHours")
+                        .WithMany("DoctorNoWorkHours")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.NoWorkHour", "NoWorkHour")
+                        .WithMany("DoctorNoWorkHours")
+                        .HasForeignKey("NoWorkHourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Doctor");
+
+                    b.Navigation("NoWorkHour");
                 });
 
             modelBuilder.Entity("Domain.Entities.OfficeLocation", b =>
@@ -665,11 +770,15 @@ namespace Persistence.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("Domain.Entities.OperationClaim", b =>
+            modelBuilder.Entity("Domain.Entities.OldAppointmentDuration", b =>
                 {
-                    b.HasOne("Domain.Entities.OperationClaim", null)
-                        .WithMany("OperationClaims")
-                        .HasForeignKey("OperationClaimId");
+                    b.HasOne("Domain.Entities.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Clinic");
                 });
 
             modelBuilder.Entity("Domain.Entities.Report", b =>
@@ -686,13 +795,13 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.UserOperationClaim", b =>
                 {
                     b.HasOne("Domain.Entities.OperationClaim", "OperationClaim")
-                        .WithMany()
+                        .WithMany("UserOperationClaims")
                         .HasForeignKey("OperationClaimId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.BaseUser", "User")
-                        .WithMany()
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("UserOperationClaims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -704,7 +813,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Admin", b =>
                 {
-                    b.HasOne("Core.Entities.BaseUser", null)
+                    b.HasOne("Domain.Entities.User", null)
                         .WithOne()
                         .HasForeignKey("Domain.Entities.Admin", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -719,7 +828,7 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.BaseUser", null)
+                    b.HasOne("Domain.Entities.User", null)
                         .WithOne()
                         .HasForeignKey("Domain.Entities.Doctor", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -746,7 +855,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Patient", b =>
                 {
-                    b.HasOne("Core.Entities.BaseUser", null)
+                    b.HasOne("Domain.Entities.User", null)
                         .WithOne()
                         .HasForeignKey("Domain.Entities.Patient", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -768,6 +877,11 @@ namespace Persistence.Migrations
                     b.Navigation("OfficeLocations");
                 });
 
+            modelBuilder.Entity("Domain.Entities.NoWorkHour", b =>
+                {
+                    b.Navigation("DoctorNoWorkHours");
+                });
+
             modelBuilder.Entity("Domain.Entities.OfficeLocation", b =>
                 {
                     b.Navigation("Doctor")
@@ -776,7 +890,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.OperationClaim", b =>
                 {
-                    b.Navigation("OperationClaims");
+                    b.Navigation("UserOperationClaims");
                 });
 
             modelBuilder.Entity("Domain.Entities.Room", b =>
@@ -789,11 +903,16 @@ namespace Persistence.Migrations
                     b.Navigation("Doctors");
                 });
 
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("UserOperationClaims");
+                });
+
             modelBuilder.Entity("Domain.Entities.Doctor", b =>
                 {
                     b.Navigation("Appointments");
 
-                    b.Navigation("NoWorkHours");
+                    b.Navigation("DoctorNoWorkHours");
                 });
 
             modelBuilder.Entity("Domain.Entities.Patient", b =>

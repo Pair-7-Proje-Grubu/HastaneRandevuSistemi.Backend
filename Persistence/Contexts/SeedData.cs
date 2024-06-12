@@ -22,9 +22,11 @@ namespace Persistence.Contexts
             OfficeLocation officeLocation = new OfficeLocation() { Id = 1, BlockId = 1, FloorId = 1, RoomId = 1 };
             OfficeLocation officeLocation2 = new OfficeLocation() { Id = 2, BlockId = 1, FloorId = 1, RoomId = 2 };
             Clinic clinic = new Clinic() { Id = 1, Name = "Ortopedi", PhoneNumber = "0500000000" };
-
-         
-
+            WorkingTime workingTime = new WorkingTime() { 
+                Id = 1, 
+                StartTime= new TimeSpan(08,30,0), EndTime= new TimeSpan(17,0,0),
+                StartBreakTime= new TimeSpan(12,0,0), EndBreakTime= new TimeSpan(13,0,0)
+            };
 
             Admin admin = new Admin()
             {
@@ -38,7 +40,7 @@ namespace Persistence.Contexts
             };
 
 
-
+            modelBuilder.Entity<WorkingTime>().HasData(workingTime);
             modelBuilder.Entity<Title>().HasData(title);
             modelBuilder.Entity<Block>().HasData(block);
             modelBuilder.Entity<Floor>().HasData(floor);
@@ -57,6 +59,7 @@ namespace Persistence.Contexts
                 UserId = 1,
                 OperationClaimId = 3
             });
+
 
             modelBuilder.Entity<Admin>().HasData(admin);
         }
