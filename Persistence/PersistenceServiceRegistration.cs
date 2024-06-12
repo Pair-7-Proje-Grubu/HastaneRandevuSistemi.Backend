@@ -1,4 +1,6 @@
 ﻿using Application.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Contexts;
 using Persistence.Repositories;
@@ -15,7 +17,10 @@ namespace Persistence
     {
         public static IServiceCollection AddPersistenceServices(this IServiceCollection services)
         {
-            services.AddDbContext<HRSDbContext>();
+            ConfigurationManager configurationManager = new();
+            configurationManager.SetBasePath(Path.Combine(Directory.GetCurrentDirectory()));
+            configurationManager.AddJsonFile("appsettings.json");
+            services.AddDbContext<HRSDbContext>(options => options.UseSqlServer(configurationManager.GetConnectionString("DefaultConnection")));
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<IAllergyRepository, AllergyRepository>();
