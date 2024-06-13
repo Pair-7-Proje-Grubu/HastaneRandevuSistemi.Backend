@@ -20,6 +20,9 @@
 
   <ItemGroup>
     <Folder Include="Features\Appointments\Commands\Delete\" />
+    <Folder Include="Features\FAQs\Command\Delete\" />
+    <Folder Include="Features\FAQs\Command\Update\" />
+    <Folder Include="Features\FAQs\Queries\" />
     <Folder Include="Services\AppointmentService\" />
   </ItemGroup>
 
