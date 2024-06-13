@@ -36,6 +36,7 @@ namespace Persistence
             services.AddScoped<IFloorRepository, FloorRepository>();
             services.AddScoped<IOfficeLocationRepository, OfficeLocationRepository>();
             services.AddScoped<IWorkingTimeRepository, WorkingTimeRepository>();
+            services.AddScoped<IFAQRepository, FAQRepository>();
 
 
             return services;
