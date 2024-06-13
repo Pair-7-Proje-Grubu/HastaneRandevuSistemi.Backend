@@ -7,12 +7,14 @@ using AutoMapper;
 using MediatR;
 using Domain.Entities;
 using Application.Repositories;
+using Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Titles.Commands.Create
 {
-    public class CreateTitleCommand : IRequest<CreateTitleResponse>
+    public class CreateTitleCommand : IRequest<CreateTitleResponse>, ISecuredRequest
     {
         public string TitleName { get; set; }
+        public string[] RequiredRoles => ["Admin"];  //???
 
 
         public class CreateTitleCommandHandler : IRequestHandler<CreateTitleCommand, CreateTitleResponse>
