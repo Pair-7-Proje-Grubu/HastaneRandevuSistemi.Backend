@@ -1,4 +1,7 @@
-﻿using Application.Features.Reports.Commands.Create;
+﻿using Application.Features.Clinics.Queries.GetListClinic;
+using Application.Features.Floors.Queries.GetList;
+using Application.Features.OfficeLocations.Queries.GetList;
+using Application.Features.Reports.Commands.Create;
 using Application.Features.Rooms.Commands.Create;
 using Application.Features.Rooms.Commands.Delete;
 using Application.Features.Rooms.Commands.Update;
@@ -12,25 +15,34 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoomController : ControllerBase
+    public class RoomController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public RoomController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] CreateRoomCommand command)
         {
             var result =await _mediator.Send(command);
             return Ok(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] GetListRoomQuery query)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            DeleteRoomCommand command = new() { Id = id };
+            await _mediator.Send(command);
+            return Ok();
+        }
+
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update([FromBody] UpdateRoomCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpGet("GetList")]
+        public async Task<IActionResult> GetList()
+        {
+            GetListRoomQuery query = new GetListRoomQuery();
             var result = await _mediator.Send(query);
             return Ok(result);
         }
@@ -40,21 +52,6 @@ namespace WebAPI.Controllers
         {
             GetByIdRoomQuery query = new() { Id = id };
             var result = await _mediator.Send(query);
-            return Ok(result);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
-        {
-            DeleteRoomCommand command = new() { Id = id };
-            await _mediator.Send(command);
-            return Ok(); // Refactor
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateRoomCommand command)
-        {
-            var result = await _mediator.Send(command);
             return Ok(result);
         }
     }

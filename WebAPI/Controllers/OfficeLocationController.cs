@@ -1,4 +1,5 @@
-﻿using Application.Features.OfficeLocations.Commands.Create;
+﻿using Application.Features.Floors.Queries.GetList;
+using Application.Features.OfficeLocations.Commands.Create;
 using Application.Features.OfficeLocations.Commands.Delete;
 using Application.Features.OfficeLocations.Commands.Update;
 using Application.Features.OfficeLocations.Queries.GetById;
@@ -11,34 +12,12 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OfficeLocationController : ControllerBase
+    public class OfficeLocationController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public OfficeLocationController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] CreateOfficeLocationCommand command)
         {
             var result = await _mediator.Send(command);
-            return Ok(result);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] GetListOfficeLocationQuery query)
-        {
-            var result = await _mediator.Send(query);
-            return Ok(result);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
-        {
-            GetByIdOfficeLocationQuery query = new() { Id = id };
-            var result = await _mediator.Send(query);
             return Ok(result);
         }
 
@@ -50,10 +29,26 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] UpdateOfficeLocationCommand command)
         {
             var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpGet("GetList")]
+        public async Task<IActionResult> GetList()
+        {
+            GetListOfficeLocationQuery query = new GetListOfficeLocationQuery();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            GetByIdOfficeLocationQuery query = new() { Id = id };
+            var result = await _mediator.Send(query);
             return Ok(result);
         }
     }

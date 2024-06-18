@@ -12,10 +12,10 @@ namespace Application.Features.OfficeLocations.Commands.Update
     {
         public UpdateOfficeLocationCommandValidator()
         {
-            RuleFor(x => x.Id).NotEmpty().NotNull().WithMessage("Id alanı boş olamaz.");
-            RuleFor(x => x.BlockId).NotEmpty().NotNull().WithMessage("Id alanı boş olamaz.");
-            RuleFor(x => x.FloorId).NotEmpty().NotNull().WithMessage("Id alanı boş olamaz.");
-            RuleFor(x => x.RoomId).NotEmpty().NotNull().WithMessage("Id alanı boş olamaz.");
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Id alanı boş olamaz.");
+            RuleFor(x => x.BlockId).NotEmpty().WithMessage("Id alanı boş olamaz.");
+            RuleFor(x => x.FloorId).NotEmpty().WithMessage("Id alanı boş olamaz.");
+            RuleFor(x => x.RoomId).NotEmpty().WithMessage("Id alanı boş olamaz.");
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Application.Features.Doctors.Commands.UpdateDoctor;
+using Application.Features.Floors.Commands.Update;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -12,11 +14,13 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Blocks.Commands.Update
 {
-    public class UpdateBlockCommand : IRequest<UpdateBlockResponse>
+    public class UpdateBlockCommand : IRequest<UpdateBlockResponse>, ISecuredRequest
     {
         public int Id { get; set; }
 
-        public int No { get; set; }
+        public string No { get; set; }
+
+        public string[] RequiredRoles => ["Admin"];
 
         public class UpdateBlockCommandHandler : IRequestHandler<UpdateBlockCommand, UpdateBlockResponse>
         {
@@ -31,16 +35,16 @@ namespace Application.Features.Blocks.Commands.Update
 
             public async Task<UpdateBlockResponse> Handle(UpdateBlockCommand request, CancellationToken cancellationToken)
             {
-                Block? block = await _blockRepository.GetAsync(p => p.Id == request.Id);
+               /* Block? block = await _blockRepository.GetAsync(p => p.Id == request.Id);
 
                 if (block is null)
-                    throw new ValidationException("Böyle bir veri bulunamadı.");
+                    throw new Exception("Böyle bir veri bulunamadı.");*/
 
                 Block mappedBlock = _mapper.Map<Block>(request);
 
                 await _blockRepository.UpdateAsync(mappedBlock);
 
-                UpdateBlockResponse response = new UpdateBlockResponse();
+                UpdateBlockResponse response = _mapper.Map<UpdateBlockResponse>(mappedBlock);
 
                 return response;
             }

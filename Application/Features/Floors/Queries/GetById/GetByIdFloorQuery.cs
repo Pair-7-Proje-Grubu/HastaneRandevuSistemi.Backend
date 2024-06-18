@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -10,9 +11,11 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Floors.Queries.GetById
 {
-    public class GetByIdFloorQuery : IRequest<GetByIdFloorResponse>
+    public class GetByIdFloorQuery : IRequest<GetByIdFloorResponse>, ISecuredRequest
     {
         public int Id { get; set; }
+
+        public string[] RequiredRoles => ["Admin"];
 
         public class GetByIdQueryHandler : IRequestHandler<GetByIdFloorQuery, GetByIdFloorResponse>
         {

@@ -11,7 +11,7 @@ namespace Application.Features.Rooms.Commands.Create
     {
         public CreateRoomCommandValidator()
         {
-            RuleFor(x => x.No).NotEmpty().NotNull().WithMessage("No alanı boş olamaz.");
+            RuleFor(x => x.No).NotEmpty().WithMessage("No alanı boş olamaz.");
         }
     }
 }
