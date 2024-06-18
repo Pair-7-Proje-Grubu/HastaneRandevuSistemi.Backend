@@ -30,6 +30,7 @@ namespace Persistence.Contexts
         public DbSet<Report> Reports { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<FAQ> FAQs { get; set; }
 
 
         public HRSDbContext(DbContextOptions options) : base(options)
