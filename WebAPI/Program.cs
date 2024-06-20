@@ -15,6 +15,19 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    
+    options.AddPolicy(name: MyAllowSpecificOrigins, policy =>
+       policy.WithOrigins("http://localhost:4200")
+                .WithOrigins("http://localhost:7027")
+                .AllowAnyMethod()
+                .AllowAnyHeader().AllowCredentials()
+                .SetPreflightMaxAge(TimeSpan.FromMinutes(10))
+    );
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -80,7 +93,6 @@ builder.Services.AddSwaggerGen(options =>
 #endregion
 
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -98,6 +110,9 @@ app.ConfigureExceptionMiddlewareExtensions();
 //app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
+
+app.UseCors(MyAllowSpecificOrigins);
+
 
 app.UseAuthentication();
 

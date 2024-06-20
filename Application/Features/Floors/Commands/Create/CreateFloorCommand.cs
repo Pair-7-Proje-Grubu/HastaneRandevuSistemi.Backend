@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -10,9 +11,11 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Floors.Commands.Create
 {
-    public class CreateFloorCommand : IRequest<CreateFloorResponse>
+    public class CreateFloorCommand : IRequest<CreateFloorResponse>,ISecuredRequest
     {
         public string No { get; set; }
+
+        public string[] RequiredRoles => ["Admin"];
         public class CreateFloorCommandHandler : IRequestHandler<CreateFloorCommand, CreateFloorResponse>
         {
             private readonly IFloorRepository _floorRepository;

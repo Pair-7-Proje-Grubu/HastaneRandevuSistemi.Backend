@@ -1,5 +1,7 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Rooms.Commands.Update;
+using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -11,11 +13,13 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Floors.Commands.Update
 {
-    public class UpdateFloorCommand : IRequest<UpdateFloorResponse>
+    public class UpdateFloorCommand : IRequest<UpdateFloorResponse>, ISecuredRequest
     {
         public int Id { get; set; }
 
-        public int No { get; set; }
+        public string No { get; set; }
+
+        public string[] RequiredRoles => ["Admin"];
 
         public class UpdateFloorCommandHandler : IRequestHandler<UpdateFloorCommand, UpdateFloorResponse>
         {
@@ -30,16 +34,16 @@ namespace Application.Features.Floors.Commands.Update
 
             public async Task<UpdateFloorResponse> Handle(UpdateFloorCommand request, CancellationToken cancellationToken)
             {
-                Floor? floor = await _floorRepository.GetAsync(p => p.Id == request.Id);
+                //Floor? floor = await _floorRepository.GetAsync(p => p.Id == request.Id);
 
-                if (floor is null)
-                    throw new ValidationException("Böyle bir veri bulunamadı.");
+                //if (floor is null)
+                //    throw new ValidationException("Böyle bir veri bulunamadı.");
 
                 Floor mappedFloor = _mapper.Map<Floor>(request);
 
                 await _floorRepository.UpdateAsync(mappedFloor);
 
-                UpdateFloorResponse response = new UpdateFloorResponse();
+                UpdateFloorResponse response = _mapper.Map<UpdateFloorResponse>(mappedFloor);
 
                 return response;
             }

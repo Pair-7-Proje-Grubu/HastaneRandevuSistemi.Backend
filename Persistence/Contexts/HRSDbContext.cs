@@ -30,10 +30,15 @@ namespace Persistence.Contexts
         public DbSet<Report> Reports { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<FAQ> FAQs { get; set; }
+
+
+        public HRSDbContext(DbContextOptions options) : base(options)
+        {
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-RH2IO8U\\SQLEXPRESS; Database=HastaneRandevuSistemi; Trusted_Connection=True; TrustServerCertificate=True;");
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -79,14 +84,30 @@ namespace Persistence.Contexts
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var entries = ChangeTracker.Entries()
-                .Where(e => e.State == EntityState.Added && e.Entity is BaseEntity);
-
-            foreach (var entityEntry in entries)
+            foreach (var item in ChangeTracker.Entries())
             {
-                ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.Now;
+                if (item.Entity is BaseEntity entityReference)
+                {
+                    switch (item.State)
+                    {
+                        case EntityState.Modified:
+                            {
+                                // UpdatedDate'i güncelle
+                                entityReference.UpdatedDate = DateTime.Now;
+                                // CreatedDate'in güncellenmesini engelle
+                                item.Property(nameof(BaseEntity.CreatedDate)).IsModified = false;
+                                break;
+                            }
+                        case EntityState.Added:
+                            {
+                                // CreatedDate ve UpdatedDate'i ayarla
+                                entityReference.CreatedDate = DateTime.Now;
+                                entityReference.UpdatedDate = DateTime.Now;
+                                break;
+                            }
+                    }
+                }
             }
-
             return base.SaveChangesAsync(cancellationToken);
         }
 

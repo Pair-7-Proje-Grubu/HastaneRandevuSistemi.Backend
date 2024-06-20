@@ -12,9 +12,9 @@ namespace Application.Features.Rooms.Commands.Update
     {
         public UpdateRoomCommandValidator()
         {
-            RuleFor(x => x.Id).NotEmpty().NotNull().WithMessage("Id alanı boş olamaz.");
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Id alanı boş olamaz.");
 
-            RuleFor(x => x.No).NotEmpty().NotNull().WithMessage("No alanı boş olamaz.");
+            RuleFor(x => x.No).NotEmpty().WithMessage("No alanı boş olamaz.");
         }
     }
 }

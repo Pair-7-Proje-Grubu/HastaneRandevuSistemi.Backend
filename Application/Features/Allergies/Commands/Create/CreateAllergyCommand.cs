@@ -7,13 +7,16 @@ using AutoMapper;
 using MediatR;
 using Domain.Entities;
 using Application.Repositories;
-using Application.Features.Allergies.Commands.Create;
+using Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Allergies.Commands.Create
 {
-    public class CreateAllergyCommand :IRequest<CreateAllergyResponse>
+    public class CreateAllergyCommand :IRequest<CreateAllergyResponse>, ISecuredRequest
     {
         public string Name { get; set; }
+
+        public string[] RequiredRoles => ["Admin"];  // ???
+    
     }
 
 

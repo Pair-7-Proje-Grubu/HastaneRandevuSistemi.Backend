@@ -1,5 +1,7 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -10,9 +12,12 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Rooms.Commands.Create
 {
-    public class CreateRoomCommand: IRequest<CreateRoomResponse>
+    public class CreateRoomCommand: IRequest<CreateRoomResponse>, ISecuredRequest
     {
         public string No { get; set; }
+
+        public string[] RequiredRoles => ["Admin"];
+
         public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, CreateRoomResponse>
         {
             private readonly IRoomRepository _roomRepository;
@@ -24,6 +29,10 @@ namespace Application.Features.Rooms.Commands.Create
             }
             public async Task<CreateRoomResponse> Handle(CreateRoomCommand request, CancellationToken cancellationToken)
             {
+                Room? roomWithSameNo = await _roomRepository.GetAsync(p => p.No == request.No);
+                if (roomWithSameNo is not null)
+                    throw new BusinessException("Aynı No da 2. kayıt eklenemez.");
+
                 Room room = _mapper.Map<Room>(request);
                 await _roomRepository.AddAsync(room);
 

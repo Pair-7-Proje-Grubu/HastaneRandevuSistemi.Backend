@@ -11,9 +11,9 @@ namespace Application.Features.OfficeLocations.Commands.Create
     {
         public CreateOfficeLocationCommandValidator()
         {
-            RuleFor(x => x.BlockId).NotEmpty().NotNull().WithMessage("Id alanı boş olamaz.");
-            RuleFor(x => x.FloorId).NotEmpty().NotNull().WithMessage("Id alanı boş olamaz.");
-            RuleFor(x => x.RoomId).NotEmpty().NotNull().WithMessage("Id alanı boş olamaz.");
+            RuleFor(x => x.BlockId).NotEmpty().WithMessage("Id alanı boş olamaz.");
+            RuleFor(x => x.FloorId).NotEmpty().WithMessage("Id alanı boş olamaz.");
+            RuleFor(x => x.RoomId).NotEmpty().WithMessage("Id alanı boş olamaz.");
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using Application.Features.Reports.Queries.GetList;
-using Application.Repositories;
+﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -11,20 +11,15 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Blocks.Queries.GetList
 {
-    public class GetListBlockQuery : IRequest<List<GetListBlockResponse>>
+    public class GetListBlockQuery : IRequest<List<GetListBlockResponse>>, ISecuredRequest
     {
-        public int Page { get; set; }
-
-        public int PageSize { get; set; }
-
-        public string[] RequiredRoles => ["Block.Add", "Block.Update"];
-
-        public class GetListQueryHandler : IRequestHandler<GetListBlockQuery, List<GetListBlockResponse>>
+        public string[] RequiredRoles => ["Admin"];
+        public class GetListBlockQueryHandler : IRequestHandler<GetListBlockQuery, List<GetListBlockResponse>>
         {
             private readonly IBlockRepository _blockRepository;
             private readonly IMapper _mapper;
 
-            public GetListQueryHandler(IBlockRepository blockRepository, IMapper mapper)
+            public GetListBlockQueryHandler(IBlockRepository blockRepository, IMapper mapper)
             {
                 _blockRepository = blockRepository;
                 _mapper = mapper;

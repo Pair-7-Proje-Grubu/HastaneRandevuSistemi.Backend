@@ -38,7 +38,14 @@ namespace Core.CrossCuttingConcerns.Exceptions
 
                     await context.Response.WriteAsync(JsonSerializer.Serialize(validationProblemDetails));
                 }
-
+                else if (ex is BusinessException)
+                {
+                    ProblemDetails problemDetails = new ProblemDetails();
+                    problemDetails.Title = "Business Rule Violation";
+                    problemDetails.Detail = ex.Message;
+                    problemDetails.Type = "BusinessException";
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
+                }
                 else
                 {
                     context.Response.StatusCode = StatusCodes.Status500InternalServerError;

@@ -9,6 +9,7 @@ namespace Application.Features.Floors.Queries.GetList
 {
     public class GetListFloorResponse
     {
-        public List<Floor> Floors { get; set; }
+        public int Id { get; set; }
+        public string No { get; set; }
     }
 }

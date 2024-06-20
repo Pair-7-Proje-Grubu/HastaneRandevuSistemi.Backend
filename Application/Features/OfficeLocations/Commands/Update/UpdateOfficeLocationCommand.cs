@@ -1,6 +1,7 @@
 ﻿using Application.Features.Doctors.Commands.UpdateDoctor;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -12,12 +13,14 @@ using System.Threading.Tasks;
 
 namespace Application.Features.OfficeLocations.Commands.Update
 {
-    public class UpdateOfficeLocationCommand : IRequest<UpdateOfficeLocationResponse>
+    public class UpdateOfficeLocationCommand : IRequest<UpdateOfficeLocationResponse>, ISecuredRequest
     {
         public int Id { get; set; }
         public int BlockId { get; set; }
         public int FloorId { get; set; }
         public int RoomId { get; set; }
+
+        public string[] RequiredRoles => ["Admin"];
 
         public class UpdateOfficeLocationCommandHandler : IRequestHandler<UpdateOfficeLocationCommand, UpdateOfficeLocationResponse>
         {
@@ -32,16 +35,11 @@ namespace Application.Features.OfficeLocations.Commands.Update
 
             public async Task<UpdateOfficeLocationResponse> Handle(UpdateOfficeLocationCommand request, CancellationToken cancellationToken)
             {
-                OfficeLocation? officeLocation = await _officeLocationRepository.GetAsync(p => p.Id == request.Id);
+                OfficeLocation officeLocation = _mapper.Map<OfficeLocation>(request);
 
-                if (officeLocation is null)
-                    throw new ValidationException("Böyle bir veri bulunamadı.");
+                await _officeLocationRepository.UpdateAsync(officeLocation);
 
-                OfficeLocation mappedOfficeLocation = _mapper.Map<OfficeLocation>(request);
-
-                await _officeLocationRepository.UpdateAsync(mappedOfficeLocation);
-
-                UpdateOfficeLocationResponse response = new UpdateOfficeLocationResponse();
+                UpdateOfficeLocationResponse response = _mapper.Map<UpdateOfficeLocationResponse>(officeLocation);
 
                 return response;
             }
