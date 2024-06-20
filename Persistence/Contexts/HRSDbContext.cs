@@ -33,7 +33,7 @@ namespace Persistence.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-8SGA7NI\\SQLEXPRESS; Database=HastaneRandevuSistemi; Trusted_Connection=True; TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-RH2IO8U\\SQLEXPRESS; Database=HastaneRandevuSistemi; Trusted_Connection=True; TrustServerCertificate=True;");
             base.OnConfiguring(optionsBuilder);
         }
 

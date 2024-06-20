@@ -33,7 +33,7 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
             {
                 List<Doctor> doctors = await _doctorRepository.GetListAsync(d => d.ClinicId == request.ClinicId, include: d => d.Include(d => d.DoctorNoWorkHours).ThenInclude(d => d.NoWorkHour));
 
-                WorkingTime workingTime = (await _workingTimeRepository.GetListAsync()).MaxBy(x => x.CreatedDate);
+                Domain.Entities.WorkingTime workingTime = (await _workingTimeRepository.GetListAsync()).MaxBy(x => x.CreatedDate);
 
                 List<GetListAvailableDto> responseDtos = new List<GetListAvailableDto>();
 
@@ -47,15 +47,6 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                     {
                         List<DateRange> ranges = new List<DateRange>();
                         List<DoctorNoWorkHour>? doctorNoWorkHours = doctor.DoctorNoWorkHours.Where(d => d.NoWorkHour.StartDate.Date == DateTime.Now.AddDays(i).Date).ToList();
-
-                        //if (doctorNoWorkHours.Count > 1)
-                        //{
-
-                        //    ranges.Add(new DateRange() { StartTime = workingTime.StartTime, EndTime = doctorNoWorkHours[0].NoWorkHour.StartDate.TimeOfDay });
-                        //    ranges.Add(new DateRange() { StartTime = doctorNoWorkHours[0].NoWorkHour.EndDate.TimeOfDay, EndTime = doctorNoWorkHours[1].NoWorkHour.StartDate.TimeOfDay });
-                        //    ranges.Add(new DateRange() { StartTime = doctorNoWorkHours[1].NoWorkHour.EndDate.TimeOfDay, EndTime = workingTime.EndTime });
-
-                        //}
 
                         if (doctorNoWorkHours.Count > 1)
                         {
@@ -76,7 +67,6 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                                 EndTime = workingTime.EndTime
                             });
                         }
-
                         else if(doctorNoWorkHours.Count == 1)
                         {
                             ranges.Add(new DateRange() { StartTime = workingTime.StartTime, EndTime = doctorNoWorkHours[0].NoWorkHour.StartDate.TimeOfDay });
@@ -86,7 +76,6 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                         {
                             ranges.Add(new DateRange() { StartTime = workingTime.StartTime, EndTime = workingTime.EndTime});
                         }
-
                         
                         dto.AppointmentDates.Add(new AppointmentDate()
                         {

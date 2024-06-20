@@ -49,6 +49,7 @@ namespace Core.Utilities.JWT
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            //claims.Add(new Claim(ClaimTypes.Role, "Doctor"));
 
             foreach (var operationClaim in operationClaims)
             {
