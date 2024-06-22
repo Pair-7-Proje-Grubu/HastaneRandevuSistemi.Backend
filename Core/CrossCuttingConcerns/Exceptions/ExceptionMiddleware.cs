@@ -41,7 +41,10 @@ namespace Core.CrossCuttingConcerns.Exceptions
 
                 else
                 {
-                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                    await context.Response.WriteAsync(ex.Message);
+
+                    //STATUS CODE DEĞİŞTİRMEK HATA DOĞURUYOR!
+                    //context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 }
             }
         }
