@@ -9,6 +9,9 @@ namespace Application.Features.OfficeLocations.Queries.GetList
 {
     public class GetListOfficeLocationResponse
     {
-        public List<OfficeLocation> OfficeLocations { get; set; }
+        public int Id { get; set; }
+        public int BlockId { get; set; }
+        public int FloorId { get; set; }
+        public int RoomId { get; set; }
     }
 }

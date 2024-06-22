@@ -1,6 +1,9 @@
-﻿using Application.Features.Doctors.Commands.UpdateDoctor;
+﻿using Application.Features.Clinics.Commands.Update;
+using Application.Features.OfficeLocations.Commands.Update;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -18,10 +21,12 @@ namespace Application.Features.Rooms.Commands.Update
 
         public string No { get; set; }
 
-        public class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand, UpdateRoomResponse>
+        public class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand, UpdateRoomResponse>, ISecuredRequest
         {
             private readonly IRoomRepository _roomRepository;
             private readonly IMapper _mapper;
+
+            public string[] RequiredRoles => ["Admin"];
 
             public UpdateRoomCommandHandler(IRoomRepository roomRepository, IMapper mapper)
             {
@@ -31,16 +36,15 @@ namespace Application.Features.Rooms.Commands.Update
 
             public async Task<UpdateRoomResponse> Handle(UpdateRoomCommand request, CancellationToken cancellationToken)
             {
-                Room? room = await _roomRepository.GetAsync(p => p.Id == request.Id);
-
+                Room? room = await _roomRepository.GetAsync(i => i.Id == request.Id);
                 if (room is null)
-                    throw new ValidationException("Böyle bir veri bulunamadı.");
+                    throw new BusinessException("Böyle bir veri bulunamadı.");
 
                 Room mappedRoom = _mapper.Map<Room>(request);
 
                 await _roomRepository.UpdateAsync(mappedRoom);
-
-                UpdateRoomResponse response = new UpdateRoomResponse();
+                
+                UpdateRoomResponse response = _mapper.Map<UpdateRoomResponse>(mappedRoom);
 
                 return response;
             }

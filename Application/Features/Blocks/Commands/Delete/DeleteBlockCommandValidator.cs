@@ -12,8 +12,7 @@ namespace Application.Features.Blocks.Commands.Delete
         public DeleteBlockCommandValidator()
         {
             RuleFor(p => p.Id)
-                .NotEmpty().WithMessage("Id is required.")
-                .NotNull();
+                .NotEmpty().WithMessage("Id is required.");
         }
     }
 }

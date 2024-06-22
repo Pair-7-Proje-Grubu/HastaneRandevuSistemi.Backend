@@ -1,5 +1,8 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Blocks.Queries.GetList;
+using Application.Features.Floors.Queries.GetList;
+using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -10,20 +13,15 @@ using System.Threading.Tasks;
 
 namespace Application.Features.OfficeLocations.Queries.GetList
 {
-    public class GetListOfficeLocationQuery : IRequest<List<GetListOfficeLocationResponse>>
+    public class GetListOfficeLocationQuery : IRequest<List<GetListOfficeLocationResponse>>,ISecuredRequest
     {
-        public int Page { get; set; }
-
-        public int PageSize { get; set; }
-
-        public string[] RequiredRoles => ["OfficeLocation.Add", "OfficeLocation.Update"];
-
-        public class GetListQueryHandler : IRequestHandler<GetListOfficeLocationQuery, List<GetListOfficeLocationResponse>>
+        public string[] RequiredRoles => ["Admin"];
+        public class GetListOfficeLocationQueryHandler : IRequestHandler<GetListOfficeLocationQuery, List<GetListOfficeLocationResponse>>
         {
             private readonly IOfficeLocationRepository _officeLocationRepository;
             private readonly IMapper _mapper;
 
-            public GetListQueryHandler(IOfficeLocationRepository officeLocationRepository, IMapper mapper)
+            public GetListOfficeLocationQueryHandler(IOfficeLocationRepository officeLocationRepository, IMapper mapper)
             {
                 _officeLocationRepository = officeLocationRepository;
                 _mapper = mapper;

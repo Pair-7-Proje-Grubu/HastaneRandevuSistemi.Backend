@@ -84,14 +84,30 @@ namespace Persistence.Contexts
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var entries = ChangeTracker.Entries()
-                .Where(e => e.State == EntityState.Added && e.Entity is BaseEntity);
-
-            foreach (var entityEntry in entries)
+            foreach (var item in ChangeTracker.Entries())
             {
-                ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.Now;
+                if (item.Entity is BaseEntity entityReference)
+                {
+                    switch (item.State)
+                    {
+                        case EntityState.Modified:
+                            {
+                                // UpdatedDate'i güncelle
+                                entityReference.UpdatedDate = DateTime.Now;
+                                // CreatedDate'in güncellenmesini engelle
+                                item.Property(nameof(BaseEntity.CreatedDate)).IsModified = false;
+                                break;
+                            }
+                        case EntityState.Added:
+                            {
+                                // CreatedDate ve UpdatedDate'i ayarla
+                                entityReference.CreatedDate = DateTime.Now;
+                                entityReference.UpdatedDate = DateTime.Now;
+                                break;
+                            }
+                    }
+                }
             }
-
             return base.SaveChangesAsync(cancellationToken);
         }
 

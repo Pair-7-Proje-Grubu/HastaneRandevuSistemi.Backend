@@ -12,9 +12,9 @@ namespace Application.Features.Blocks.Commands.Update
     {
         public UpdateBlockCommandValidator()
         {
-            RuleFor(x => x.Id).NotEmpty().NotNull().NotNull().WithMessage("Id alanı boş olamaz.");
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Id alanı boş olamaz.");
 
-            RuleFor(x => x.No).NotEmpty().NotNull().NotNull().WithMessage("No alanı boş olamaz.");
+            RuleFor(x => x.No).NotEmpty().WithMessage("No alanı boş olamaz.");
         }
     }
 }

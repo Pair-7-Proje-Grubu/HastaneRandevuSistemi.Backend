@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -10,9 +11,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Blocks.Commands.Create
 {
-    public class CreateBlockCommand: IRequest<CreateBlockResponse>
+    public class CreateBlockCommand: IRequest<CreateBlockResponse>, ISecuredRequest
     {
         public string No { get; set; }
+        public string[] RequiredRoles => ["Admin"];
         public class CreateBlockCommandHandler : IRequestHandler<CreateBlockCommand, CreateBlockResponse>
         {
             private readonly IBlockRepository _blockRepository;

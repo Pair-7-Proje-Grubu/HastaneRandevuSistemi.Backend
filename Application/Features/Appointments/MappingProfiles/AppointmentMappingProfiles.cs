@@ -1,4 +1,5 @@
 ﻿using Application.Features.Appointments.Commands.Create;
+using Application.Features.Appointments.Queries.GetListActiveAppointment;
 using AutoMapper;
 using Domain.Entities;
 using System;

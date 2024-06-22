@@ -9,7 +9,7 @@ namespace Application.Features.Appointments.Commands.Create
 {
     public class CreateAppointmentResponse
     {
-        public int? PatientId { get; set; }
+        public int PatientId { get; set; }
         public int DoctorId { get; set; }
         public DateTime DateTime { get; set; }
         public CancelStatus isCancelStatus { get; set; }

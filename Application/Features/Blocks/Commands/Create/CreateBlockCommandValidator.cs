@@ -12,7 +12,7 @@ namespace Application.Features.Blocks.Commands.Create
     {
         public CreateBlockCommandValidator()
         {
-            RuleFor(x => x.No).NotEmpty().NotNull().WithMessage("No alanı boş olamaz.");
+            RuleFor(x => x.No).NotEmpty().WithMessage("No alanı boş olamaz.");
         }
     }
 }

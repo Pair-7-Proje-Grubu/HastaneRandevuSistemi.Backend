@@ -1,5 +1,7 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -10,11 +12,13 @@ using System.Threading.Tasks;
 
 namespace Application.Features.OfficeLocations.Commands.Create
 {
-    public class CreateOfficeLocationCommand : IRequest<CreateOfficeLocationResponse>
+    public class CreateOfficeLocationCommand : IRequest<CreateOfficeLocationResponse>, ISecuredRequest
     {
         public int BlockId { get; set; }
         public int FloorId { get; set; }
         public int RoomId { get; set; }
+
+        public string[] RequiredRoles => ["Admin"];
         public class CreateOfficeLocationCommandHandler : IRequestHandler<CreateOfficeLocationCommand, CreateOfficeLocationResponse>
         {
             private readonly IOfficeLocationRepository _officeLocationRepository;

@@ -1,6 +1,8 @@
 ﻿using Application.Features.Reports.Commands.Delete;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -12,9 +14,11 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Rooms.Commands.Delete
 {
-    public class DeleteRoomCommand : IRequest
+    public class DeleteRoomCommand : IRequest , ISecuredRequest
     {
         public int Id { get; set; }
+
+        public string[] RequiredRoles => ["Admin"];
 
         public class DeleteRoomCommandHandler : IRequestHandler<DeleteRoomCommand>
         {
@@ -31,7 +35,7 @@ namespace Application.Features.Rooms.Commands.Delete
             {
                 Room? room = await _roomRepository.GetAsync(i => i.Id == request.Id);
                 if (room is null)
-                    throw new ValidationException("Böyle bir veri bulunamadı.");
+                    throw new BusinessException("Böyle bir veri bulunamadı.");
 
                 await _roomRepository.DeleteAsync(room);
             }
