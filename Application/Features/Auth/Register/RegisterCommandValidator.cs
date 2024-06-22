@@ -12,26 +12,36 @@ namespace Application.Features.Auth.Register
     {
         public RegisterCommandValidator()
         {
-            RuleFor(r => r.FirstName).NotEmpty().WithMessage(ValidationMessages.Required)
-                .DependentRules(() =>
-                {
-                    RuleFor(r => r.FirstName)
-                    .Length(2, 50).WithMessage(ValidationMessages.Length)
-                    .Matches("^[a-zA-Z]+$").WithMessage(ValidationMessages.OnlyLetters).WithName("Ad");
-                }).WithName("Ad");
+            RuleFor(r => r.FirstName).NotEmpty().Length(2, 50).Matches(@"^[\p{L}\p{M}]+$");
+            RuleFor(r => r.LastName).NotEmpty().Length(2, 50).Matches(@"^[\p{L}\p{M}]+$");
 
-            RuleFor(r => r.LastName).NotEmpty().WithMessage(ValidationMessages.Required).WithName("Soyad")
-                .Length(2, 50).WithMessage(ValidationMessages.Length).WithName("Soyad")
-                .Matches("^[a-zA-Z]+$").WithMessage(ValidationMessages.OnlyLetters).WithName("Soyad");
+            RuleFor(r => r.BirthDate)
+            .NotEmpty()
+            .Must(BeAValidDate).WithMessage("Please enter a valid date.")
+            .Must(BeAReasonableAge).WithMessage("Please enter a reasonable birthdate.");
 
-            RuleFor(r => r.Email).NotEmpty().WithMessage(ValidationMessages.Required)
-                .EmailAddress().WithMessage(ValidationMessages.InvalidFormat);
+            RuleFor(r => r.Gender).NotEmpty().Must(BeValidGender).WithMessage("Gender can only be 'M', 'F' or 'U'.");
+            RuleFor(r => r.Email).NotEmpty().Length(10, 50).EmailAddress();
+            RuleFor(r => r.Phone).NotEmpty().Matches(@"^\+?\d{10,15}$");
+            RuleFor(r => r.Password).NotEmpty().Length(6, 30);
+        }
 
-            RuleFor(r => r.Phone).NotEmpty().WithMessage(ValidationMessages.Required).WithName("Telefon numarası")
-                .Matches(@"^\+?\d{10,15}$").WithMessage(ValidationMessages.InvalidFormat).WithName("Telefon numarası");
+        private bool BeValidGender(char gender)
+        {
+            return gender == 'M' || gender == 'F' || gender == 'U';
+        }
 
-            RuleFor(r => r.Password).NotEmpty().WithMessage(ValidationMessages.Required).WithName("Şifre")
-                .MinimumLength(6).WithMessage(ValidationMessages.Length).WithName("Şifre");
+        private bool BeAValidDate(DateTime date)
+        {
+            return !date.Equals(default(DateTime));
+        }
+
+        private bool BeAReasonableAge(DateTime date)
+        {
+            var minDate = DateTime.Now.AddYears(-140); // 140 yaşından büyük olmamalı
+            var maxDate = DateTime.Now.AddDays(1); // Gelecekte olmamalı (1 günlük tolerans)
+
+            return date > minDate && date < maxDate;
         }
     }
 }
