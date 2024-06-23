@@ -1,4 +1,5 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Clinics.Queries.GetByIdClinic;
+using Application.Repositories;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
@@ -31,9 +32,8 @@ namespace Application.Features.Allergies.Queries.GetByIdAllergy
 
                 Allergy? allergy = await _allergyRepository.GetAsync(x => x.Id == request.Id);
 
-                GetByIdAllergyResponse response = new GetByIdAllergyResponse();
-                response.Allergy = allergy;
-
+                GetByIdAllergyResponse response = _mapper.Map<GetByIdAllergyResponse>(allergy);
+                
                 return response;
             }
         }
