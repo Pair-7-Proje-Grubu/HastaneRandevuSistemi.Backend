@@ -16,7 +16,7 @@ namespace Application.Features.NoWorkHours.Commands.Delete
 
         public class DeleteNoWorkHourCommandHandler : IRequestHandler<DeleteNoWorkHourCommand>
         {
-            private INoWorkHourRepository _noWorkHourRepository;
+            private readonly INoWorkHourRepository _noWorkHourRepository;
             private readonly IMapper _mapper;
 
             public DeleteNoWorkHourCommandHandler(INoWorkHourRepository noWorkHourRepository, IMapper mapper)
@@ -27,10 +27,19 @@ namespace Application.Features.NoWorkHours.Commands.Delete
 
             public async Task Handle(DeleteNoWorkHourCommand request, CancellationToken cancellationToken)
             {
-                NoWorkHour? noWorkHour = _mapper.Map<NoWorkHour>(request);
+                //if (request.Ids == null || !request.Ids.Any())
+                //    throw new Exception("ID listesi boş olamaz.");
 
+                //List<NoWorkHour>? noWorkHours = await _noWorkHourRepository.GetListAsync(h => request.Ids.Contains(h.Id));
+
+                //if (noWorkHours == null || !noWorkHours.Any())
+                //    throw new Exception("Veri bulunamadı.");
+
+                NoWorkHour? noWorkHour = await _noWorkHourRepository.GetAsync(h => h.Id == request.Id);
                 if (noWorkHour is null)
-                    throw new Exception("Veri bulunamadı.");
+                {
+                    throw new Exception("Id'ye ait veri bulunamadı");
+                }
 
                 await _noWorkHourRepository.DeleteAsync(noWorkHour);
             }

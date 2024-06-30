@@ -13,11 +13,9 @@ namespace Application.Features.NoWorkHours.Commands.Update
         {
             RuleFor(x => x.Id).NotEmpty();
 
-            RuleFor(x => x.DateTime).NotEmpty();
 
             RuleFor(x => x.Id).GreaterThan(0);
 
-            RuleFor(x => x.DateTime).GreaterThan(DateTime.Now);
         }
     }
 }

@@ -9,6 +9,6 @@ namespace Application.Features.Titles.Queries.GetByIdTitle
 {
     public class GetByIdTitleResponse
     {
-        public Title? Title { get; set; }
+        public string TitleName { get; set; }
     }
 }

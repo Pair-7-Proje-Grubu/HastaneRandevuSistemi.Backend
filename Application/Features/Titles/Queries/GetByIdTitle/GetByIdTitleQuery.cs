@@ -32,9 +32,8 @@ namespace Application.Features.Titles.Queries.GetByIdTitle
 
                 Title? title = await _titleRepository.GetAsync(x => x.Id == request.Id);
 
-                GetByIdTitleResponse response = new GetByIdTitleResponse();
-                response.Title = title;
-
+                GetByIdTitleResponse response = _mapper.Map<GetByIdTitleResponse>(title);
+               
                 return response;
             }
         }

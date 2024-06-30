@@ -10,6 +10,7 @@ namespace Application.Features.NoWorkHours.Dtos
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public bool isFullDay { get; set; } = false;
+        public string Title { get; set; }
+        //public bool isFullDay = false;
     }
 }

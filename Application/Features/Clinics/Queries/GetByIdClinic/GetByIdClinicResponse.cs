@@ -9,6 +9,8 @@ namespace Application.Features.Clinics.Queries.GetByIdClinic
 {
     public class GetByIdClinicResponse
     {
-        public Clinic? Clinic { get; set; }
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+        public int AppointmentDuration { get; set; }
     }
 }

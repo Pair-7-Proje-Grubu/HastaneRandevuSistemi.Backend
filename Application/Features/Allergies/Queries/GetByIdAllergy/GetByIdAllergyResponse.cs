@@ -9,6 +9,6 @@ namespace Application.Features.Allergies.Queries.GetByIdAllergy
 {
     public class GetByIdAllergyResponse
     {
-        public Allergy? Allergy { get; set; }
+        public string Name { get; set; }
     }
 }
