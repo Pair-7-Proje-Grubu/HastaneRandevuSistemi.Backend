@@ -16,11 +16,11 @@ namespace Application.Features.WorkingTimes.Commands.Create
     public class CreateWorkingTimeCommand : IRequest<CreateWorkingTimeResponse>
     {
         //[JsonConverter(typeof(TimeSpanToStringConverter))]
-        //public TimeSpan StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
         //[JsonConverter(typeof(TimeSpanToStringConverter))]
-        //public TimeSpan EndTime { get; set; }
+        public TimeSpan EndTime { get; set; }
         //[JsonConverter(typeof(TimeSpanToStringConverter))]
-        //public TimeSpan StartBreakTime { get; set; }
+        public TimeSpan StartBreakTime { get; set; }
         //[JsonConverter(typeof(TimeSpanToStringConverter))]
         public TimeSpan EndBreakTime { get; set; }
 
