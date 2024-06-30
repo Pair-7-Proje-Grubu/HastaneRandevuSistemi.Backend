@@ -16,7 +16,8 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
 
     public class GetListAvailableAppointmentQuery : IRequest<GetListAvailableAppointmentResponse>
     {
-        public int ClinicId { get; set; }
+        public int DoctorId { get; set; }
+
         public class GetListAvailableAppointmentQueryHandler : IRequestHandler<GetListAvailableAppointmentQuery, GetListAvailableAppointmentResponse>
         {
 
@@ -31,18 +32,25 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
 
             public async Task<GetListAvailableAppointmentResponse> Handle(GetListAvailableAppointmentQuery request, CancellationToken cancellationToken)
             {
-                List<Doctor> doctors = await _doctorRepository.GetListAsync(d => d.ClinicId == request.ClinicId, include: d => d.Include(d => d.DoctorNoWorkHours).ThenInclude(d => d.NoWorkHour));
+                Doctor? doctor = await _doctorRepository.GetAsync(
+                    d => d.Id == request.DoctorId, 
+                    include: d => 
+                        d.Include(d => d.Clinic)
+                        .Include(d=> d.Appointments)
+                        .Include(d => d.DoctorNoWorkHours)
+                            .ThenInclude(d => d.NoWorkHour));
 
-                Domain.Entities.WorkingTime workingTime = (await _workingTimeRepository.GetListAsync()).MaxBy(x => x.CreatedDate);
+                WorkingTime workingTime = (await _workingTimeRepository.GetListAsync()).MaxBy(x => x.CreatedDate);
 
-                List<GetListAvailableDto> responseDtos = new List<GetListAvailableDto>();
-
+                GetListAvailableAppointmentResponse response = new GetListAvailableAppointmentResponse();
                 int dayLimit = 10;
 
-                foreach (Doctor doctor in doctors)
-                {      
+                if (doctor is not null)
+                {
+                    response.AppointmentDuration = doctor.Clinic.AppointmentDuration;
+
                     GetListAvailableDto dto = new GetListAvailableDto();
-                    dto.AppointmentDates = new List<AppointmentDate>();
+                    response.AppointmentDates = new List<AppointmentDate>();
                     for (int i = 0; i < dayLimit; i++)
                     {
                         List<DateRange> ranges = new List<DateRange>();
@@ -67,27 +75,26 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                                 EndTime = workingTime.EndTime
                             });
                         }
-                        else if(doctorNoWorkHours.Count == 1)
+                        else if (doctorNoWorkHours.Count == 1)
                         {
                             ranges.Add(new DateRange() { StartTime = workingTime.StartTime, EndTime = doctorNoWorkHours[0].NoWorkHour.StartDate.TimeOfDay });
                             ranges.Add(new DateRange() { StartTime = doctorNoWorkHours[0].NoWorkHour.EndDate.TimeOfDay, EndTime = workingTime.EndTime });
                         }
                         else
                         {
-                            ranges.Add(new DateRange() { StartTime = workingTime.StartTime, EndTime = workingTime.EndTime});
+                            ranges.Add(new DateRange() { StartTime = workingTime.StartTime, EndTime = workingTime.EndTime });
                         }
-                        
-                        dto.AppointmentDates.Add(new AppointmentDate()
+
+                        response.AppointmentDates.Add(new AppointmentDate()
                         {
-                            Date = DateTime.Now.AddDays(i),
-                            Range = ranges
+                            BookedSlots = doctor.Appointments.Where(d => d.DateTime.Date == DateTime.Now.AddDays(i).Date).Select(x=> x.DateTime.TimeOfDay).ToList(),
+                            Date = DateTime.Now.AddDays(i).Date,
+                            Ranges = ranges
                         });
                     }
-                    responseDtos.Add(dto);
                 }
+               
 
-                GetListAvailableAppointmentResponse response = new GetListAvailableAppointmentResponse();
-                response.GetListAvailableDtos = responseDtos;
                 return response;
             }
         }
