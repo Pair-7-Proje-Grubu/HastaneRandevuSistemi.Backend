@@ -1,6 +1,6 @@
 using Application;
 using Core;
-using Core.CrossCuttingConcerns.Converters;
+//using Core.CrossCuttingConcerns.Converters;
 using Core.CrossCuttingConcerns.Exceptions;
 using Core.CrossCuttingConcerns.Exceptions.Extensions;
 using Core.Utilities.Encryption;
@@ -11,6 +11,9 @@ using Microsoft.OpenApi.Models;
 using Persistence;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using System;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -92,6 +95,12 @@ builder.Services.AddSwaggerGen(options =>
 
 #endregion
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.Converters.Add(new TimeSpanToStringConverter());
+    });
 
 var app = builder.Build();
 
@@ -121,3 +130,17 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public class TimeSpanToStringConverter : JsonConverter<TimeSpan>
+{
+    public override TimeSpan Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        return TimeSpan.Parse(reader.GetString());
+    }
+
+    public override void Write(Utf8JsonWriter writer, TimeSpan value, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(value.ToString(@"hh\:mm\:ss"));
+    }
+
+}
