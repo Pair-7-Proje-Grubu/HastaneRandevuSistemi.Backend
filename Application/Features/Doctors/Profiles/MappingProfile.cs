@@ -1,5 +1,7 @@
 ﻿using Application.Features.Doctors.Commands.CreateDoctor;
 using Application.Features.Doctors.Commands.UpdateDoctor;
+using Application.Features.Doctors.Queries.GetByIdDoctor;
+using Application.Features.Floors.Queries.GetById;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -16,6 +18,8 @@ namespace Application.Features.Doctors.Profiles
         {
             CreateMap<Doctor, CreateDoctorCommand>().ReverseMap();
             CreateMap<Doctor, UpdateDoctorCommand>().ReverseMap();
+            CreateMap<Doctor, GetByIdDoctorResponse>().ReverseMap();
+
         }
     }
 }
