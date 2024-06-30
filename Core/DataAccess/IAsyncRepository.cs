@@ -13,7 +13,6 @@ namespace Core.DataAccess
         Task AddAsync(T entity);
         Task AddRangeAsync(ICollection<T> entity);
         Task UpdateAsync(T entity);
-        Task SoftDeleteAsync(T entity);
         Task DeleteAsync(T entity);
         Task DeleteRangeAsync(ICollection<T> entity);
         Task<T?> GetAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
