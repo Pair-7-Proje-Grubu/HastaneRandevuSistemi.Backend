@@ -46,7 +46,7 @@ namespace Application.Features.NoWorkHours.Queries.GetList
                 { 
                     var doctorNoWorkHours = await _doctorNoWorkHourRepository.GetListAsync(h => h.DoctorId == request.DoctorId, include: h => h.Include(d => d.NoWorkHour));
 
-                    noWorkHours = doctorNoWorkHours.Select(dnwh => dnwh.NoWorkHour).ToList();
+                    noWorkHours = doctorNoWorkHours.Select(dnwh => dnwh.NoWorkHour).AsQueryable().AsNoTracking().ToList();
                 }
 
                 List<GetListNoWorkHourResponse> response = _mapper.Map<List<GetListNoWorkHourResponse>>(noWorkHours);
