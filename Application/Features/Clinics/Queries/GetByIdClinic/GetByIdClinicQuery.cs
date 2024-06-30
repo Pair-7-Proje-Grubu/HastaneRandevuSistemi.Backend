@@ -37,8 +37,7 @@ namespace Application.Features.Clinics.Queries.GetByIdClinic
             {
                 Clinic? clinic = await _clinicRepository.GetAsync(x => x.Id == request.Id);
 
-                GetByIdClinicResponse response = new GetByIdClinicResponse();
-                response.Clinic = clinic;
+                GetByIdClinicResponse response = _mapper.Map<GetByIdClinicResponse>(clinic);
                 return response;
 
             }

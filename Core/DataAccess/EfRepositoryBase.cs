@@ -51,6 +51,12 @@ namespace Core.DataAccess
             await context.SaveChangesAsync();   
         }
 
+        public async Task DeleteRangeAsync(ICollection<TEntity> entity)
+        {
+            context.RemoveRange(entity);
+            await context.SaveChangesAsync();
+        }
+
         public TEntity Get(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
             IQueryable<TEntity> data = context.Set<TEntity>();
