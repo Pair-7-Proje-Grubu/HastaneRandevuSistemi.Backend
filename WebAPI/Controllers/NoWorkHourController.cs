@@ -1,4 +1,6 @@
 ﻿using Application.Features.NoWorkHours.Commands.Create;
+using Application.Features.NoWorkHours.Commands.Delete;
+using Application.Features.NoWorkHours.Commands.Update;
 using Application.Features.NoWorkHours.Queries.GetById;
 using Application.Features.NoWorkHours.Queries.GetList;
 using MediatR;
@@ -14,22 +16,28 @@ namespace WebAPI.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CreateNoWorkHourCommand command)
         {
+            if (command is null)
+            {
+                return BadRequest("Invalid data.");
+            }
+
             await _mediator.Send(command);
             return Ok();
         }
 
-        [HttpPost("Delete")]
-        public async Task<IActionResult> Delete([FromBody] CreateNoWorkHourCommand command)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            DeleteNoWorkHourCommand command = new () { Id = id };
             await _mediator.Send(command);
             return Ok();
         }
 
-        [HttpPost("Update")]
-        public async Task<IActionResult> Update([FromBody] CreateNoWorkHourCommand command)
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update([FromBody] UpdateNoWorkHourCommand command)
         {
-            await _mediator.Send(command);
-            return Ok();
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         [HttpGet("{Id}")]
@@ -40,10 +48,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("GetList")]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList([FromQuery] GetListNoWorkHourQuery query)
         {
-            GetListQuery getListQuery = new GetListQuery();
-            List<GetListNoWorkHourResponse> result = await _mediator.Send(getListQuery);
+            List<GetListNoWorkHourResponse> result = await _mediator.Send(query);
 
             return Ok(result);
         }

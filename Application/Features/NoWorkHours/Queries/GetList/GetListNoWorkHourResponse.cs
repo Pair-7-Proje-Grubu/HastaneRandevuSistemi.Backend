@@ -9,7 +9,10 @@ namespace Application.Features.NoWorkHours.Queries.GetList
 {
     public class GetListNoWorkHourResponse
     {
-        public List<NoWorkHour> NoWorkHours { get; set; }
+        public int Id { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Title { get; set; }
 
         #region non-used
         //public int Id { get; set; }

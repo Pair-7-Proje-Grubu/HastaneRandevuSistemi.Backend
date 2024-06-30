@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Features.NoWorkHours.Dtos;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +14,16 @@ namespace Application.Features.NoWorkHours.Commands.Create
 
         //public DateTime DateTime { get; set; }
 
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
-        public int DoctorId { get; set; }
+        //public int DoctorId { get; set; }
 
-        public DateTime StartDate { get; set; }
+        //public DateTime StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        //public DateTime EndDate { get; set; }
 
-        public bool IsFullDay { get; set; }
+        //public bool IsFullDay { get; set; }
+
+        public List<NoWorkHourDto> NoWorkHours { get; set; }
     }
 }

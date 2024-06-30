@@ -19,6 +19,9 @@ namespace Application.Features.NoWorkHours.MappingProfiles
         {
             CreateMap<NoWorkHour, NoWorkHourDto>().ReverseMap();
             CreateMap<NoWorkHour, CreateNoWorkHourResponse>().ReverseMap();
+            CreateMap<CreateNoWorkHourCommand, List<NoWorkHour>>()
+            .ConvertUsing((src, dest, context) =>
+                src.NoWorkHours.Select(dto => context.Mapper.Map<NoWorkHour>(dto)).ToList());
 
             CreateMap<NoWorkHour, UpdateNoWorkHourCommand>().ReverseMap();
             CreateMap<NoWorkHour, UpdateNoWorkHourResponse>().ReverseMap();

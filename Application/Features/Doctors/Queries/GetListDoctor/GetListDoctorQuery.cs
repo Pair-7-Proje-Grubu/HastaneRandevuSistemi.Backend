@@ -12,9 +12,8 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Doctors.Queries.GetListDoctor
 {
-    public class GetListDoctorQuery : IRequest<GetListDoctorResponse>, ISecuredRequest
+    public class GetListDoctorQuery : IRequest<GetListDoctorResponse>
     {
-        public string[] RequiredRoles => ["Appointment.Get"];
 
         public class GetListDoctorQueryHandler : IRequestHandler<GetListDoctorQuery, GetListDoctorResponse>
         {

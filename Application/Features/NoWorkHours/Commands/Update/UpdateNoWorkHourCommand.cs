@@ -1,5 +1,7 @@
-﻿using Application.Repositories;
+﻿using Application.Features.NoWorkHours.Dtos;
+using Application.Repositories;
 using AutoMapper;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -13,8 +15,9 @@ namespace Application.Features.NoWorkHours.Commands.Update
     public class UpdateNoWorkHourCommand : IRequest<UpdateNoWorkHourResponse>
     {
         public int Id { get; set; }
-
-        public DateTime DateTime { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Title { get; set; }
 
         public class UpdateNoWorkHourCommandHandler : IRequestHandler<UpdateNoWorkHourCommand, UpdateNoWorkHourResponse>
         {
@@ -29,11 +32,15 @@ namespace Application.Features.NoWorkHours.Commands.Update
 
             public async Task<UpdateNoWorkHourResponse> Handle(UpdateNoWorkHourCommand request, CancellationToken cancellationToken)
             { 
-                NoWorkHour noWorkHour = _mapper.Map<NoWorkHour>(request);
+                NoWorkHour? noWorkHour = await _noWorkHourRepository.GetAsync(h => h.Id == request.Id);
+                if (noWorkHour == null)
+                    throw new BusinessException("Id'ye ait veri bulunamadı");
 
-                await _noWorkHourRepository.UpdateAsync(noWorkHour);
+                NoWorkHour mappedNoWorkHour = _mapper.Map<NoWorkHour>(request);
 
-                UpdateNoWorkHourResponse response = _mapper.Map<UpdateNoWorkHourResponse>(noWorkHour);
+                await _noWorkHourRepository.UpdateAsync(mappedNoWorkHour);
+
+                UpdateNoWorkHourResponse response = _mapper.Map<UpdateNoWorkHourResponse>(mappedNoWorkHour);
 
                 return response;
             }
