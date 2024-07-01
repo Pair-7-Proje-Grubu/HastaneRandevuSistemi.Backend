@@ -11,6 +11,7 @@ namespace Application.Repositories
 {
     public interface IDoctorRepository : IAsyncRepository<Doctor>, IRepository<Doctor>
     {
+
     }
     
 }

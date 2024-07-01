@@ -37,12 +37,14 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                     include: d => 
                         d.Include(d => d.Clinic)
                         .Include(d=> d.Appointments)
+                        .Include(x => x.Id)
                         .Include(d => d.DoctorNoWorkHours)
                             .ThenInclude(d => d.NoWorkHour));
 
                 WorkingTime workingTime = (await _workingTimeRepository.GetListAsync()).MaxBy(x => x.CreatedDate);
 
                 GetListAvailableAppointmentResponse response = new GetListAvailableAppointmentResponse();
+
                 int dayLimit = 10;
 
                 if (doctor is not null)

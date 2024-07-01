@@ -15,6 +15,7 @@ namespace Domain.Entities
         public DateTime BirthDate { get; set; }
         public char Gender { get; set; }
 
+        
         public virtual List<UserOperationClaim> UserOperationClaims { get; set; }
 
     }

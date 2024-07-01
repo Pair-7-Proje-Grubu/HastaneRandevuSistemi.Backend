@@ -3,9 +3,12 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions.Types;
+using Core.DataAccess;
 using Core.Utilities;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +41,7 @@ namespace Application.Features.Doctors.Commands.CreateDoctor
 
             public async Task<CreateDoctorResponse> Handle(CreateDoctorCommand request, CancellationToken cancellationToken)
             {
-                // Email kontrolü ve kullanıcıyı bulma
+                //// Email kontrolü ve kullanıcıyı bulma
                 User? user = await _userRepository.GetAsync(p => p.Email == request.Email);
                 if (user == null)
                 {
@@ -52,14 +55,10 @@ namespace Application.Features.Doctors.Commands.CreateDoctor
                     TitleId = request.TitleId,
                     ClinicId = request.ClinicId,
                     OfficeLocationId = request.OfficeLocationId,
-                    Phone = user.Phone,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    BirthDate = user.BirthDate,
-                    Gender = user.Gender
+                    
                     // Diğer gerekli alanlar
-                };
-
+                };   // Doctor entity'sini oluşturma ve kaydetme
+               
                 await _doctorRepository.AddAsync(doctor);
 
                 return new CreateDoctorResponse();

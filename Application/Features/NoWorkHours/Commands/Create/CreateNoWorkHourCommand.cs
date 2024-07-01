@@ -15,14 +15,14 @@ using System.Threading.Tasks;
 
 namespace Application.Features.NoWorkHours.Commands.Create
 {
-    public class CreateNoWorkHourCommand : IRequest<CreateNoWorkHourResponse>, ISecuredRequest
+    public class CreateNoWorkHourCommand : IRequest<CreateNoWorkHourResponse>
     {
         public int DoctorId { get; set; }
         public List<NoWorkHourDto> NoWorkHours { get; set; }
 
-        string[] ISecuredRequest.RequiredRoles => RequiredRoles;
+        //string[] ISecuredRequest.RequiredRoles => RequiredRoles;
 
-        public string[] RequiredRoles { get; } = { "Doctor" };
+        //public string[] RequiredRoles { get; } = { "Doctor" };
 
         public class CreateNoWorkHourCommandHandler : IRequestHandler<CreateNoWorkHourCommand, CreateNoWorkHourResponse>
         {
