@@ -52,7 +52,7 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AppointmentDuration = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -61,6 +61,23 @@ namespace Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clinics", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FAQs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Question = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FAQs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,6 +104,7 @@ namespace Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -249,7 +267,10 @@ namespace Persistence.Migrations
                 name: "Admins",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -317,7 +338,10 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false),
                     TitleId = table.Column<int>(type: "int", nullable: false),
                     ClinicId = table.Column<int>(type: "int", nullable: false),
-                    OfficeLocationId = table.Column<int>(type: "int", nullable: false)
+                    OfficeLocationId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -458,17 +482,50 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "Blocks",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "No", "UpdatedDate" },
-                values: new object[] { 1, null, null, "A", null });
+                values: new object[,]
+                {
+                    { 1, null, null, "A", null },
+                    { 2, null, null, "B", null },
+                    { 3, null, null, "C", null }
+                });
 
             migrationBuilder.InsertData(
                 table: "Clinics",
                 columns: new[] { "Id", "AppointmentDuration", "CreatedDate", "DeletedDate", "Name", "PhoneNumber", "UpdatedDate" },
-                values: new object[] { 1, 0, null, null, "Ortopedi", "0500000000", null });
+                values: new object[,]
+                {
+                    { 1, 0, null, null, "Yoğun Bakım", null, null },
+                    { 2, 0, null, null, "Palyatif Bakım", null, null },
+                    { 3, 0, null, null, "Beyin ve Sinir Cerrahisi", null, null },
+                    { 4, 0, null, null, "Çocuk Sağlığı ve Hastalıkları", null, null },
+                    { 5, 0, null, null, "Enfeksiyon Hastalıkları", null, null },
+                    { 6, 0, null, null, "Fiziksel Tıp ve Rehabilitasyon", null, null },
+                    { 7, 0, null, null, "Genel Cerrahi", null, null },
+                    { 8, 0, null, null, "Genel Dahiliye", null, null },
+                    { 9, 0, null, null, "Göğüs Cerrahi", null, null },
+                    { 10, 0, null, null, "Göğüs Hastalıkları", null, null },
+                    { 11, 0, null, null, "Göz Hastalıkları", null, null },
+                    { 12, 0, null, null, "Kadın Hastalıkları ve Doğum", null, null },
+                    { 13, 0, null, null, "Kalp Damar Cerrahisi", null, null },
+                    { 14, 0, null, null, "Kardiyoloji", null, null },
+                    { 15, 0, null, null, "Kulak Burun Boğaz", null, null },
+                    { 16, 0, null, null, "Nöroloji", null, null },
+                    { 17, 0, null, null, "Ortopedi ve Travmatoloji", null, null },
+                    { 18, 0, null, null, "Üroloji", null, null }
+                });
 
             migrationBuilder.InsertData(
                 table: "Floors",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "No", "UpdatedDate" },
-                values: new object[] { 1, null, null, "Zemin", null });
+                values: new object[,]
+                {
+                    { 1, null, null, "Zemin", null },
+                    { 2, null, null, "1.Kat", null },
+                    { 3, null, null, "2.Kat", null },
+                    { 4, null, null, "3.Kat", null },
+                    { 5, null, null, "4.Kat", null },
+                    { 6, null, null, "-1.Kat", null }
+                });
 
             migrationBuilder.InsertData(
                 table: "OperationClaims",
@@ -477,7 +534,8 @@ namespace Persistence.Migrations
                 {
                     { 1, null, null, "Patient", null },
                     { 2, null, null, "Doctor", null },
-                    { 3, null, null, "Admin", null }
+                    { 3, null, null, "Support", null },
+                    { 4, null, null, "Admin", null }
                 });
 
             migrationBuilder.InsertData(
@@ -485,19 +543,41 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "No", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, null, null, "15", null },
-                    { 2, null, null, "20", null }
+                    { 1, null, null, "O-1", null },
+                    { 2, null, null, "O-2", null },
+                    { 3, null, null, "K-1", null },
+                    { 4, null, null, "K-2", null },
+                    { 5, null, null, "K-3", null },
+                    { 6, null, null, "D-1", null },
+                    { 7, null, null, "D-2", null },
+                    { 8, null, null, "N-1", null },
+                    { 9, null, null, "N-2", null },
+                    { 10, null, null, "U-1", null },
+                    { 11, null, null, "U-2", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Titles",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "TitleName", "UpdatedDate" },
-                values: new object[] { 1, null, null, "Uzman", null });
+                values: new object[,]
+                {
+                    { 1, null, null, "Pratisyen Doktor", null },
+                    { 2, null, null, "Uzman Doktor", null },
+                    { 3, null, null, "Operatör Doktor", null },
+                    { 4, null, null, "Yardımcı Doçent", null },
+                    { 5, null, null, "Doçent", null },
+                    { 6, null, null, "Profesör", null },
+                    { 7, null, null, "Ordinaryüs ", null }
+                });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "BirthDate", "CreatedDate", "DeletedDate", "Email", "FirstName", "Gender", "LastName", "PasswordHash", "PasswordSalt", "Phone", "UpdatedDate" },
-                values: new object[] { 1, new DateTime(2024, 6, 11, 23, 59, 6, 108, DateTimeKind.Local).AddTicks(5070), null, null, "testAdmin@hrs.com", "Test", "M", "Admin", null, null, "0500000000", null });
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4733), new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4743), null, "admin@hrs.com", "Test", "U", "Admin", new byte[] { 78, 16, 72, 202, 31, 106, 159, 195, 116, 228, 15, 76, 187, 219, 110, 8, 165, 122, 251, 154, 220, 35, 135, 99, 104, 230, 196, 69, 49, 24, 48, 152, 255, 89, 83, 135, 2, 41, 188, 134, 249, 227, 113, 191, 89, 19, 155, 27, 105, 169, 73, 78, 6, 239, 237, 6, 18, 128, 37, 113, 146, 171, 138, 232 }, new byte[] { 89, 79, 229, 75, 128, 181, 128, 217, 73, 155, 117, 190, 249, 218, 36, 213, 163, 58, 248, 10, 137, 78, 198, 135, 159, 141, 209, 41, 218, 150, 86, 26, 188, 207, 238, 202, 32, 152, 238, 164, 241, 174, 168, 244, 196, 134, 18, 132, 249, 192, 67, 86, 165, 48, 18, 71, 250, 91, 223, 117, 172, 11, 1, 143, 239, 137, 15, 68, 93, 226, 80, 144, 34, 190, 221, 82, 248, 162, 232, 114, 196, 2, 17, 17, 27, 246, 87, 67, 121, 70, 92, 150, 13, 204, 13, 243, 170, 187, 7, 140, 54, 239, 214, 73, 120, 70, 50, 249, 107, 245, 133, 60, 209, 9, 178, 248, 108, 103, 230, 15, 72, 87, 252, 55, 112, 237, 103, 76 }, "+905000000000", null },
+                    { 2, new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4748), new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4749), null, "doctor@hrs.com", "Test", "U", "Doctor", new byte[] { 78, 16, 72, 202, 31, 106, 159, 195, 116, 228, 15, 76, 187, 219, 110, 8, 165, 122, 251, 154, 220, 35, 135, 99, 104, 230, 196, 69, 49, 24, 48, 152, 255, 89, 83, 135, 2, 41, 188, 134, 249, 227, 113, 191, 89, 19, 155, 27, 105, 169, 73, 78, 6, 239, 237, 6, 18, 128, 37, 113, 146, 171, 138, 232 }, new byte[] { 89, 79, 229, 75, 128, 181, 128, 217, 73, 155, 117, 190, 249, 218, 36, 213, 163, 58, 248, 10, 137, 78, 198, 135, 159, 141, 209, 41, 218, 150, 86, 26, 188, 207, 238, 202, 32, 152, 238, 164, 241, 174, 168, 244, 196, 134, 18, 132, 249, 192, 67, 86, 165, 48, 18, 71, 250, 91, 223, 117, 172, 11, 1, 143, 239, 137, 15, 68, 93, 226, 80, 144, 34, 190, 221, 82, 248, 162, 232, 114, 196, 2, 17, 17, 27, 246, 87, 67, 121, 70, 92, 150, 13, 204, 13, 243, 170, 187, 7, 140, 54, 239, 214, 73, 120, 70, 50, 249, 107, 245, 133, 60, 209, 9, 178, 248, 108, 103, 230, 15, 72, 87, 252, 55, 112, 237, 103, 76 }, "+905000000001", null }
+                });
 
             migrationBuilder.InsertData(
                 table: "WorkingTimes",
@@ -506,8 +586,8 @@ namespace Persistence.Migrations
 
             migrationBuilder.InsertData(
                 table: "Admins",
-                column: "Id",
-                value: 1);
+                columns: new[] { "Id", "CreatedDate", "DeletedDate", "UpdatedDate" },
+                values: new object[] { 1, new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4746), null, null });
 
             migrationBuilder.InsertData(
                 table: "OfficeLocations",
@@ -515,13 +595,40 @@ namespace Persistence.Migrations
                 values: new object[,]
                 {
                     { 1, 1, null, null, 1, 1, null },
-                    { 2, 1, null, null, 1, 2, null }
+                    { 2, 1, null, null, 1, 2, null },
+                    { 3, 1, null, null, 2, 3, null },
+                    { 4, 1, null, null, 2, 4, null },
+                    { 5, 1, null, null, 2, 5, null },
+                    { 6, 2, null, null, 1, 6, null },
+                    { 7, 2, null, null, 1, 7, null },
+                    { 8, 3, null, null, 1, 10, null },
+                    { 9, 3, null, null, 1, 11, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Patients",
+                columns: new[] { "Id", "BloodType", "EmergencyContact" },
+                values: new object[,]
+                {
+                    { 1, null, null },
+                    { 2, null, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "UserOperationClaims",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "OperationClaimId", "UpdatedDate", "UserId" },
-                values: new object[] { 1, null, null, 3, null, 1 });
+                values: new object[,]
+                {
+                    { 1, null, null, 1, null, 1 },
+                    { 2, null, null, 1, null, 2 },
+                    { 3, null, null, 2, null, 2 },
+                    { 4, null, null, 4, null, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Doctors",
+                columns: new[] { "Id", "ClinicId", "CreatedDate", "DeletedDate", "OfficeLocationId", "TitleId", "UpdatedDate" },
+                values: new object[] { 2, 17, new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4751), null, 1, 1, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AllergyPatient_PatientsId",
@@ -562,8 +669,7 @@ namespace Persistence.Migrations
                 name: "IX_Doctors_OfficeLocationId",
                 table: "Doctors",
                 column: "OfficeLocationId",
-                unique: true,
-                filter: "[OfficeLocationId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Doctors_TitleId",
@@ -615,6 +721,9 @@ namespace Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "DoctorNoWorkHour");
+
+            migrationBuilder.DropTable(
+                name: "FAQs");
 
             migrationBuilder.DropTable(
                 name: "Reports");

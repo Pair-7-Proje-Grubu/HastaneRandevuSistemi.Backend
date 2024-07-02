@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.NoWorkHours.Queries.GetList
 {
-    public class GetListQuery : IRequest<List<GetListNoWorkHourResponse>>, ISecuredRequest
+    public class GetListNoWorkHourQuery : IRequest<List<GetListNoWorkHourResponse>>, ISecuredRequest
     {
         //public int Page { get; set; }
         //public int PageSize { get; set; }
@@ -20,7 +20,7 @@ namespace Application.Features.NoWorkHours.Queries.GetList
         string[] ISecuredRequest.RequiredRoles => RequiredRoles;
         public string[] RequiredRoles { get; } = { "Doctor", "Admin" };
 
-        public class GetListQueryHandler : IRequestHandler<GetListQuery, List<GetListNoWorkHourResponse>>
+        public class GetListQueryHandler : IRequestHandler<GetListNoWorkHourQuery, List<GetListNoWorkHourResponse>>
         {
             private readonly INoWorkHourRepository _noWorkHourRepository;
             private readonly IDoctorNoWorkHourRepository _doctorNoWorkHourRepository;
@@ -33,7 +33,7 @@ namespace Application.Features.NoWorkHours.Queries.GetList
                 _doctorNoWorkHourRepository = doctorNoWorkHourRepository;
             }
 
-            public async Task<List<GetListNoWorkHourResponse>> Handle(GetListQuery request, CancellationToken cancellationToken)
+            public async Task<List<GetListNoWorkHourResponse>> Handle(GetListNoWorkHourQuery request, CancellationToken cancellationToken)
             {
                 List<NoWorkHour> noWorkHours = new List<NoWorkHour>();
 
@@ -46,7 +46,7 @@ namespace Application.Features.NoWorkHours.Queries.GetList
                 { 
                     var doctorNoWorkHours = await _doctorNoWorkHourRepository.GetListAsync(h => h.DoctorId == request.DoctorId, include: h => h.Include(d => d.NoWorkHour));
 
-                    noWorkHours = doctorNoWorkHours.Select(dnwh => dnwh.NoWorkHour).ToList();
+                    noWorkHours = doctorNoWorkHours.Select(dnwh => dnwh.NoWorkHour).AsQueryable().AsNoTracking().ToList();
                 }
 
                 List<GetListNoWorkHourResponse> response = _mapper.Map<List<GetListNoWorkHourResponse>>(noWorkHours);

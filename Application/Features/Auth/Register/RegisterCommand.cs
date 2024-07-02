@@ -1,6 +1,7 @@
 ﻿using Application.Features.Appointments.Commands.Create;
 using Application.Repositories;
 using AutoMapper;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Utilities;
 using Domain.Entities;
 using FluentValidation;
@@ -37,13 +38,11 @@ namespace Application.Features.Auth.Register
             public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
 
-                //IValidator<RegisterCommand> validator = new RegisterCommandValidator();
-                //validator.ValidateAndThrow(request);
 
                 Patient? patientWithSameEmail = await _patientRepository.GetAsync(p => p.Email == request.Email);
-                if(patientWithSameEmail is not null)
+                if (patientWithSameEmail is not null)
                 {
-                    throw new Exception("Email adresi ile daha önceden sisteme kayıt yapılmış");
+                    throw new BusinessException("Email adresi ile daha önceden sisteme kayıt yapılmış");
                 }
 
                 Patient newPatient = _mapper.Map<Patient>(request);
@@ -53,7 +52,9 @@ namespace Application.Features.Auth.Register
                 HashingHelper.CreatePasswordHash(request.Password, out passwordSalt, out passwordHash);
                 newPatient.PasswordSalt = passwordSalt;
                 newPatient.PasswordHash = passwordHash;
-
+                newPatient.UserOperationClaims = new List<UserOperationClaim>() {
+                    new UserOperationClaim() { OperationClaimId = 1, UserId = newPatient.Id }
+                };
                 await _patientRepository.AddAsync(newPatient);
 
                 return new RegisterResponse();

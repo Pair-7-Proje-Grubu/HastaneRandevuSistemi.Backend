@@ -31,16 +31,16 @@ namespace Application.Features.NoWorkHours.Commands.Update
             }
 
             public async Task<UpdateNoWorkHourResponse> Handle(UpdateNoWorkHourCommand request, CancellationToken cancellationToken)
-            { 
+            {
                 NoWorkHour? noWorkHour = await _noWorkHourRepository.GetAsync(h => h.Id == request.Id);
                 if (noWorkHour == null)
                     throw new BusinessException("Id'ye ait veri bulunamadı");
 
-                NoWorkHour mappedNoWorkHour = _mapper.Map<NoWorkHour>(request);
+                _mapper.Map(request, noWorkHour);
 
-                await _noWorkHourRepository.UpdateAsync(mappedNoWorkHour);
+                await _noWorkHourRepository.UpdateAsync(noWorkHour);
 
-                UpdateNoWorkHourResponse response = _mapper.Map<UpdateNoWorkHourResponse>(mappedNoWorkHour);
+                UpdateNoWorkHourResponse response = _mapper.Map<UpdateNoWorkHourResponse>(noWorkHour);
 
                 return response;
             }

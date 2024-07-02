@@ -1,7 +1,7 @@
 ﻿using Application.Features.WorkingTimes.Commands.Create;
 using Application.Repositories;
 using AutoMapper;
-using Core.CrossCuttingConcerns.Converters;
+//using Core.CrossCuttingConcerns.Converters;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -15,13 +15,13 @@ namespace Application.Features.WorkingTimes.Commands.Create
 {
     public class CreateWorkingTimeCommand : IRequest<CreateWorkingTimeResponse>
     {
-        [JsonConverter(typeof(TimeSpanToStringConverter))]
+        //[JsonConverter(typeof(TimeSpanToStringConverter))]
         public TimeSpan StartTime { get; set; }
-        [JsonConverter(typeof(TimeSpanToStringConverter))]
+        //[JsonConverter(typeof(TimeSpanToStringConverter))]
         public TimeSpan EndTime { get; set; }
-        [JsonConverter(typeof(TimeSpanToStringConverter))]
+        //[JsonConverter(typeof(TimeSpanToStringConverter))]
         public TimeSpan StartBreakTime { get; set; }
-        [JsonConverter(typeof(TimeSpanToStringConverter))]
+        //[JsonConverter(typeof(TimeSpanToStringConverter))]
         public TimeSpan EndBreakTime { get; set; }
 
         public class CreateWorkingTimeCommandHandler : IRequestHandler<CreateWorkingTimeCommand, CreateWorkingTimeResponse>

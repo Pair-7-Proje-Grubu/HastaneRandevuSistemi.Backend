@@ -30,6 +30,7 @@ namespace Core.DataAccess
 
         public async Task AddAsync(TEntity entity)
         {
+
             await context.AddAsync(entity);
             await context.SaveChangesAsync();
         }
@@ -82,12 +83,24 @@ namespace Core.DataAccess
 
         public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
-            IQueryable<TEntity> data = context.Set<TEntity>();
+            IQueryable<TEntity> data = context.Set<TEntity>().AsNoTracking();
 
             if (include != null)
                 data = include(data);
 
             return await data.FirstOrDefaultAsync(predicate);
+
+        }
+
+
+        public async Task<TEntity?> GetAsyncAsNoTracking(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+        {
+            IQueryable<TEntity> data = context.Set<TEntity>();
+
+            if (include != null)
+                data = include(data);
+
+            return await data.AsNoTracking().FirstOrDefaultAsync(predicate);
 
         }
 
@@ -111,6 +124,9 @@ namespace Core.DataAccess
         public async Task UpdateAsync(TEntity entity)
         {
             context.Update(entity);
+
+            var entries = context.ChangeTracker.Entries();
+            
             await context.SaveChangesAsync();
         }
 

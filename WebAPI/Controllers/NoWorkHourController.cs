@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("GetList")]
-        public async Task<IActionResult> GetList([FromQuery] GetListQuery query)
+        public async Task<IActionResult> GetList([FromQuery] GetListNoWorkHourQuery query)
         {
             List<GetListNoWorkHourResponse> result = await _mediator.Send(query);
 

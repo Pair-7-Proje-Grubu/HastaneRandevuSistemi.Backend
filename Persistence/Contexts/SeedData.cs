@@ -1,4 +1,6 @@
-﻿using Core.Entities;
+﻿using Azure.Core;
+using Core.Entities;
+using Core.Utilities;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,57 +13,167 @@ namespace Persistence.Contexts
 {
     public static class SeedData
     {
+
+
         public static void Initialize(ModelBuilder modelBuilder)
         {
 
-            Title title = new Title() { Id = 1, TitleName = "Uzman" };
-            Block block = new Block() { Id = 1, No = "A" };
-            Floor floor = new Floor() { Id = 1, No = "Zemin" };
-            Room room = new Room() { Id = 1, No = "15" };
-            Room room2 = new Room() { Id = 2, No = "20" };
-            OfficeLocation officeLocation = new OfficeLocation() { Id = 1, BlockId = 1, FloorId = 1, RoomId = 1 };
-            OfficeLocation officeLocation2 = new OfficeLocation() { Id = 2, BlockId = 1, FloorId = 1, RoomId = 2 };
-            Clinic clinic = new Clinic() { Id = 1, Name = "Ortopedi", PhoneNumber = "0500000000" };
-            WorkingTime workingTime = new WorkingTime() { 
+            Title[] titles = [ new(){ Id = 1, TitleName = "Pratisyen Doktor" },
+                                new() { Id = 2, TitleName = "Uzman Doktor" },
+                                new() { Id = 3, TitleName = "Operatör Doktor" },
+                                new() { Id = 4, TitleName = "Yardımcı Doçent" },
+                                new() { Id = 5, TitleName = "Doçent" },
+                                new() { Id = 6, TitleName = "Profesör" },
+                                new() { Id = 7, TitleName = "Ordinaryüs " },
+                                ];
+
+            Block[] blocks = [new(){ Id = 1, No = "A" },
+                                new() { Id = 2, No = "B" },
+                                new() { Id = 3, No = "C" }];
+
+            Floor[] floors = [new(){ Id = 1, No = "Zemin" },
+                                new(){ Id = 2, No = "1.Kat" },
+                                new(){ Id = 3, No = "2.Kat" },
+                                new(){ Id = 4, No = "3.Kat" },
+                                new(){ Id = 5, No = "4.Kat" },
+                                new(){ Id = 6, No = "-1.Kat" },
+            ];
+
+            Room[] rooms = [new(){ Id = 1, No = "O-1" },
+                                new(){ Id = 2, No = "O-2" },
+                                new(){ Id = 3, No = "K-1" },
+                                new(){ Id = 4, No = "K-2" },
+                                new(){ Id = 5, No = "K-3" },
+                                new(){ Id = 6, No = "D-1" },
+                                new(){ Id = 7, No = "D-2" },
+                                new(){ Id = 8, No = "N-1" },
+                                new(){ Id = 9, No = "N-2" },
+                                new(){ Id = 10, No = "U-1" },
+                                new(){ Id = 11, No = "U-2" },
+            ];
+
+
+            OfficeLocation[] officeLocations = [
+                new(){ Id = 1, BlockId = 1, FloorId = 1, RoomId = 1 },
+                new(){ Id = 2, BlockId = 1, FloorId = 1, RoomId = 2 },
+                new(){ Id = 3, BlockId = 1, FloorId = 2, RoomId = 3 },
+                new(){ Id = 4, BlockId = 1, FloorId = 2, RoomId = 4 },
+                new(){ Id = 5, BlockId = 1, FloorId = 2, RoomId = 5 },
+                new(){ Id = 6, BlockId = 2, FloorId = 1, RoomId = 6 },
+                new(){ Id = 7, BlockId = 2, FloorId = 1, RoomId = 7 },
+                new(){ Id = 8, BlockId = 3, FloorId = 1, RoomId = 10},
+                new(){ Id = 9, BlockId = 3, FloorId = 1, RoomId = 11 },
+            ];
+
+            Clinic[] clinics =
+            [
+                new Clinic() { Id = 1, Name = "Yoğun Bakım" },
+                new Clinic() { Id = 2, Name = "Palyatif Bakım" },
+                new Clinic() { Id = 3, Name = "Beyin ve Sinir Cerrahisi" },
+                new Clinic() { Id = 4, Name = "Çocuk Sağlığı ve Hastalıkları" },
+                new Clinic() { Id = 5, Name = "Enfeksiyon Hastalıkları" },
+                new Clinic() { Id = 6, Name = "Fiziksel Tıp ve Rehabilitasyon" },
+                new Clinic() { Id = 7, Name = "Genel Cerrahi" },
+                new Clinic() { Id = 8, Name = "Genel Dahiliye" },
+                new Clinic() { Id = 9, Name = "Göğüs Cerrahi" },
+                new Clinic() { Id = 10, Name = "Göğüs Hastalıkları" },
+                new Clinic() { Id = 11, Name = "Göz Hastalıkları" },
+                new Clinic() { Id = 12, Name = "Kadın Hastalıkları ve Doğum" },
+                new Clinic() { Id = 13, Name = "Kalp Damar Cerrahisi" },
+                new Clinic() { Id = 14, Name = "Kardiyoloji" },
+                new Clinic() { Id = 15, Name = "Kulak Burun Boğaz" },
+                new Clinic() { Id = 16, Name = "Nöroloji" },
+                new Clinic() { Id = 17, Name = "Ortopedi ve Travmatoloji" },
+                new Clinic() { Id = 18, Name = "Üroloji" }
+            ];
+
+
+            WorkingTime workingTime = new WorkingTime()
+            {
                 Id = 1, 
                 StartTime= new TimeSpan(08,30,0), EndTime= new TimeSpan(17,0,0),
                 StartBreakTime= new TimeSpan(12,0,0), EndBreakTime= new TimeSpan(13,0,0)
             };
 
-            Admin admin = new Admin()
-            {
+
+            byte[] passwordSalt, passwordHash;
+
+            HashingHelper.CreatePasswordHash("123456", out passwordSalt, out passwordHash);
+
+            Patient admin = new Patient() { 
                 Id = 1,
                 FirstName = "Test",
                 LastName = "Admin",
+                Email = "admin@hrs.com",
+                Phone = "+905000000000",
                 BirthDate = DateTime.Now,
-                Gender = 'M',
-                Email = "testAdmin@hrs.com",
-                Phone = "0500000000",
+                Gender = 'U',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+
+                
+            };
+            Admin AdminData = new Admin()
+            {
+                CreatedDate = DateTime.Now,
+                Id = 1,
             };
 
 
-            modelBuilder.Entity<WorkingTime>().HasData(workingTime);
-            modelBuilder.Entity<Title>().HasData(title);
-            modelBuilder.Entity<Block>().HasData(block);
-            modelBuilder.Entity<Floor>().HasData(floor);
-            modelBuilder.Entity<Room>().HasData(room);
-            modelBuilder.Entity<Room>().HasData(room2);
-            modelBuilder.Entity<OfficeLocation>().HasData(officeLocation);
-            modelBuilder.Entity<OfficeLocation>().HasData(officeLocation2);
-            modelBuilder.Entity<Clinic>().HasData(clinic);
-            modelBuilder.Entity<Domain.Entities.OperationClaim>()
-                .HasData(new Domain.Entities.OperationClaim() { Id = 1, Name = "Patient" },
-                         new Domain.Entities.OperationClaim() { Id = 2, Name = "Doctor" },
-                         new Domain.Entities.OperationClaim() { Id = 3, Name = "Admin" });
-            modelBuilder.Entity<Domain.Entities.UserOperationClaim>().HasData(new Domain.Entities.UserOperationClaim()
+            Patient doctor = new Patient()
             {
-                Id = 1,
-                UserId = 1,
-                OperationClaimId = 3
-            });
+                Id = 2,
+                FirstName = "Test",
+                LastName = "Doctor",
+                Email = "doctor@hrs.com",
+                Phone = "+905000000001",
+                BirthDate = DateTime.Now,
+                Gender = 'U',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+                
+
+            };
+          
+            Doctor doctorData = new Doctor()
+            {
+                Id = 2,
+                ClinicId = 17,   
+                TitleId = 1,
+                OfficeLocationId = 1,
+                CreatedDate = DateTime.Now,
+            };
+
+            OperationClaim[] operationClaims = [new(){ Id = 1, Name = "Patient" },
+                                                new(){ Id = 2, Name = "Doctor" },
+                                                new(){ Id = 3, Name = "Support" },
+                                                new(){ Id = 4, Name = "Admin" }];
 
 
-            modelBuilder.Entity<Admin>().HasData(admin);
+            UserOperationClaim[] userOperationClaims = [
+               new UserOperationClaim(){Id=1, UserId = 1, OperationClaimId = 1},
+               new UserOperationClaim(){Id=4, UserId = 1, OperationClaimId = 4},
+               new UserOperationClaim(){Id=2, UserId = 2, OperationClaimId = 1},
+               new UserOperationClaim(){Id=3, UserId = 2, OperationClaimId = 2},
+            ];
+
+
+            modelBuilder.Entity<WorkingTime>().HasData(workingTime);
+            modelBuilder.Entity<Title>().HasData(titles);
+            modelBuilder.Entity<Block>().HasData(blocks);
+            modelBuilder.Entity<Floor>().HasData(floors);
+            modelBuilder.Entity<Room>().HasData(rooms);
+            modelBuilder.Entity<OfficeLocation>().HasData(officeLocations);
+            modelBuilder.Entity<Clinic>().HasData(clinics);
+            modelBuilder.Entity<OperationClaim>().HasData(operationClaims);
+            modelBuilder.Entity<Patient>().HasData(admin);
+            modelBuilder.Entity<Admin>().HasData(AdminData);
+            modelBuilder.Entity<Patient>().HasData(doctor);
+            modelBuilder.Entity<Doctor>().HasData(doctorData);
+            modelBuilder.Entity<UserOperationClaim>().HasData(userOperationClaims);
+
         }
     }
 }

@@ -13,6 +13,5 @@ namespace Domain.Entities
         public string? EmergencyContact { get; set; }
         public virtual ICollection<Allergy> Allergies { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }
-
     }
 }

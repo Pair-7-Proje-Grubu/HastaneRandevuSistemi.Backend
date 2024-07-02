@@ -47,9 +47,18 @@ namespace Persistence.Contexts
 
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Patient>().ToTable("Patients");
-            modelBuilder.Entity<Doctor>().ToTable("Doctors");
-            modelBuilder.Entity<Admin>().ToTable("Admins");
-            
+
+            modelBuilder.Entity<Doctor>()
+            .HasOne(e => e.User)
+            .WithMany()
+            .HasForeignKey(e => e.Id);
+
+
+            modelBuilder.Entity<Admin>()
+            .HasOne(e => e.User)
+            .WithMany()
+            .HasForeignKey(e => e.Id);
+
 
             modelBuilder.Entity<Appointment>()
                 .HasOne(x => x.Patient)
@@ -84,6 +93,8 @@ namespace Persistence.Contexts
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            var datas = ChangeTracker.Entries();
+
             foreach (var item in ChangeTracker.Entries())
             {
                 if (item.Entity is BaseEntity entityReference)

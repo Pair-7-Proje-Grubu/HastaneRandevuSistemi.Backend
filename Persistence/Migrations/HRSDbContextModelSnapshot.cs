@@ -37,6 +37,32 @@ namespace Persistence.Migrations
                     b.ToTable("AllergyPatient");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Admin", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Admins");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4746)
+                        });
+                });
+
             modelBuilder.Entity("Domain.Entities.Allergy", b =>
                 {
                     b.Property<int>("Id")
@@ -131,6 +157,16 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             No = "A"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            No = "B"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            No = "C"
                         });
                 });
 
@@ -156,7 +192,6 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedDate")
@@ -171,8 +206,154 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             AppointmentDuration = 0,
-                            Name = "Ortopedi",
-                            PhoneNumber = "0500000000"
+                            Name = "Yoğun Bakım"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AppointmentDuration = 0,
+                            Name = "Palyatif Bakım"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AppointmentDuration = 0,
+                            Name = "Beyin ve Sinir Cerrahisi"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AppointmentDuration = 0,
+                            Name = "Çocuk Sağlığı ve Hastalıkları"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AppointmentDuration = 0,
+                            Name = "Enfeksiyon Hastalıkları"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AppointmentDuration = 0,
+                            Name = "Fiziksel Tıp ve Rehabilitasyon"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AppointmentDuration = 0,
+                            Name = "Genel Cerrahi"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AppointmentDuration = 0,
+                            Name = "Genel Dahiliye"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AppointmentDuration = 0,
+                            Name = "Göğüs Cerrahi"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AppointmentDuration = 0,
+                            Name = "Göğüs Hastalıkları"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            AppointmentDuration = 0,
+                            Name = "Göz Hastalıkları"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            AppointmentDuration = 0,
+                            Name = "Kadın Hastalıkları ve Doğum"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            AppointmentDuration = 0,
+                            Name = "Kalp Damar Cerrahisi"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            AppointmentDuration = 0,
+                            Name = "Kardiyoloji"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            AppointmentDuration = 0,
+                            Name = "Kulak Burun Boğaz"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            AppointmentDuration = 0,
+                            Name = "Nöroloji"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            AppointmentDuration = 0,
+                            Name = "Ortopedi ve Travmatoloji"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            AppointmentDuration = 0,
+                            Name = "Üroloji"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Doctor", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClinicId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OfficeLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TitleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClinicId");
+
+                    b.HasIndex("OfficeLocationId")
+                        .IsUnique();
+
+                    b.HasIndex("TitleId");
+
+                    b.ToTable("Doctors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            ClinicId = 17,
+                            CreatedDate = new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4751),
+                            OfficeLocationId = 1,
+                            TitleId = 1
                         });
                 });
 
@@ -268,6 +449,31 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             No = "Zemin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            No = "1.Kat"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            No = "2.Kat"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            No = "3.Kat"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            No = "4.Kat"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            No = "-1.Kat"
                         });
                 });
 
@@ -353,6 +559,55 @@ namespace Persistence.Migrations
                             BlockId = 1,
                             FloorId = 1,
                             RoomId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BlockId = 1,
+                            FloorId = 2,
+                            RoomId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BlockId = 1,
+                            FloorId = 2,
+                            RoomId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BlockId = 1,
+                            FloorId = 2,
+                            RoomId = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            BlockId = 2,
+                            FloorId = 1,
+                            RoomId = 6
+                        },
+                        new
+                        {
+                            Id = 7,
+                            BlockId = 2,
+                            FloorId = 1,
+                            RoomId = 7
+                        },
+                        new
+                        {
+                            Id = 8,
+                            BlockId = 3,
+                            FloorId = 1,
+                            RoomId = 10
+                        },
+                        new
+                        {
+                            Id = 9,
+                            BlockId = 3,
+                            FloorId = 1,
+                            RoomId = 11
                         });
                 });
 
@@ -425,6 +680,11 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 3,
+                            Name = "Support"
+                        },
+                        new
+                        {
+                            Id = 4,
                             Name = "Admin"
                         });
                 });
@@ -489,12 +749,57 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            No = "15"
+                            No = "O-1"
                         },
                         new
                         {
                             Id = 2,
-                            No = "20"
+                            No = "O-2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            No = "K-1"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            No = "K-2"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            No = "K-3"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            No = "D-1"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            No = "D-2"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            No = "N-1"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            No = "N-2"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            No = "U-1"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            No = "U-2"
                         });
                 });
 
@@ -527,7 +832,37 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            TitleName = "Uzman"
+                            TitleName = "Pratisyen Doktor"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            TitleName = "Uzman Doktor"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            TitleName = "Operatör Doktor"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            TitleName = "Yardımcı Doçent"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            TitleName = "Doçent"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            TitleName = "Profesör"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            TitleName = "Ordinaryüs "
                         });
                 });
 
@@ -619,8 +954,26 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            OperationClaimId = 3,
+                            OperationClaimId = 1,
                             UserId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            OperationClaimId = 4,
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            OperationClaimId = 1,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            OperationClaimId = 2,
+                            UserId = 2
                         });
                 });
 
@@ -668,49 +1021,6 @@ namespace Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.Admin", b =>
-                {
-                    b.HasBaseType("Domain.Entities.User");
-
-                    b.ToTable("Admins", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BirthDate = new DateTime(2024, 6, 29, 23, 52, 17, 722, DateTimeKind.Local).AddTicks(9017),
-                            Email = "testAdmin@hrs.com",
-                            FirstName = "Test",
-                            Gender = "M",
-                            LastName = "Admin",
-                            Phone = "0500000000"
-                        });
-                });
-
-            modelBuilder.Entity("Domain.Entities.Doctor", b =>
-                {
-                    b.HasBaseType("Domain.Entities.User");
-
-                    b.Property<int>("ClinicId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OfficeLocationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TitleId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ClinicId");
-
-                    b.HasIndex("OfficeLocationId")
-                        .IsUnique()
-                        .HasFilter("[OfficeLocationId] IS NOT NULL");
-
-                    b.HasIndex("TitleId");
-
-                    b.ToTable("Doctors", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Entities.Patient", b =>
                 {
                     b.HasBaseType("Domain.Entities.User");
@@ -722,6 +1032,34 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Patients", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BirthDate = new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4733),
+                            CreatedDate = new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4743),
+                            Email = "admin@hrs.com",
+                            FirstName = "Test",
+                            Gender = "U",
+                            LastName = "Admin",
+                            PasswordHash = new byte[] { 78, 16, 72, 202, 31, 106, 159, 195, 116, 228, 15, 76, 187, 219, 110, 8, 165, 122, 251, 154, 220, 35, 135, 99, 104, 230, 196, 69, 49, 24, 48, 152, 255, 89, 83, 135, 2, 41, 188, 134, 249, 227, 113, 191, 89, 19, 155, 27, 105, 169, 73, 78, 6, 239, 237, 6, 18, 128, 37, 113, 146, 171, 138, 232 },
+                            PasswordSalt = new byte[] { 89, 79, 229, 75, 128, 181, 128, 217, 73, 155, 117, 190, 249, 218, 36, 213, 163, 58, 248, 10, 137, 78, 198, 135, 159, 141, 209, 41, 218, 150, 86, 26, 188, 207, 238, 202, 32, 152, 238, 164, 241, 174, 168, 244, 196, 134, 18, 132, 249, 192, 67, 86, 165, 48, 18, 71, 250, 91, 223, 117, 172, 11, 1, 143, 239, 137, 15, 68, 93, 226, 80, 144, 34, 190, 221, 82, 248, 162, 232, 114, 196, 2, 17, 17, 27, 246, 87, 67, 121, 70, 92, 150, 13, 204, 13, 243, 170, 187, 7, 140, 54, 239, 214, 73, 120, 70, 50, 249, 107, 245, 133, 60, 209, 9, 178, 248, 108, 103, 230, 15, 72, 87, 252, 55, 112, 237, 103, 76 },
+                            Phone = "+905000000000"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BirthDate = new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4748),
+                            CreatedDate = new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4749),
+                            Email = "doctor@hrs.com",
+                            FirstName = "Test",
+                            Gender = "U",
+                            LastName = "Doctor",
+                            PasswordHash = new byte[] { 78, 16, 72, 202, 31, 106, 159, 195, 116, 228, 15, 76, 187, 219, 110, 8, 165, 122, 251, 154, 220, 35, 135, 99, 104, 230, 196, 69, 49, 24, 48, 152, 255, 89, 83, 135, 2, 41, 188, 134, 249, 227, 113, 191, 89, 19, 155, 27, 105, 169, 73, 78, 6, 239, 237, 6, 18, 128, 37, 113, 146, 171, 138, 232 },
+                            PasswordSalt = new byte[] { 89, 79, 229, 75, 128, 181, 128, 217, 73, 155, 117, 190, 249, 218, 36, 213, 163, 58, 248, 10, 137, 78, 198, 135, 159, 141, 209, 41, 218, 150, 86, 26, 188, 207, 238, 202, 32, 152, 238, 164, 241, 174, 168, 244, 196, 134, 18, 132, 249, 192, 67, 86, 165, 48, 18, 71, 250, 91, 223, 117, 172, 11, 1, 143, 239, 137, 15, 68, 93, 226, 80, 144, 34, 190, 221, 82, 248, 162, 232, 114, 196, 2, 17, 17, 27, 246, 87, 67, 121, 70, 92, 150, 13, 204, 13, 243, 170, 187, 7, 140, 54, 239, 214, 73, 120, 70, 50, 249, 107, 245, 133, 60, 209, 9, 178, 248, 108, 103, 230, 15, 72, 87, 252, 55, 112, 237, 103, 76 },
+                            Phone = "+905000000001"
+                        });
                 });
 
             modelBuilder.Entity("AllergyPatient", b =>
@@ -737,6 +1075,17 @@ namespace Persistence.Migrations
                         .HasForeignKey("PatientsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Admin", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Appointment", b =>
@@ -756,6 +1105,41 @@ namespace Persistence.Migrations
                     b.Navigation("Doctor");
 
                     b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Doctor", b =>
+                {
+                    b.HasOne("Domain.Entities.Clinic", "Clinic")
+                        .WithMany("Doctors")
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.OfficeLocation", "OfficeLocation")
+                        .WithOne("Doctor")
+                        .HasForeignKey("Domain.Entities.Doctor", "OfficeLocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Title", "Title")
+                        .WithMany("Doctors")
+                        .HasForeignKey("TitleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Clinic");
+
+                    b.Navigation("OfficeLocation");
+
+                    b.Navigation("Title");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.DoctorNoWorkHour", b =>
@@ -845,48 +1229,6 @@ namespace Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Admin", b =>
-                {
-                    b.HasOne("Domain.Entities.User", null)
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.Admin", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.Doctor", b =>
-                {
-                    b.HasOne("Domain.Entities.Clinic", "Clinic")
-                        .WithMany("Doctors")
-                        .HasForeignKey("ClinicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.User", null)
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.Doctor", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.OfficeLocation", "OfficeLocation")
-                        .WithOne("Doctor")
-                        .HasForeignKey("Domain.Entities.Doctor", "OfficeLocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Title", "Title")
-                        .WithMany("Doctors")
-                        .HasForeignKey("TitleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Clinic");
-
-                    b.Navigation("OfficeLocation");
-
-                    b.Navigation("Title");
-                });
-
             modelBuilder.Entity("Domain.Entities.Patient", b =>
                 {
                     b.HasOne("Domain.Entities.User", null)
@@ -904,6 +1246,13 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Clinic", b =>
                 {
                     b.Navigation("Doctors");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Doctor", b =>
+                {
+                    b.Navigation("Appointments");
+
+                    b.Navigation("DoctorNoWorkHours");
                 });
 
             modelBuilder.Entity("Domain.Entities.Floor", b =>
@@ -940,13 +1289,6 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("UserOperationClaims");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Doctor", b =>
-                {
-                    b.Navigation("Appointments");
-
-                    b.Navigation("DoctorNoWorkHours");
                 });
 
             modelBuilder.Entity("Domain.Entities.Patient", b =>
