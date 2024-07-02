@@ -103,7 +103,6 @@ namespace Core.DataAccess
             return await data.ToListAsync();
         }
 
-      
         public void Update(TEntity entity)
         {
             throw new NotImplementedException();

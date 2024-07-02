@@ -8,9 +8,8 @@ namespace Application.Features.Appointments.Queries.GetListActiveAppointment
 {
     public class GetListActiveAppointmentByDoctorResponse
     {
-        public DateTime DateTime { get; set; }
-        public string OfficeLocation { get; set; }
-        public string DoctorName { get; set; }
-        public string ClinicName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime AppointmentDate { get; set; }
     }
 }
