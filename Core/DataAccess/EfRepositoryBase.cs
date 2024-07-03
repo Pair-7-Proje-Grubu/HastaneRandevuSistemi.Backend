@@ -81,37 +81,29 @@ namespace Core.DataAccess
             return data.ToList();
         }
 
-        public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
-        {
-            IQueryable<TEntity> data = context.Set<TEntity>().AsNoTracking();
-
-            if (include != null)
-                data = include(data);
-
-            return await data.FirstOrDefaultAsync(predicate);
-
-        }
-
-
-        public async Task<TEntity?> GetAsyncAsNoTracking(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+        public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, bool asNoTracking = false)
         {
             IQueryable<TEntity> data = context.Set<TEntity>();
 
             if (include != null)
                 data = include(data);
 
-            return await data.AsNoTracking().FirstOrDefaultAsync(predicate);
+            if (asNoTracking) data.AsNoTracking();
 
+            return await data.FirstOrDefaultAsync(predicate);
         }
 
-        public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+        public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, bool asNoTracking = false)
         {
             IQueryable<TEntity> data = context.Set<TEntity>();
 
             if (predicate != null)
                 data = data.Where(predicate);
+
             if (include != null)
                 data = include(data);
+
+            if (asNoTracking) data.AsNoTracking();
 
             return await data.ToListAsync();
         }
