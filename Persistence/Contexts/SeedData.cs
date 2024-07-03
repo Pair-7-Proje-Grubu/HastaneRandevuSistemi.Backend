@@ -67,24 +67,24 @@ namespace Persistence.Contexts
 
             Clinic[] clinics =
             [
-                new Clinic() { Id = 1, Name = "Yoğun Bakım" },
-                new Clinic() { Id = 2, Name = "Palyatif Bakım" },
-                new Clinic() { Id = 3, Name = "Beyin ve Sinir Cerrahisi" },
-                new Clinic() { Id = 4, Name = "Çocuk Sağlığı ve Hastalıkları" },
-                new Clinic() { Id = 5, Name = "Enfeksiyon Hastalıkları" },
-                new Clinic() { Id = 6, Name = "Fiziksel Tıp ve Rehabilitasyon" },
-                new Clinic() { Id = 7, Name = "Genel Cerrahi" },
-                new Clinic() { Id = 8, Name = "Genel Dahiliye" },
-                new Clinic() { Id = 9, Name = "Göğüs Cerrahi" },
-                new Clinic() { Id = 10, Name = "Göğüs Hastalıkları" },
-                new Clinic() { Id = 11, Name = "Göz Hastalıkları" },
-                new Clinic() { Id = 12, Name = "Kadın Hastalıkları ve Doğum" },
-                new Clinic() { Id = 13, Name = "Kalp Damar Cerrahisi" },
-                new Clinic() { Id = 14, Name = "Kardiyoloji" },
-                new Clinic() { Id = 15, Name = "Kulak Burun Boğaz" },
-                new Clinic() { Id = 16, Name = "Nöroloji" },
-                new Clinic() { Id = 17, Name = "Ortopedi ve Travmatoloji" },
-                new Clinic() { Id = 18, Name = "Üroloji" }
+                new Clinic() { Id = 1, Name = "Yoğun Bakım", AppointmentDuration = 30 },
+                new Clinic() { Id = 2, Name = "Palyatif Bakım", AppointmentDuration = 20 },
+                new Clinic() { Id = 3, Name = "Beyin ve Sinir Cerrahisi", AppointmentDuration = 20 },
+                new Clinic() { Id = 4, Name = "Çocuk Sağlığı ve Hastalıkları", AppointmentDuration = 15 },
+                new Clinic() { Id = 5, Name = "Enfeksiyon Hastalıkları", AppointmentDuration = 15 },
+                new Clinic() { Id = 6, Name = "Fiziksel Tıp ve Rehabilitasyon" , AppointmentDuration = 15},
+                new Clinic() { Id = 7, Name = "Genel Cerrahi" , AppointmentDuration = 30},
+                new Clinic() { Id = 8, Name = "Genel Dahiliye" , AppointmentDuration = 20},
+                new Clinic() { Id = 9, Name = "Göğüs Cerrahi" , AppointmentDuration = 30},
+                new Clinic() { Id = 10, Name = "Göğüs Hastalıkları" , AppointmentDuration = 30},
+                new Clinic() { Id = 11, Name = "Göz Hastalıkları", AppointmentDuration = 20 },
+                new Clinic() { Id = 12, Name = "Kadın Hastalıkları ve Doğum", AppointmentDuration = 30 },
+                new Clinic() { Id = 13, Name = "Kalp Damar Cerrahisi" , AppointmentDuration = 20},
+                new Clinic() { Id = 14, Name = "Kardiyoloji" , AppointmentDuration = 20},
+                new Clinic() { Id = 15, Name = "Kulak Burun Boğaz", AppointmentDuration = 15 },
+                new Clinic() { Id = 16, Name = "Nöroloji" , AppointmentDuration = 20},
+                new Clinic() { Id = 17, Name = "Ortopedi ve Travmatoloji" , AppointmentDuration = 15},
+                new Clinic() { Id = 18, Name = "Üroloji", AppointmentDuration = 15 }
             ];
 
 
@@ -146,6 +146,22 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
+            Patient patient = new Patient()
+            {
+                Id = 3,
+                FirstName = "Test",
+                LastName = "Patient",
+                Email = "patient@hrs.com",
+                Phone = "+905000000002",
+                BirthDate = DateTime.Now,
+                Gender = 'U',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+
+
+            };
+
             OperationClaim[] operationClaims = [new(){ Id = 1, Name = "Patient" },
                                                 new(){ Id = 2, Name = "Doctor" },
                                                 new(){ Id = 3, Name = "Support" },
@@ -154,9 +170,10 @@ namespace Persistence.Contexts
 
             UserOperationClaim[] userOperationClaims = [
                new UserOperationClaim(){Id=1, UserId = 1, OperationClaimId = 1},
-               new UserOperationClaim(){Id=4, UserId = 1, OperationClaimId = 4},
-               new UserOperationClaim(){Id=2, UserId = 2, OperationClaimId = 1},
-               new UserOperationClaim(){Id=3, UserId = 2, OperationClaimId = 2},
+               new UserOperationClaim(){Id=2, UserId = 1, OperationClaimId = 4},
+               new UserOperationClaim(){Id=3, UserId = 2, OperationClaimId = 1},
+               new UserOperationClaim(){Id=4, UserId = 2, OperationClaimId = 2},
+               new UserOperationClaim(){Id=5, UserId = 3, OperationClaimId = 1},
             ];
 
 
@@ -172,6 +189,7 @@ namespace Persistence.Contexts
             modelBuilder.Entity<Admin>().HasData(AdminData);
             modelBuilder.Entity<Patient>().HasData(doctor);
             modelBuilder.Entity<Doctor>().HasData(doctorData);
+            modelBuilder.Entity<Patient>().HasData(patient);
             modelBuilder.Entity<UserOperationClaim>().HasData(userOperationClaims);
 
         }

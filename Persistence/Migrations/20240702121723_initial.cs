@@ -494,24 +494,24 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "AppointmentDuration", "CreatedDate", "DeletedDate", "Name", "PhoneNumber", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, 0, null, null, "Yoğun Bakım", null, null },
-                    { 2, 0, null, null, "Palyatif Bakım", null, null },
-                    { 3, 0, null, null, "Beyin ve Sinir Cerrahisi", null, null },
-                    { 4, 0, null, null, "Çocuk Sağlığı ve Hastalıkları", null, null },
-                    { 5, 0, null, null, "Enfeksiyon Hastalıkları", null, null },
-                    { 6, 0, null, null, "Fiziksel Tıp ve Rehabilitasyon", null, null },
-                    { 7, 0, null, null, "Genel Cerrahi", null, null },
-                    { 8, 0, null, null, "Genel Dahiliye", null, null },
-                    { 9, 0, null, null, "Göğüs Cerrahi", null, null },
-                    { 10, 0, null, null, "Göğüs Hastalıkları", null, null },
-                    { 11, 0, null, null, "Göz Hastalıkları", null, null },
-                    { 12, 0, null, null, "Kadın Hastalıkları ve Doğum", null, null },
-                    { 13, 0, null, null, "Kalp Damar Cerrahisi", null, null },
-                    { 14, 0, null, null, "Kardiyoloji", null, null },
-                    { 15, 0, null, null, "Kulak Burun Boğaz", null, null },
-                    { 16, 0, null, null, "Nöroloji", null, null },
-                    { 17, 0, null, null, "Ortopedi ve Travmatoloji", null, null },
-                    { 18, 0, null, null, "Üroloji", null, null }
+                    { 1, 30, null, null, "Yoğun Bakım", null, null },
+                    { 2, 20, null, null, "Palyatif Bakım", null, null },
+                    { 3, 20, null, null, "Beyin ve Sinir Cerrahisi", null, null },
+                    { 4, 15, null, null, "Çocuk Sağlığı ve Hastalıkları", null, null },
+                    { 5, 15, null, null, "Enfeksiyon Hastalıkları", null, null },
+                    { 6, 15, null, null, "Fiziksel Tıp ve Rehabilitasyon", null, null },
+                    { 7, 30, null, null, "Genel Cerrahi", null, null },
+                    { 8, 20, null, null, "Genel Dahiliye", null, null },
+                    { 9, 30, null, null, "Göğüs Cerrahi", null, null },
+                    { 10, 30, null, null, "Göğüs Hastalıkları", null, null },
+                    { 11, 20, null, null, "Göz Hastalıkları", null, null },
+                    { 12, 30, null, null, "Kadın Hastalıkları ve Doğum", null, null },
+                    { 13, 20, null, null, "Kalp Damar Cerrahisi", null, null },
+                    { 14, 20, null, null, "Kardiyoloji", null, null },
+                    { 15, 15, null, null, "Kulak Burun Boğaz", null, null },
+                    { 16, 20, null, null, "Nöroloji", null, null },
+                    { 17, 15, null, null, "Ortopedi ve Travmatoloji", null, null },
+                    { 18, 15, null, null, "Üroloji", null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -575,8 +575,9 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "BirthDate", "CreatedDate", "DeletedDate", "Email", "FirstName", "Gender", "LastName", "PasswordHash", "PasswordSalt", "Phone", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4733), new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4743), null, "admin@hrs.com", "Test", "U", "Admin", new byte[] { 78, 16, 72, 202, 31, 106, 159, 195, 116, 228, 15, 76, 187, 219, 110, 8, 165, 122, 251, 154, 220, 35, 135, 99, 104, 230, 196, 69, 49, 24, 48, 152, 255, 89, 83, 135, 2, 41, 188, 134, 249, 227, 113, 191, 89, 19, 155, 27, 105, 169, 73, 78, 6, 239, 237, 6, 18, 128, 37, 113, 146, 171, 138, 232 }, new byte[] { 89, 79, 229, 75, 128, 181, 128, 217, 73, 155, 117, 190, 249, 218, 36, 213, 163, 58, 248, 10, 137, 78, 198, 135, 159, 141, 209, 41, 218, 150, 86, 26, 188, 207, 238, 202, 32, 152, 238, 164, 241, 174, 168, 244, 196, 134, 18, 132, 249, 192, 67, 86, 165, 48, 18, 71, 250, 91, 223, 117, 172, 11, 1, 143, 239, 137, 15, 68, 93, 226, 80, 144, 34, 190, 221, 82, 248, 162, 232, 114, 196, 2, 17, 17, 27, 246, 87, 67, 121, 70, 92, 150, 13, 204, 13, 243, 170, 187, 7, 140, 54, 239, 214, 73, 120, 70, 50, 249, 107, 245, 133, 60, 209, 9, 178, 248, 108, 103, 230, 15, 72, 87, 252, 55, 112, 237, 103, 76 }, "+905000000000", null },
-                    { 2, new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4748), new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4749), null, "doctor@hrs.com", "Test", "U", "Doctor", new byte[] { 78, 16, 72, 202, 31, 106, 159, 195, 116, 228, 15, 76, 187, 219, 110, 8, 165, 122, 251, 154, 220, 35, 135, 99, 104, 230, 196, 69, 49, 24, 48, 152, 255, 89, 83, 135, 2, 41, 188, 134, 249, 227, 113, 191, 89, 19, 155, 27, 105, 169, 73, 78, 6, 239, 237, 6, 18, 128, 37, 113, 146, 171, 138, 232 }, new byte[] { 89, 79, 229, 75, 128, 181, 128, 217, 73, 155, 117, 190, 249, 218, 36, 213, 163, 58, 248, 10, 137, 78, 198, 135, 159, 141, 209, 41, 218, 150, 86, 26, 188, 207, 238, 202, 32, 152, 238, 164, 241, 174, 168, 244, 196, 134, 18, 132, 249, 192, 67, 86, 165, 48, 18, 71, 250, 91, 223, 117, 172, 11, 1, 143, 239, 137, 15, 68, 93, 226, 80, 144, 34, 190, 221, 82, 248, 162, 232, 114, 196, 2, 17, 17, 27, 246, 87, 67, 121, 70, 92, 150, 13, 204, 13, 243, 170, 187, 7, 140, 54, 239, 214, 73, 120, 70, 50, 249, 107, 245, 133, 60, 209, 9, 178, 248, 108, 103, 230, 15, 72, 87, 252, 55, 112, 237, 103, 76 }, "+905000000001", null }
+                    { 1, new DateTime(2024, 7, 2, 15, 17, 23, 498, DateTimeKind.Local).AddTicks(4439), new DateTime(2024, 7, 2, 15, 17, 23, 498, DateTimeKind.Local).AddTicks(4447), null, "admin@hrs.com", "Test", "U", "Admin", new byte[] { 145, 78, 55, 17, 34, 1, 229, 31, 65, 251, 46, 139, 111, 246, 158, 241, 221, 219, 35, 197, 111, 74, 162, 124, 145, 80, 31, 255, 222, 92, 234, 119, 205, 38, 16, 75, 12, 117, 65, 7, 231, 237, 186, 140, 181, 115, 89, 42, 223, 189, 244, 246, 209, 95, 75, 24, 102, 75, 245, 235, 191, 126, 168, 44 }, new byte[] { 22, 216, 141, 59, 205, 105, 118, 202, 52, 176, 147, 128, 125, 33, 66, 49, 92, 95, 146, 158, 200, 58, 83, 66, 116, 81, 91, 229, 184, 53, 123, 66, 25, 220, 82, 178, 169, 114, 207, 243, 45, 132, 92, 137, 244, 207, 74, 118, 72, 33, 154, 173, 60, 46, 251, 70, 222, 81, 46, 35, 141, 176, 211, 245, 176, 144, 38, 187, 46, 246, 138, 63, 226, 126, 9, 179, 47, 98, 104, 172, 3, 144, 216, 16, 50, 99, 86, 1, 98, 26, 138, 34, 68, 178, 93, 46, 119, 244, 235, 148, 57, 248, 128, 48, 229, 41, 206, 146, 89, 139, 177, 163, 103, 125, 44, 237, 255, 200, 6, 219, 18, 149, 146, 138, 213, 208, 99, 16 }, "+905000000000", null },
+                    { 2, new DateTime(2024, 7, 2, 15, 17, 23, 498, DateTimeKind.Local).AddTicks(4450), new DateTime(2024, 7, 2, 15, 17, 23, 498, DateTimeKind.Local).AddTicks(4451), null, "doctor@hrs.com", "Test", "U", "Doctor", new byte[] { 145, 78, 55, 17, 34, 1, 229, 31, 65, 251, 46, 139, 111, 246, 158, 241, 221, 219, 35, 197, 111, 74, 162, 124, 145, 80, 31, 255, 222, 92, 234, 119, 205, 38, 16, 75, 12, 117, 65, 7, 231, 237, 186, 140, 181, 115, 89, 42, 223, 189, 244, 246, 209, 95, 75, 24, 102, 75, 245, 235, 191, 126, 168, 44 }, new byte[] { 22, 216, 141, 59, 205, 105, 118, 202, 52, 176, 147, 128, 125, 33, 66, 49, 92, 95, 146, 158, 200, 58, 83, 66, 116, 81, 91, 229, 184, 53, 123, 66, 25, 220, 82, 178, 169, 114, 207, 243, 45, 132, 92, 137, 244, 207, 74, 118, 72, 33, 154, 173, 60, 46, 251, 70, 222, 81, 46, 35, 141, 176, 211, 245, 176, 144, 38, 187, 46, 246, 138, 63, 226, 126, 9, 179, 47, 98, 104, 172, 3, 144, 216, 16, 50, 99, 86, 1, 98, 26, 138, 34, 68, 178, 93, 46, 119, 244, 235, 148, 57, 248, 128, 48, 229, 41, 206, 146, 89, 139, 177, 163, 103, 125, 44, 237, 255, 200, 6, 219, 18, 149, 146, 138, 213, 208, 99, 16 }, "+905000000001", null },
+                    { 3, new DateTime(2024, 7, 2, 15, 17, 23, 498, DateTimeKind.Local).AddTicks(4455), new DateTime(2024, 7, 2, 15, 17, 23, 498, DateTimeKind.Local).AddTicks(4456), null, "patient@hrs.com", "Test", "U", "Patient", new byte[] { 145, 78, 55, 17, 34, 1, 229, 31, 65, 251, 46, 139, 111, 246, 158, 241, 221, 219, 35, 197, 111, 74, 162, 124, 145, 80, 31, 255, 222, 92, 234, 119, 205, 38, 16, 75, 12, 117, 65, 7, 231, 237, 186, 140, 181, 115, 89, 42, 223, 189, 244, 246, 209, 95, 75, 24, 102, 75, 245, 235, 191, 126, 168, 44 }, new byte[] { 22, 216, 141, 59, 205, 105, 118, 202, 52, 176, 147, 128, 125, 33, 66, 49, 92, 95, 146, 158, 200, 58, 83, 66, 116, 81, 91, 229, 184, 53, 123, 66, 25, 220, 82, 178, 169, 114, 207, 243, 45, 132, 92, 137, 244, 207, 74, 118, 72, 33, 154, 173, 60, 46, 251, 70, 222, 81, 46, 35, 141, 176, 211, 245, 176, 144, 38, 187, 46, 246, 138, 63, 226, 126, 9, 179, 47, 98, 104, 172, 3, 144, 216, 16, 50, 99, 86, 1, 98, 26, 138, 34, 68, 178, 93, 46, 119, 244, 235, 148, 57, 248, 128, 48, 229, 41, 206, 146, 89, 139, 177, 163, 103, 125, 44, 237, 255, 200, 6, 219, 18, 149, 146, 138, 213, 208, 99, 16 }, "+905000000002", null }
                 });
 
             migrationBuilder.InsertData(
@@ -587,7 +588,7 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "Admins",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "UpdatedDate" },
-                values: new object[] { 1, new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4746), null, null });
+                values: new object[] { 1, new DateTime(2024, 7, 2, 15, 17, 23, 498, DateTimeKind.Local).AddTicks(4449), null, null });
 
             migrationBuilder.InsertData(
                 table: "OfficeLocations",
@@ -611,7 +612,8 @@ namespace Persistence.Migrations
                 values: new object[,]
                 {
                     { 1, null, null },
-                    { 2, null, null }
+                    { 2, null, null },
+                    { 3, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -620,15 +622,16 @@ namespace Persistence.Migrations
                 values: new object[,]
                 {
                     { 1, null, null, 1, null, 1 },
-                    { 2, null, null, 1, null, 2 },
-                    { 3, null, null, 2, null, 2 },
-                    { 4, null, null, 4, null, 1 }
+                    { 2, null, null, 4, null, 1 },
+                    { 3, null, null, 1, null, 2 },
+                    { 4, null, null, 2, null, 2 },
+                    { 5, null, null, 1, null, 3 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Doctors",
                 columns: new[] { "Id", "ClinicId", "CreatedDate", "DeletedDate", "OfficeLocationId", "TitleId", "UpdatedDate" },
-                values: new object[] { 2, 17, new DateTime(2024, 7, 2, 1, 51, 20, 789, DateTimeKind.Local).AddTicks(4751), null, 1, 1, null });
+                values: new object[] { 2, 17, new DateTime(2024, 7, 2, 15, 17, 23, 498, DateTimeKind.Local).AddTicks(4454), null, 1, 1, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AllergyPatient_PatientsId",
