@@ -1,5 +1,6 @@
 ﻿using Application.Features.Clinics.Commands.Create;
 using Application.Features.Clinics.Commands.Update;
+using Application.Features.Clinics.Dtos;
 using Application.Features.Clinics.Queries.GetByIdClinic;
 using Application.Features.Clinics.Queries.GetListClinic;
 using AutoMapper;
@@ -21,8 +22,9 @@ namespace Application.Features.Clinics.Profiles
             CreateMap<Clinic, CreateClinicResponse>().ReverseMap();
             CreateMap<Clinic, UpdateClinicCommand>().ReverseMap();
             CreateMap<Clinic, UpdateClinicResponse>().ReverseMap();
-            CreateMap<Clinic, GetListClinicResponse>().ReverseMap();
+            CreateMap<Clinic, GetListClinicDto>().ReverseMap();
             CreateMap<Clinic, GetByIdClinicResponse>().ReverseMap();
+            
         
         }
     }
