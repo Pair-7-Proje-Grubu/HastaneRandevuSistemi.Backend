@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Appointments.Commands.Create
+namespace Application.Features.Appointments.Commands.Book
 {
-    public class CreateAppointmentResponse
+    public class BookAppointmentResponse
     {
         public int PatientId { get; set; }
         public int DoctorId { get; set; }

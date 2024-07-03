@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Appointments.Commands.Create
+namespace Application.Features.Appointments.Commands.Book
 {
-    public class CreateAppointmentCommandValidator : AbstractValidator<CreateAppointmentCommand>
+    public class BookAppointmentCommandValidator : AbstractValidator<BookAppointmentCommand>
     {
-        public CreateAppointmentCommandValidator()
+        public BookAppointmentCommandValidator()
         {
             RuleFor(a => a.DoctorId).NotEmpty();
             RuleFor(a => a.DateTime).NotEmpty();

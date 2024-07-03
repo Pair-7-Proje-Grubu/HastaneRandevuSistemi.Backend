@@ -1,4 +1,4 @@
-﻿using Application.Features.Appointments.Commands.Create;
+﻿using Application.Features.Appointments.Commands.Book;
 using Application.Features.Appointments.Queries.GetListActiveAppointment;
 using Application.Features.Appointments.Queries.GetListAppointment;
 using Application.Features.Appointments.Queries.GetListAvailableAppointment;
@@ -10,10 +10,10 @@ namespace WebAPI.Controllers
     {
 
 
-        [HttpPost("Add")]
-        public async Task<IActionResult> Create([FromBody] CreateAppointmentCommand command)
+        [HttpPost("Book")]
+        public async Task<IActionResult> Book([FromBody] BookAppointmentCommand command)
         {
-            CreateAppointmentResponse response = await _mediator.Send(command);
+            BookAppointmentResponse response = await _mediator.Send(command);
             return Ok(response);
         }
 

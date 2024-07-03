@@ -1,4 +1,4 @@
-﻿using Application.Features.Appointments.Commands.Create;
+﻿using Application.Features.Appointments.Commands.Book;
 using Application.Features.Appointments.Queries.GetListActiveAppointment;
 using AutoMapper;
 using Domain.Entities;
@@ -14,8 +14,8 @@ namespace Application.Features.Appointments.MappingProfiles
     {
         public AppointmentMappingProfiles() 
         {
-            CreateMap<Appointment, CreateAppointmentCommand>().ReverseMap();
-            CreateMap<Appointment, CreateAppointmentResponse>().ReverseMap();
+            CreateMap<Appointment, BookAppointmentCommand>().ReverseMap();
+            CreateMap<Appointment, BookAppointmentResponse>().ReverseMap();
         }
     }
 }
