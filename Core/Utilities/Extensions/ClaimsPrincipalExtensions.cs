@@ -19,5 +19,10 @@ namespace Core.Utilities.Extensions
         {
             return Convert.ToInt32(claimsPrincipal?.Claims(ClaimTypes.NameIdentifier)?.FirstOrDefault());
         }
+
+        public static string GetUserEmail(this ClaimsPrincipal claimsPrincipal)
+        {
+            return claimsPrincipal?.Claims(ClaimTypes.Email)?.FirstOrDefault();
+        }
     }
 }
