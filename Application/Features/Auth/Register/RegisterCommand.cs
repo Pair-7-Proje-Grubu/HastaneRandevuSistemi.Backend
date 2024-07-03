@@ -1,4 +1,4 @@
-﻿using Application.Features.Appointments.Commands.Create;
+﻿using Application.Features.Appointments.Commands.Book;
 using Application.Repositories;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
