@@ -16,6 +16,7 @@ namespace Application.Features.Appointments.MappingProfiles
         {
             CreateMap<Appointment, BookAppointmentCommand>().ReverseMap();
             CreateMap<Appointment, BookAppointmentResponse>().ReverseMap();
+            CreateMap<Appointment, GetListActiveAppointmentByDoctorResponse>().ReverseMap();
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Application.Features.Clinics.Queries.GetByIdClinic;
 using Application.Features.Clinics.Queries.GetListClinic;
 using Application.Features.Clinics.Commands.Update;
+using Application.Features.Clinics.Dtos;
 namespace WebAPI.Controllers
 
 {
@@ -27,7 +28,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetList()
         {
             GetListClinicQuery getListClinicQuery = new GetListClinicQuery();
-            GetListClinicResponse result = await _mediator.Send(getListClinicQuery);
+            List<GetListClinicDto> result = await _mediator.Send(getListClinicQuery);
             return Ok(result);
         }
 

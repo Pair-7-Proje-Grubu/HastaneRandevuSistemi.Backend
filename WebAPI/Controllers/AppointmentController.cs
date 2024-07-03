@@ -32,11 +32,11 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        //[HttpPost("GetListActiveAppointments")] //GetListAvailableAppointments
-        //public async Task<IActionResult> GetListActive([FromBody] GetListActiveAppointmentByPatientQuery query)
-        //{
-        //    List<GetListActiveAppointmentByPatientResponse> response = await _mediator.Send(query);
-        //    return Ok(response);
-        //}
+        [HttpPost("GetListActiveAppointmentByDoctor")]
+        public async Task<IActionResult> GetListActive([FromBody] GetListActiveAppointmentByDoctorQuery query)
+        {
+            List<GetListActiveAppointmentByDoctorResponse> response = await _mediator.Send(query);
+            return Ok(response);
+        }
     }
 }

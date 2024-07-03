@@ -4,6 +4,7 @@ using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Application.Features.Appointments.Queries.GetListActiveAppointment
 {
     public class GetListActiveAppointmentByDoctorQuery : IRequest<List<GetListActiveAppointmentByDoctorResponse>>, ISecuredRequest
     {
-        public string[] RequiredRoles => [ "Appointment.Doctor.Get" ];
+        public string[] RequiredRoles => [ "Doctor" ];
 
         public class GetListActiveAppointmentByDoctorQueryHandler : IRequestHandler<GetListActiveAppointmentByDoctorQuery, List<GetListActiveAppointmentByDoctorResponse>>
         {
@@ -30,13 +31,18 @@ namespace Application.Features.Appointments.Queries.GetListActiveAppointment
             }
             public async Task<List<GetListActiveAppointmentByDoctorResponse>> Handle(GetListActiveAppointmentByDoctorQuery request, CancellationToken cancellationToken)
             {
-                List<Appointment> activeAppointments = new List<Appointment>();
+                //List<Appointment> activeAppointments = new List<Appointment>();
 
                 int userId = Convert.ToInt16(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-                activeAppointments = (await _appointmentRepository.GetListAsync(a => a.DoctorId == userId)).Where(a => a.DateTime > DateTime.Now).ToList();
+                List<Appointment> activeAppointments = (await _appointmentRepository.GetListAsync(a => a.DoctorId == userId, include: q => q.Include(a => a.Patient))).Where(a => a.DateTime > DateTime.Now).ToList();
                 
-                List<GetListActiveAppointmentByDoctorResponse> response = _mapper.Map<List<GetListActiveAppointmentByDoctorResponse>>(activeAppointments);
+                List<GetListActiveAppointmentByDoctorResponse> response = activeAppointments.Select(a => new GetListActiveAppointmentByDoctorResponse
+                {
+                    FirstName = a.Patient.FirstName,
+                    LastName = a.Patient.LastName,
+                    AppointmentDate = a.DateTime
+                }).ToList();
                 return response;
             }
         }
