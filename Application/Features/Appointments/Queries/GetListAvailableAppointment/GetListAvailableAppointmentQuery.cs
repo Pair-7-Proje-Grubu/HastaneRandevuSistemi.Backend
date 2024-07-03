@@ -2,6 +2,7 @@
 using Application.Features.Doctors.Queries.GetListDoctor;
 using Application.Repositories;
 using AutoMapper;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -37,11 +38,13 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                     include: d => 
                         d.Include(d => d.Clinic)
                         .Include(d=> d.Appointments)
-                        .Include(x => x.Id)
                         .Include(d => d.DoctorNoWorkHours)
-                            .ThenInclude(d => d.NoWorkHour));
+                            .ThenInclude(d => d.NoWorkHour), asNoTracking:true);
 
-                WorkingTime workingTime = (await _workingTimeRepository.GetListAsync()).MaxBy(x => x.CreatedDate);
+                if (doctor is null) throw new BusinessException("Doktor bulunamadı!");
+
+                WorkingTime? workingTime = (await _workingTimeRepository.GetListAsync(asNoTracking:true)).MaxBy(x => x.CreatedDate);
+                if (workingTime is null) throw new BusinessException("Mesai saati verisi bulunamadı!");
 
                 GetListAvailableAppointmentResponse response = new GetListAvailableAppointmentResponse();
 
@@ -50,6 +53,8 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                 if (doctor is not null)
                 {
                     response.AppointmentDuration = doctor.Clinic.AppointmentDuration;
+
+                    if (response.AppointmentDuration <= 0) throw new BusinessException("Randevu süresi 0 veya 0'dan küçük olamaz!");
 
                     GetListAvailableDto dto = new GetListAvailableDto();
                     response.AppointmentDates = new List<AppointmentDate>();
