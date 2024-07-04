@@ -16,6 +16,7 @@
     <PackageReference Include="FluentValidation" Version="11.9.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.1" />
     <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="SendGrid" Version="9.29.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +24,8 @@
     <Folder Include="Features\FAQs\Command\Delete\" />
     <Folder Include="Features\FAQs\Command\Update\" />
     <Folder Include="Features\FAQs\Queries\" />
+    <Folder Include="Features\Feedbacks\Commands\Delete\" />
+    <Folder Include="Features\Feedbacks\Commands\Update\" />
     <Folder Include="Services\AppointmentService\" />
   </ItemGroup>
 

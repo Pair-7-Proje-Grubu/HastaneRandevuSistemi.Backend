@@ -1,5 +1,6 @@
 ﻿using Application.Features.Doctors.Commands.CreateDoctor;
 using Application.Features.Doctors.Commands.UpdateDoctor;
+using Application.Features.Doctors.Queries.GetByClinicIdDoctor;
 using Application.Features.Doctors.Queries.GetByIdDoctor;
 using Application.Features.Doctors.Queries.GetListDoctor;
 using MediatR;
@@ -38,10 +39,17 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("{Id}")]
+        [HttpGet("GetById/{Id}")]
         public async Task<IActionResult> GetById([FromRoute] GetByIdDoctorQuery getByIdDoctorQuery)
         {
             GetByIdDoctorResponse result = await _mediator.Send(getByIdDoctorQuery);
+            return Ok(result);
+        }
+
+        [HttpGet("GetByClinicId/{ClinicId}")]
+        public async Task<IActionResult> GetByClinicId([FromRoute] GetByClinicIdDoctorQuery getByClinicIdDoctorQuery)
+        {
+            List<GetByClinicIdDoctorResponse> result = await _mediator.Send(getByClinicIdDoctorQuery);
             return Ok(result);
         }
 

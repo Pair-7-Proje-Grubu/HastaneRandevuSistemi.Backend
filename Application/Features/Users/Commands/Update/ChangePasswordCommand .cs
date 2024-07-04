@@ -50,7 +50,7 @@ namespace Application.Features.Users.Commands.Update
 
                 await _patientRepository.UpdateAsync(patient);
 
-                return new ChangePasswordResponse { IsSuccess = true, Message = "Şifre başarıyla güncellendi." };
+                return new ChangePasswordResponse { IsSuccess = true, Message = "Parola başarıyla güncellendi." };
             }
         }
     }

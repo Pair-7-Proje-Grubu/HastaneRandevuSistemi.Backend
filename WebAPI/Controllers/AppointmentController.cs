@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
         [HttpPost("List")]
         public async Task<IActionResult> GetList([FromBody] GetListAppointmentQuery command)
         {
-            GetListAppointmentResponse response = await _mediator.Send(command);
+            List<GetListAppointmentResponse> response = await _mediator.Send(command);
             return Ok(response);
         }
 
