@@ -2,6 +2,7 @@
 using Application.Features.Appointments.Queries.GetListActiveAppointment;
 using Application.Features.Appointments.Queries.GetListAppointment;
 using Application.Features.Appointments.Queries.GetListAvailableAppointment;
+using Application.Features.Appointments.Queries.GetListPastAppointmentByDoctor;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -36,6 +37,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetListActive([FromBody] GetListActiveAppointmentByDoctorQuery query)
         {
             List<GetListActiveAppointmentByDoctorResponse> response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpPost("GetListPastAppointmentByDoctor")]
+        public async Task<IActionResult> GetListPast([FromBody] GetListPastAppointmentByDoctorQuery query)
+        {
+            List<GetListPastAppointmentByDoctorResponse> response = await _mediator.Send(query);
             return Ok(response);
         }
     }

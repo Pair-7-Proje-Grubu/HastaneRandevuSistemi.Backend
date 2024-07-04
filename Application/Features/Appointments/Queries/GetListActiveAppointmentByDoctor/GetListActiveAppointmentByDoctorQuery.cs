@@ -43,6 +43,7 @@ namespace Application.Features.Appointments.Queries.GetListActiveAppointment
                     LastName = a.Patient.LastName,
                     AppointmentDate = a.DateTime
                 }).ToList();
+
                 return response;
             }
         }
