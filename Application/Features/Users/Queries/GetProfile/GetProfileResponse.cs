@@ -8,7 +8,7 @@ namespace Application.Features.Users.Queries.GetProfile
 {
     public class GetProfileResponse
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FirstName {  get; set; }
+        public string LastName {  get; set; }
     }
-}   
+}
