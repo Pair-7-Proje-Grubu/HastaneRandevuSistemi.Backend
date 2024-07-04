@@ -1,5 +1,6 @@
 ﻿using Application.Features.Doctors.Commands.CreateDoctor;
 using Application.Features.Doctors.Commands.UpdateDoctor;
+using Application.Features.Doctors.Queries.GetByClinicIdDoctor;
 using Application.Features.Doctors.Queries.GetByIdDoctor;
 using Application.Features.Floors.Queries.GetById;
 using AutoMapper;
@@ -19,7 +20,11 @@ namespace Application.Features.Doctors.Profiles
             CreateMap<Doctor, CreateDoctorCommand>().ReverseMap();
             CreateMap<Doctor, UpdateDoctorCommand>().ReverseMap();
             CreateMap<Doctor, GetByIdDoctorResponse>().ReverseMap();
-
+            CreateMap<Doctor, GetByClinicIdDoctorResponse>()
+             .ForMember(dest => dest.TitleName, opt => opt.MapFrom(src => src.Title.TitleName))
+             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
+             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
+             .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.User.Gender));
         }
     }
 }
