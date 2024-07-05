@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
     {
 
         [HttpPost("GetClinic")]
-        public async Task<IActionResult> GetClinicz([FromRoute] GetClinicQuery getClinicQuery)
+        public async Task<IActionResult> GetClinic([FromRoute] GetClinicQuery getClinicQuery)
         {
             GetClinicResponse result = await _mediator.Send(getClinicQuery);
             return Ok(result);
