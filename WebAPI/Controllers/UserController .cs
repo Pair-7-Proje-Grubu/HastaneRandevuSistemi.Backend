@@ -62,9 +62,8 @@ namespace WebAPI.Controllers
         [HttpGet("GetProfile")]
         public async Task<IActionResult> GetProfile()
         {
-            //int userId = _httpContextAccessor.HttpContext.User.GetUserId();
+            int userId = _httpContextAccessor.HttpContext.User.GetUserId();
 
-            int userId = 2;
             Patient? patient = await _patientRepository.GetAsync(x => x.Id == userId);
             if (patient is null) throw new BusinessException("Bu ID'de bir hasta bulunamadı!");
             GetProfileResponse result = new GetProfileResponse()
