@@ -1,6 +1,8 @@
 ﻿using Application.Repositories;
+using Application.Services.PatientService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.Utilities.Extensions;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -31,9 +33,7 @@ namespace Application.Features.Appointments.Queries.GetListActiveAppointment
             }
             public async Task<List<GetListActiveAppointmentByDoctorResponse>> Handle(GetListActiveAppointmentByDoctorQuery request, CancellationToken cancellationToken)
             {
-                //List<Appointment> activeAppointments = new List<Appointment>();
-
-                int userId = Convert.ToInt16(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+                int userId = _httpContextAccessor.HttpContext.User.GetUserId();
 
                 List<Appointment> activeAppointments = (await _appointmentRepository.GetListAsync(a => a.DoctorId == userId, include: q => q.Include(a => a.Patient))).Where(a => a.DateTime > DateTime.Now).ToList();
                 

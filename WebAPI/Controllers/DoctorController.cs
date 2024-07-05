@@ -53,11 +53,10 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetList")]
-        public async Task<IActionResult> GetList()
+        [HttpPost("GetListDoctor")]
+        public async Task<IActionResult> GetList([FromBody] GetListDoctorQuery getListDoctorQuery)
         {
-            GetListDoctorQuery getListDoctorQuery = new GetListDoctorQuery();
-            GetListDoctorResponse result = await _mediator.Send(getListDoctorQuery);
+            List<GetListDoctorResponse> result = await _mediator.Send(getListDoctorQuery);
 
             return Ok(result);
         }

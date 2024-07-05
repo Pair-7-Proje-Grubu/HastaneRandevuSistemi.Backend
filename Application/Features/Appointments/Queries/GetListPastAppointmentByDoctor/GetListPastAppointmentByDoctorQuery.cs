@@ -42,7 +42,6 @@ namespace Application.Features.Appointments.Queries.GetListPastAppointmentByDoct
                 {
                     FirstName = a.Patient.FirstName,
                     LastName = a.Patient.LastName,
-                    BloodType = a.Patient.BloodType.ConvertToString(),
                     AppointmentDate = a.DateTime.ToString(),
                 }).ToList();
                 return response;
