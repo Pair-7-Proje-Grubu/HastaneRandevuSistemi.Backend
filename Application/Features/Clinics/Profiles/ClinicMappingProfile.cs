@@ -23,7 +23,7 @@ namespace Application.Features.Clinics.Profiles
             CreateMap<Clinic, UpdateClinicCommand>().ReverseMap();
             CreateMap<Clinic, UpdateClinicResponse>().ReverseMap();
             CreateMap<Clinic, GetListClinicDto>().ReverseMap();
-            CreateMap<Clinic, GetByIdClinicResponse>().ReverseMap();
+            CreateMap<Clinic, GetClinicResponse>().ReverseMap();
             
         
         }

@@ -17,10 +17,10 @@ namespace WebAPI.Controllers
     public class ClinicController : BaseController
     {
 
-        [HttpGet("{Id}")]
-        public async Task<IActionResult> GetById([FromRoute] GetByIdClinicQuery getByIdClinicQuery)
+        [HttpPost("GetClinic")]
+        public async Task<IActionResult> GetClinicz([FromRoute] GetClinicQuery getClinicQuery)
         {
-            GetByIdClinicResponse result = await _mediator.Send(getByIdClinicQuery);
+            GetClinicResponse result = await _mediator.Send(getClinicQuery);
             return Ok(result);
         }
 
