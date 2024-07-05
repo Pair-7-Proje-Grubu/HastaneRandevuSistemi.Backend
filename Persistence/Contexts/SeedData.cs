@@ -162,6 +162,270 @@ namespace Persistence.Contexts
 
             };
 
+            ///
+
+            Patient doctorPatient1 = new Patient()
+            {
+                Id = 4,
+                FirstName = "Ahmet",
+                LastName = "Yıldız",
+                Email = "ahmet.yildiz@hrs.com",
+                Phone = "+905301234567",
+                BirthDate = new DateTime(1975, 9, 20),
+                Gender = 'M',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+            Patient doctorPatient2 = new Patient()
+            {
+                Id = 5,
+                FirstName = "Emine",
+                LastName = "Şahin",
+                Email = "emine.sahin@hrs.com",
+                Phone = "+905412345678",
+                BirthDate = new DateTime(1980, 12, 15),
+                Gender = 'F',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+            Patient doctorPatient3 = new Patient()
+            {
+                Id = 6,
+                FirstName = "Mustafa",
+                LastName = "Aydın",
+                Email = "mustafa.aydin@hrs.com",
+                Phone = "+905523456789",
+                BirthDate = new DateTime(1972, 6, 8),
+                Gender = 'M',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+            Patient doctorPatient4 = new Patient()
+            {
+                Id = 7,
+                FirstName = "Hacer",
+                LastName = "Korkmaz",
+                Email = "hacer.korkmaz@hrs.com",
+                Phone = "+905634567890",
+                BirthDate = new DateTime(1983, 2, 28),
+                Gender = 'F',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+            Patient doctorPatient5 = new Patient()
+            {
+                Id = 8,
+                FirstName = "İbrahim",
+                LastName = "Arslan",
+                Email = "ibrahim.arslan@hrs.com",
+                Phone = "+905745678901",
+                BirthDate = new DateTime(1978, 4, 17),
+                Gender = 'M',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+            Patient doctorPatient6 = new Patient()
+            {
+                Id = 14,
+                FirstName = "Seda",
+                LastName = "Kara",
+                Email = "seda.kara@hrs.com",
+                Phone = "+905356789012",
+                BirthDate = new DateTime(1982, 3, 15),
+                Gender = 'F',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+            Patient doctorPatient7 = new Patient()
+            {
+                Id = 15,
+                FirstName = "Okan",
+                LastName = "Yılmaz",
+                Email = "okan.yilmaz@hrs.com",
+                Phone = "+905467890123",
+                BirthDate = new DateTime(1979, 7, 22),
+                Gender = 'M',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+            Patient doctorPatient8 = new Patient()
+            {
+                Id = 16,
+                FirstName = "Sevgi",
+                LastName = "Öztürk",
+                Email = "sevgi.ozturk@hrs.com",
+                Phone = "+905578901234",
+                BirthDate = new DateTime(1985, 11, 8),
+                Gender = 'F',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+
+            // 
+            Doctor doctor1 = new Doctor()
+            {
+                Id = 4,
+                ClinicId = 1,
+                TitleId = 2,
+                OfficeLocationId = 2,
+                CreatedDate = DateTime.Now,
+            };
+
+            Doctor doctor2 = new Doctor()
+            {
+                Id = 5,
+                ClinicId = 3,
+                TitleId = 3,
+                OfficeLocationId = 3,
+                CreatedDate = DateTime.Now,
+            };
+
+            Doctor doctor3 = new Doctor()
+            {
+                Id = 6,
+                ClinicId = 5,
+                TitleId = 4,
+                OfficeLocationId = 4,
+                CreatedDate = DateTime.Now,
+            };
+
+            Doctor doctor4 = new Doctor()
+            {
+                Id = 7,
+                ClinicId = 7,
+                TitleId = 5,
+                OfficeLocationId = 5,
+                CreatedDate = DateTime.Now,
+            };
+
+            Doctor doctor5 = new Doctor()
+            {
+                Id = 8,
+                ClinicId = 9,
+                TitleId = 6,
+                OfficeLocationId = 6,
+                CreatedDate = DateTime.Now,
+            };
+
+            Doctor doctor6 = new Doctor()
+            {
+                Id = 14,
+                ClinicId = 3, 
+                TitleId = 2,  
+                OfficeLocationId = 7,
+                CreatedDate = DateTime.Now,
+            };
+
+            Doctor doctor7 = new Doctor()
+            {
+                Id = 15,
+                ClinicId = 3, 
+                TitleId = 3,  
+                OfficeLocationId = 8,
+                CreatedDate = DateTime.Now,
+            };
+
+            Doctor doctor8 = new Doctor()
+            {
+                Id = 16,
+                ClinicId = 3, 
+                TitleId = 4,  
+                OfficeLocationId = 9,
+                CreatedDate = DateTime.Now,
+            };
+
+            // 
+            Patient patient4 = new Patient()
+            {
+                Id = 9,
+                FirstName = "Ayşe",
+                LastName = "Yılmaz",
+                Email = "ayse.yilmaz@email.com",
+                Phone = "+905856789012",
+                BirthDate = new DateTime(1985, 5, 15),
+                Gender = 'F',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+            Patient patient5 = new Patient()
+            {
+                Id = 10,
+                FirstName = "Mehmet",
+                LastName = "Kaya",
+                Email = "mehmet.kaya@email.com",
+                Phone = "+905967890123",
+                BirthDate = new DateTime(1990, 8, 22),
+                Gender = 'M',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+            Patient patient6 = new Patient()
+            {
+                Id = 11,
+                FirstName = "Fatma",
+                LastName = "Demir",
+                Email = "fatma.demir@email.com",
+                Phone = "+905078901234",
+                BirthDate = new DateTime(1978, 11, 30),
+                Gender = 'F',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+            Patient patient7 = new Patient()
+            {
+                Id = 12,
+                FirstName = "Ali",
+                LastName = "Öztürk",
+                Email = "ali.ozturk@email.com",
+                Phone = "+905189012345",
+                BirthDate = new DateTime(1995, 3, 10),
+                Gender = 'M',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+            Patient patient8 = new Patient()
+            {
+                Id = 13,
+                FirstName = "Zeynep",
+                LastName = "Çelik",
+                Email = "zeynep.celik@email.com",
+                Phone = "+905290123456",
+                BirthDate = new DateTime(1988, 7, 5),
+                Gender = 'F',
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                CreatedDate = DateTime.Now,
+            };
+
+
+
+
+
+
             OperationClaim[] operationClaims = [new(){ Id = 1, Name = "Patient" },
                                                 new(){ Id = 2, Name = "Doctor" },
                                                 new(){ Id = 3, Name = "Support" },
@@ -174,6 +438,31 @@ namespace Persistence.Contexts
                new UserOperationClaim(){Id=3, UserId = 2, OperationClaimId = 1},
                new UserOperationClaim(){Id=4, UserId = 2, OperationClaimId = 2},
                new UserOperationClaim(){Id=5, UserId = 3, OperationClaimId = 1},
+               ///
+               new UserOperationClaim(){Id=6, UserId = 4, OperationClaimId = 1},
+               new UserOperationClaim(){Id=7, UserId = 4, OperationClaimId = 2},
+               new UserOperationClaim(){Id=8, UserId = 5, OperationClaimId = 1},
+               new UserOperationClaim(){Id=9, UserId = 5, OperationClaimId = 2},
+               new UserOperationClaim(){Id=10, UserId = 6, OperationClaimId = 1},
+               new UserOperationClaim(){Id=11, UserId = 6, OperationClaimId = 2},
+               new UserOperationClaim(){Id=12, UserId = 7, OperationClaimId = 1},
+               new UserOperationClaim(){Id=13, UserId = 7, OperationClaimId = 2},
+               new UserOperationClaim(){Id=14, UserId = 8, OperationClaimId = 1},
+               new UserOperationClaim(){Id=15, UserId = 8, OperationClaimId = 2},
+               //
+               new UserOperationClaim(){Id=16, UserId = 9, OperationClaimId = 1},
+               new UserOperationClaim(){Id=17, UserId = 10, OperationClaimId = 1},
+               new UserOperationClaim(){Id=18, UserId = 11, OperationClaimId = 1},
+               new UserOperationClaim(){Id=19, UserId = 12, OperationClaimId = 1},
+               new UserOperationClaim(){Id=20, UserId = 13, OperationClaimId = 1},
+               new UserOperationClaim(){Id=21, UserId = 14, OperationClaimId = 1}, 
+               new UserOperationClaim(){Id=22, UserId = 14, OperationClaimId = 2}, 
+               new UserOperationClaim(){Id=23, UserId = 15, OperationClaimId = 1}, 
+               new UserOperationClaim(){Id=24, UserId = 15, OperationClaimId = 2},
+               new UserOperationClaim(){Id=25, UserId = 16, OperationClaimId = 1}, 
+               new UserOperationClaim(){Id=26, UserId = 16, OperationClaimId = 2} 
+
+
             ];
 
 
@@ -190,7 +479,11 @@ namespace Persistence.Contexts
             modelBuilder.Entity<Patient>().HasData(doctor);
             modelBuilder.Entity<Doctor>().HasData(doctorData);
             modelBuilder.Entity<Patient>().HasData(patient);
+            modelBuilder.Entity<Patient>().HasData(doctorPatient1, doctorPatient2, doctorPatient3, doctorPatient4, doctorPatient5, doctorPatient6, doctorPatient7, doctorPatient8);
+            modelBuilder.Entity<Doctor>().HasData(doctor1, doctor2, doctor3, doctor4, doctor5, doctor6, doctor7, doctor8);
+            modelBuilder.Entity<Patient>().HasData(patient4, patient5, patient6, patient7, patient8);
             modelBuilder.Entity<UserOperationClaim>().HasData(userOperationClaims);
+
 
         }
     }
