@@ -15,7 +15,7 @@ namespace Application.Features.Doctors.Queries.GetListDoctor
 {
     public class GetListDoctorQuery : IRequest<List<GetListDoctorResponse>>, ISecuredRequest
     {
-        public string[] RequiredRoles => ["Doctor", "Admin"];
+        public string[] RequiredRoles => ["Patient","Doctor", "Admin"];
 
         public class GetListDoctorQueryHandler : IRequestHandler<GetListDoctorQuery, List<GetListDoctorResponse>>
         {
