@@ -70,6 +70,8 @@ namespace WebAPI.Controllers
             {
                 FirstName = patient.FirstName,
                 LastName = patient.LastName,
+                BirthDate = patient.BirthDate,
+                Gender = patient.Gender,
             };
             return Ok(result);
         }
