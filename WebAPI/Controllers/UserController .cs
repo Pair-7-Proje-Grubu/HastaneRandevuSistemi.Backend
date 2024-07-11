@@ -1,14 +1,8 @@
-﻿using Application.Features.Auth.Login;
-using Application.Features.Auth.Register;
-using Application.Features.Users.Commands.Update;
+﻿using Application.Features.Users.Commands.Update.ChangePassword;
+using Application.Features.Users.Commands.Update.ChangePhoneNumber;
+using Application.Features.Users.Queries.GetPhoneNumber;
 using Application.Features.Users.Queries.GetProfile;
-using Application.Repositories;
-using Core.CrossCuttingConcerns.Exceptions.Types;
-using Core.Utilities.Extensions;
-using Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebAPI.Controllers
 {
@@ -16,63 +10,31 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UserController : BaseController
     {
-        private readonly IPatientRepository _patientRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public UserController(IPatientRepository patientRepository, IHttpContextAccessor httpContextAccessor)
-        {
-            _patientRepository = patientRepository;
-            _httpContextAccessor = httpContextAccessor;
-        }
-
         [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
         {
             var result = await _mediator.Send(command);
-            if (result.IsSuccess)
-            {
-                return Ok(result.Message);
-            }
-            return BadRequest(result.Message);
+            return Ok(result);
         }
 
         [HttpPost("ChangePhoneNumber")]
         public async Task<IActionResult> ChangePhoneNumber([FromBody] ChangePhoneNumberCommand command)
         {
             var result = await _mediator.Send(command);
-            if (result.IsSuccess)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result.Message);
+            return Ok(result);
         }
 
         [HttpGet("GetPhoneNumber/{email}")]
-        public async Task<IActionResult> GetPhoneNumber(string email)
+        public async Task<IActionResult> GetPhoneNumber([FromRoute] GetPhoneNumberQuery getPhoneNumberQuery)
         {
-            var patient = await _patientRepository.GetAsync(p => p.Email == email);
-            if (patient == null)
-            {
-                return NotFound("Hasta bulunamadı");
-            }
-
-            return Ok(patient.Phone);
+            var result = await _mediator.Send(getPhoneNumberQuery);
+            return Ok(result);
         }
 
         [HttpGet("GetProfile")]
-        public async Task<IActionResult> GetProfile()
+        public async Task<IActionResult> GetProfile([FromQuery] GetProfileQuery query)
         {
-            int userId = _httpContextAccessor.HttpContext.User.GetUserId();
-
-            Patient? patient = await _patientRepository.GetAsync(x => x.Id == userId);
-            if (patient is null) throw new BusinessException("Bu ID'de bir hasta bulunamadı!");
-            GetProfileResponse result = new GetProfileResponse()
-            {
-                FirstName = patient.FirstName,
-                LastName = patient.LastName,
-                BirthDate = patient.BirthDate,
-                Gender = patient.Gender,
-            };
+            var result = await _mediator.Send(query);
             return Ok(result);
         }
     }

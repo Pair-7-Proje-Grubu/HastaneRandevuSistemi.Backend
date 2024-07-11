@@ -4,7 +4,7 @@ using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Features.Users.Commands.Update
+namespace Application.Features.Users.Commands.Update.ChangePhoneNumber
 {
     public class ChangePhoneNumberCommand : IRequest<ChangePhoneNumberResponse>
     {

@@ -1,4 +1,4 @@
-﻿namespace Application.Features.Users.Commands.Update
+﻿namespace Application.Features.Users.Commands.Update.ChangePhoneNumber
 {
     public class ChangePhoneNumberResponse
     {
