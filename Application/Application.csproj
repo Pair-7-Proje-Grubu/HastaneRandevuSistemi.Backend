@@ -26,7 +26,6 @@
     <Folder Include="Features\FAQs\Queries\" />
     <Folder Include="Features\Feedbacks\Commands\Delete\" />
     <Folder Include="Features\Feedbacks\Commands\Update\" />
-    <Folder Include="Services\AppointmentService\" />
   </ItemGroup>
 
 </Project>
