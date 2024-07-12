@@ -1,4 +1,7 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Appointments.Rules;
+using Application.Repositories;
+using Application.Services.UserService;
+using Core.Application.Rules;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +24,7 @@ namespace Persistence
             configurationManager.SetBasePath(Path.Combine(Directory.GetCurrentDirectory()));
             configurationManager.AddJsonFile("appsettings.json");
             services.AddDbContext<HRSDbContext>(options => options.UseSqlServer(configurationManager.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<IAllergyRepository, AllergyRepository>();
@@ -39,7 +43,6 @@ namespace Persistence
             services.AddScoped<IWorkingTimeRepository, WorkingTimeRepository>();
             services.AddScoped<IFAQRepository, FAQRepository>();
             services.AddScoped<IFeedbackRepository, FeedbackRepository>();
-
 
             return services;
         }

@@ -1,4 +1,5 @@
 ﻿using Application.Features.Appointments.Rules;
+using Application.Services.UserService;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Validation;
 using Core.Application.Rules;
@@ -29,6 +30,10 @@ namespace Application
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+
+            services.AddScoped<IUserService, UserManager>();
+
 
             return services;
         }

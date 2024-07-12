@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories
 {
-    public interface IWorkingTimeRepository : IAsyncRepository<WorkingTime>, IRepository<WorkingTime>
+    public interface IUserRepository : IAsyncRepository<User>, IRepository<User>
     {
-        public Task<WorkingTime?> GetMostRecentAsync(bool asNoTracking = false);
     }
+    
 }
