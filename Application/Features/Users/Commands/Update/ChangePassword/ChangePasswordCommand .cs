@@ -1,10 +1,11 @@
 ﻿using Application.Repositories;
+using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Utilities;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Features.Users.Commands.Update
+namespace Application.Features.Users.Commands.Update.ChangePassword
 {
     public class ChangePasswordCommand : IRequest<ChangePasswordResponse>
     {
@@ -15,10 +16,12 @@ namespace Application.Features.Users.Commands.Update
         public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ChangePasswordResponse>
         {
             private readonly IPatientRepository _patientRepository;
+            private readonly IMapper _mapper;
 
-            public ChangePasswordCommandHandler(IPatientRepository patientRepository)
+            public ChangePasswordCommandHandler(IPatientRepository patientRepository, IMapper mapper)
             {
                 _patientRepository = patientRepository;
+                _mapper = mapper;
             }
 
             public async Task<ChangePasswordResponse> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
@@ -35,7 +38,6 @@ namespace Application.Features.Users.Commands.Update
                     throw new BusinessException("Mevcut şifre yanlış.");
                 }
 
-                // Yeni şifre eski şifre ile aynı mı kontrol et
                 bool isNewPasswordSameAsCurrent = HashingHelper.VerifyPasswordHash(request.NewPassword, patient.PasswordSalt, patient.PasswordHash);
                 if (isNewPasswordSameAsCurrent)
                 {
@@ -44,13 +46,16 @@ namespace Application.Features.Users.Commands.Update
 
                 byte[] passwordSalt, passwordHash;
                 HashingHelper.CreatePasswordHash(request.NewPassword, out passwordSalt, out passwordHash);
-
                 patient.PasswordSalt = passwordSalt;
                 patient.PasswordHash = passwordHash;
 
                 await _patientRepository.UpdateAsync(patient);
 
-                return new ChangePasswordResponse { IsSuccess = true, Message = "Parola başarıyla güncellendi." };
+                ChangePasswordResponse response = _mapper.Map<ChangePasswordResponse>(patient);
+                response.IsSuccess = true;
+                response.Message = "Parola başarıyla güncellendi.";
+
+                return response;
             }
         }
     }

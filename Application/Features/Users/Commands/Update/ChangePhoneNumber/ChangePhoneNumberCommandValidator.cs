@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.Users.Commands.Update
+namespace Application.Features.Users.Commands.Update.ChangePhoneNumber
 {
     public class ChangePhoneNumberCommandValidator : AbstractValidator<ChangePhoneNumberCommand>
     {
