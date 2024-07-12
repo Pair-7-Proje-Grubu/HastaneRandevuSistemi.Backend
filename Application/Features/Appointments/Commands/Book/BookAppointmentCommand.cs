@@ -1,5 +1,10 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Appointments.Rules;
+using Application.Features.Doctors.Rules;
+using Application.Features.Users.Rules;
+using Application.Features.WorkingTimes.Rules;
+using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Utilities.Extensions;
 using Domain.Entities;
 using MediatR;
@@ -16,22 +21,33 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Appointments.Commands.Book
 {
-    public class BookAppointmentCommand : IRequest<BookAppointmentResponse>
+    public class BookAppointmentCommand : IRequest<BookAppointmentResponse>/*, ISecuredRequest*/
     {
         public int DoctorId { get; set; }
         public DateTime DateTime { get; set; }
+
+        //public string[] RequiredRoles => ["Patient"];
 
         public class BookAppointmentCommandHandler : IRequestHandler<BookAppointmentCommand, BookAppointmentResponse>
         {
             IMapper _mapper;
             IAppointmentRepository _appointmentRepository;
             IHttpContextAccessor _httpContextAccessor;
-
-            public BookAppointmentCommandHandler(IMapper mapper, IAppointmentRepository appointmentRepository, IHttpContextAccessor httpContextAccessor)
+            IDoctorRepository _doctorRepository;
+            AppointmentBusinessRules _appointmentBusinessRules;
+            DoctorBusinessRules _doctorBusinessRules;
+            WorkingTimeBusinessRules _workingTimeBusinessRules;
+            UserBusinessRules _userBusinessRules;
+            public BookAppointmentCommandHandler(IMapper mapper, IAppointmentRepository appointmentRepository, IHttpContextAccessor httpContextAccessor, AppointmentBusinessRules appointmentBusinessRules, IDoctorRepository doctorRepository, DoctorBusinessRules doctorBusinessRules, WorkingTimeBusinessRules workingTimeBusinessRules, UserBusinessRules userBusinessRules)
             {
                 _mapper = mapper;
                 _appointmentRepository = appointmentRepository;
                 _httpContextAccessor = httpContextAccessor;
+                _doctorRepository = doctorRepository;
+                _appointmentBusinessRules = appointmentBusinessRules;
+                _doctorBusinessRules = doctorBusinessRules;
+                _workingTimeBusinessRules = workingTimeBusinessRules;
+                _userBusinessRules = userBusinessRules;
             }
 
             public async Task AppointmentInformationEmailAsync(string email, Appointment appointment)
@@ -52,17 +68,24 @@ namespace Application.Features.Appointments.Commands.Book
             public async Task<BookAppointmentResponse> Handle(BookAppointmentCommand request, CancellationToken cancellationToken)
             {
                 int userId = _httpContextAccessor.HttpContext.User.GetUserId();
-
                 string userEmail = _httpContextAccessor.HttpContext.User.GetUserEmail();
+
+                await _userBusinessRules.UserIdShouldExistWhenSelected(userId);
+                await _userBusinessRules.UserEmailShouldExistWhenSelected(userEmail);
+                await _workingTimeBusinessRules.MostRecentWorkingTimeShouldExistWhenSelected();
+                await _doctorBusinessRules.DoctorIdShouldExistWhenSelected(request.DoctorId);
+                await _appointmentBusinessRules.AppointmentCanNotDuplicatedWhenBooked(userId, request.DoctorId,request.DateTime);
+                await _appointmentBusinessRules.AppointmentTimeShouldBeValidWhenBooked(request.DoctorId, request.DateTime);
+
+
 
                 Appointment appointment = _mapper.Map<Appointment>(request);
                 appointment.PatientId = userId;
-
                 appointment.isCancelStatus = CancelStatus.NoCancel;
+
                 await _appointmentRepository.AddAsync(appointment);
 
-                //Appointment doctor = await _appointmentRepository.GetAsync(a => a.DoctorId == request.DoctorId, include: d => d.Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(u => u.User));
-
+               
                 appointment = await _appointmentRepository.GetAsync(a => a.Id == appointment.Id,
                     include: source => source
                     .Include(a => a.Doctor)
@@ -82,6 +105,7 @@ namespace Application.Features.Appointments.Commands.Book
                         .ThenInclude(u => u.Room)
                     .Include(a => a.Patient)
                     );
+
 
                 await AppointmentInformationEmailAsync(userEmail, appointment);
 

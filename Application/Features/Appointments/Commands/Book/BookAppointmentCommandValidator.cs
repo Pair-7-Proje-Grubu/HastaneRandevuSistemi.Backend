@@ -12,8 +12,7 @@ namespace Application.Features.Appointments.Commands.Book
         public BookAppointmentCommandValidator()
         {
             RuleFor(a => a.DoctorId).NotEmpty();
-            RuleFor(a => a.DateTime).NotEmpty();
-
+            RuleFor(a => a.DateTime).NotEmpty().GreaterThan(DateTime.Now).LessThan(DateTime.Now.AddDays(15));
         }
     }
 }
