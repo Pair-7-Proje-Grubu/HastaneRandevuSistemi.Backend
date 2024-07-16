@@ -4,6 +4,7 @@ using Application.Features.Appointments.Queries.GetListAppointment;
 using Application.Features.Appointments.Queries.GetListAvailableAppointment;
 using Application.Features.Appointments.Queries.GetListPastAppointmentByDoctor;
 using Application.Features.Appointments.Queries.GetListPatientByDoctor;
+using Application.Services.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -41,18 +42,16 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("GetListPastAppointmentByDoctor")]
-        public async Task<IActionResult> GetListPast([FromBody] GetListPastAppointmentByDoctorQuery query)
+        [HttpGet("GetListPastAppointmentByDoctor")]
+        public async Task<IActionResult> GetListPast([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            List<GetListPastAppointmentByDoctorResponse> response = await _mediator.Send(query);
-            return Ok(response);
+            return await PagedQuery<GetListPastAppointmentByDoctorQuery, GetListPastAppointmentByDoctorResponse>(page, pageSize);
         }
 
-        [HttpPost("GetListPatientByDoctor")]
-        public async Task<IActionResult> GetListPatient([FromBody] GetListPatientByDoctorQuery query)
+        [HttpGet("GetListPatientByDoctor")]
+        public async Task<IActionResult> GetListPatient([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            List<GetListPatientByDoctorResponse> response = await _mediator.Send(query);
-            return Ok(response);
+            return await PagedQuery<GetListPatientByDoctorQuery, GetListPatientByDoctorResponse>(page, pageSize);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Persistence.Repositories
         public AppointmentRepository(HRSDbContext context) : base(context)
         {
         }
+
     }
 
 }

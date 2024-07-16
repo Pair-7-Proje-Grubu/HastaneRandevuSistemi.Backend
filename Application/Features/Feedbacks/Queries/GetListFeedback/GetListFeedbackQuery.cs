@@ -1,5 +1,6 @@
 ﻿using Application.Features.Clinics.Dtos;
 using Application.Repositories;
+using Application.Services.Common;
 using AutoMapper;
 using Domain.Entities;
 using EllipticCurve;
@@ -12,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Feedbacks.Queries.GetListFeedback
 {
-    public class GetListFeedbackQuery : IRequest<List<GetListFeedbackResponse>>
+    public class GetListFeedbackQuery : PaginationParams, IRequest<PagedResponse<List<GetListFeedbackResponse>>>
     {
-        public class GetListFeedbackQueryHandler : IRequestHandler<GetListFeedbackQuery, List<GetListFeedbackResponse>>
+        public class GetListFeedbackQueryHandler : IRequestHandler<GetListFeedbackQuery, PagedResponse<List<GetListFeedbackResponse>>>
         {
             private readonly IFeedbackRepository _feedbackRepository;
             private readonly IMapper _mapper;
@@ -25,12 +26,12 @@ namespace Application.Features.Feedbacks.Queries.GetListFeedback
                 _mapper = mapper;
             }
 
-            public async Task<List<GetListFeedbackResponse>> Handle(GetListFeedbackQuery request, CancellationToken cancellationToken)
+            public async Task<PagedResponse<List<GetListFeedbackResponse>>> Handle(GetListFeedbackQuery request, CancellationToken cancellationToken)
             {
                 List<Feedback> feedback = await _feedbackRepository.GetListAsync();
                 List<GetListFeedbackResponse> response = _mapper.Map<List<GetListFeedbackResponse>>(feedback);
 
-                return response;
+                return response.ToPagedResponse(request);
             }
         }
     }
