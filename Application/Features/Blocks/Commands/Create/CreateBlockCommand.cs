@@ -1,6 +1,7 @@
 ﻿using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -26,6 +27,12 @@ namespace Application.Features.Blocks.Commands.Create
             }
             public async Task<CreateBlockResponse> Handle(CreateBlockCommand request, CancellationToken cancellationToken)
             {
+                Block? blockWithSameNo = await _blockRepository.GetAsync(p => p.No == request.No);
+                if (blockWithSameNo is not null)
+                {
+                    throw new BusinessException("Blok No daha önceden sisteme kaydedilmiş");
+                }
+
                 Block block = _mapper.Map<Block>(request);
                 await _blockRepository.AddAsync(block);
 

@@ -3,6 +3,7 @@ using Application.Features.Floors.Commands.Update;
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -35,10 +36,15 @@ namespace Application.Features.Blocks.Commands.Update
 
             public async Task<UpdateBlockResponse> Handle(UpdateBlockCommand request, CancellationToken cancellationToken)
             {
-               /* Block? block = await _blockRepository.GetAsync(p => p.Id == request.Id);
-
+                Block? block = await _blockRepository.GetAsync(p => p.Id == request.Id);
                 if (block is null)
-                    throw new Exception("Böyle bir veri bulunamadı.");*/
+                    throw new Exception("Böyle bir veri bulunamadı.");
+
+                Block? blockWithSameNo = await _blockRepository.GetAsync(p => p.No == request.No);
+                if (blockWithSameNo is not null)
+                {
+                    throw new BusinessException("Blok No daha önceden sisteme kaydedilmiş");
+                }
 
                 Block mappedBlock = _mapper.Map<Block>(request);
 

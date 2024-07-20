@@ -5,6 +5,7 @@ using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +30,23 @@ namespace Application.Features.OfficeLocations.Queries.GetList
 
             public async Task<List<GetListOfficeLocationResponse>> Handle(GetListOfficeLocationQuery request, CancellationToken cancellationToken)
             {
-                List<OfficeLocation> officeLocations = await _officeLocationRepository.GetListAsync();
+                List<OfficeLocation> officeLocations = await _officeLocationRepository
+                     .GetListAsync(include: query => query
+                         .Include(ol => ol.Block)
+                         .Include(ol => ol.Floor)
+                         .Include(ol => ol.Room));
 
-                List<GetListOfficeLocationResponse> response = _mapper.Map<List<GetListOfficeLocationResponse>>(officeLocations);
+                // Map işlemi
+                List<GetListOfficeLocationResponse> response = officeLocations.Select(ol => new GetListOfficeLocationResponse
+                {
+                    Id = ol.Id,
+                    BlockNo = ol.Block.No,
+                    FloorNo = ol.Floor.No,
+                    RoomNo = ol.Room.No,
+                    BlockId = ol.BlockId,
+                    FloorId = ol.FloorId,
+                    RoomId = ol.RoomId
+                }).ToList();
 
                 return response;
             }

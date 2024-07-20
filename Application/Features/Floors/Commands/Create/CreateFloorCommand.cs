@@ -1,6 +1,7 @@
 ﻿using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -27,6 +28,11 @@ namespace Application.Features.Floors.Commands.Create
             }
             public async Task<CreateFloorResponse> Handle(CreateFloorCommand request, CancellationToken cancellationToken)
             {
+                Floor? floorWithSameNo = await _floorRepository.GetAsync(p => p.No == request.No);
+                if (floorWithSameNo is not null)
+                {
+                    throw new BusinessException("Kat No daha önceden sisteme kaydedilmiş");
+                }
                 Floor floor = _mapper.Map<Floor>(request);
                 await _floorRepository.AddAsync(floor);
 
