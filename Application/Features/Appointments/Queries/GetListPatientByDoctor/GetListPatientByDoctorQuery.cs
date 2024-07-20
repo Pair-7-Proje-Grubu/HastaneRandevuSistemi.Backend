@@ -1,4 +1,5 @@
 ﻿using Application.Repositories;
+using Application.Services.Common;
 using Application.Services.PatientService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
@@ -7,6 +8,7 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using SendGrid;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +17,11 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Appointments.Queries.GetListPatientByDoctor
 {
-    public class GetListPatientByDoctorQuery : IRequest<List<GetListPatientByDoctorResponse>>, ISecuredRequest
+    public class GetListPatientByDoctorQuery : PaginationParams, IRequest<PagedResponse<List<GetListPatientByDoctorResponse>>>, ISecuredRequest
     {
         public string[] RequiredRoles => ["Doctor"];
 
-        public class GetListPatientByDoctorQueryHandler : IRequestHandler<GetListPatientByDoctorQuery, List<GetListPatientByDoctorResponse>>
+        public class GetListPatientByDoctorQueryHandler : IRequestHandler<GetListPatientByDoctorQuery, PagedResponse<List<GetListPatientByDoctorResponse>>>
         {
             private readonly IAppointmentRepository _appointmentRepository;
             private readonly IMapper _mapper;
@@ -32,25 +34,25 @@ namespace Application.Features.Appointments.Queries.GetListPatientByDoctor
                 _httpContextAccessor = contextAccessor;
             }
 
-            public async Task<List<GetListPatientByDoctorResponse>> Handle(GetListPatientByDoctorQuery request, CancellationToken cancellationToken)
+            public async Task<PagedResponse<List<GetListPatientByDoctorResponse>>> Handle(GetListPatientByDoctorQuery request, CancellationToken cancellationToken)
             {
                 int userId = _httpContextAccessor.HttpContext.User.GetUserId();
 
                 List<Appointment> appointments = await _appointmentRepository.GetListAsync(a => a.DoctorId == userId, include: a => a.Include(p => p.Patient));
 
-                List<GetListPatientByDoctorResponse> response = appointments
+                IEnumerable<GetListPatientByDoctorResponse> query = appointments
                     .Select(a => a.Patient)
-                    .GroupBy(p => p.Id) 
-                    .Select(g => g.First()) 
+                    .GroupBy(p => p.Id)
+                    .Select(g => g.First())
                     .Select(p => new GetListPatientByDoctorResponse
                     {
                         FirstName = p.FirstName,
                         LastName = p.LastName,
                         BloodType = p.BloodType.ConvertToString(),
                         EmergencyContact = p.EmergencyContact
-                    })
-                    .ToList();
-                return response;
+                    });
+
+                return query.ToPagedResponse(request);
             }
         }
     }

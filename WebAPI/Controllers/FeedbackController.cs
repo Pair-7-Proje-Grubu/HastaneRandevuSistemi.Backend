@@ -19,11 +19,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("GetList")]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            GetListFeedbackQuery getListFeedbackQuery = new GetListFeedbackQuery();
-            List<GetListFeedbackResponse> result = await _mediator.Send(getListFeedbackQuery);
-            return Ok(result);
+            return await PagedQuery<GetListFeedbackQuery, GetListFeedbackResponse>(page, pageSize);
         }
 
         [HttpPost("Add")]

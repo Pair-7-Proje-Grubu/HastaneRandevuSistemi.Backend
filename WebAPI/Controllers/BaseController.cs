@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Application.Services.Common;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,14 @@ namespace WebAPI.Controllers
         protected string getIpAddress()
         {
             return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        }
+
+        protected async Task<IActionResult> PagedQuery<TQuery, TResponse>(int page = 1, int pageSize = 10)
+            where TQuery : PaginationParams, IRequest<PagedResponse<List<TResponse>>>, new()
+        {
+            var query = new TQuery { PageNumber = page, PageSize = pageSize };
+            var response = await _mediator.Send(query);
+            return Ok(response);
         }
     }
 }

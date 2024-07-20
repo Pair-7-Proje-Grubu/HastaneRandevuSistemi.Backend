@@ -12,14 +12,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Services.Common;
 
 namespace Application.Features.Appointments.Queries.GetListPastAppointmentByDoctor
 {
-    public class GetListPastAppointmentByDoctorQuery : IRequest<List<GetListPastAppointmentByDoctorResponse>>, ISecuredRequest
+    public class GetListPastAppointmentByDoctorQuery : PaginationParams, IRequest<PagedResponse<List<GetListPastAppointmentByDoctorResponse>>>, ISecuredRequest
     {
         public string[] RequiredRoles => ["Doctor"];
 
-        public class GetListPastAppointmentByDoctorQueryHandler : IRequestHandler<GetListPastAppointmentByDoctorQuery, List<GetListPastAppointmentByDoctorResponse>>
+        public class GetListPastAppointmentByDoctorQueryHandler : IRequestHandler<GetListPastAppointmentByDoctorQuery, PagedResponse<List<GetListPastAppointmentByDoctorResponse>>>
         {
             private readonly IAppointmentRepository _appointmentsRepository;
             private readonly IMapper _mapper;
@@ -32,19 +33,20 @@ namespace Application.Features.Appointments.Queries.GetListPastAppointmentByDoct
                 _httpContextAccessor = httpContextAccessor;
             }
 
-            public async Task<List<GetListPastAppointmentByDoctorResponse>> Handle(GetListPastAppointmentByDoctorQuery request, CancellationToken cancellationToken)
+            public async Task<PagedResponse<List<GetListPastAppointmentByDoctorResponse>>> Handle(GetListPastAppointmentByDoctorQuery request, CancellationToken cancellationToken)
             {
                 int userId = _httpContextAccessor.HttpContext.User.GetUserId();
 
                 List<Appointment> pastAppointments = (await _appointmentsRepository.GetListAsync(a => a.DoctorId == userId, include: p => p.Include(a => a.Patient))).Where(a => a.DateTime < DateTime.Now).ToList();
 
-                List<GetListPastAppointmentByDoctorResponse> response = pastAppointments.Select(a => new GetListPastAppointmentByDoctorResponse
+                IEnumerable<GetListPastAppointmentByDoctorResponse> query = pastAppointments.Select(a => new GetListPastAppointmentByDoctorResponse
                 {
                     FirstName = a.Patient.FirstName,
                     LastName = a.Patient.LastName,
                     AppointmentDate = a.DateTime.ToString(),
-                }).ToList();
-                return response;
+                });
+
+                return query.ToPagedResponse(request);
             }
         }
     }
