@@ -1,4 +1,5 @@
-﻿using Application.Repositories;
+﻿using Application.Features.Clinics.Constants;
+using Application.Repositories;
 using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
@@ -12,18 +13,10 @@ namespace Application.Features.Clinics.Rules
 {
     public class ClinicBusinessRules : BaseBusinessRules
     {
-        //private readonly IClinicRepository _clinicRepository;
-
-
-        //public ClinicBusinessRules(IClinicRepository clinicRepository)
-        //{
-        //    _clinicRepository = clinicRepository;
-        //}
-
         public Task ClinicShouldExistWhenSelected(Clinic clinic)
         {
             if (clinic is null)
-                throw new BusinessException("Klinik bulunamadı!");
+                throw new BusinessException(ClinicsMessages.ClinicNotFound);
 
             return Task.CompletedTask;
         }
@@ -31,7 +24,7 @@ namespace Application.Features.Clinics.Rules
         public Task AppointmentDurationShouldBePositiveWhenSelected(int duration)
         {
             if (duration <= 0)
-                throw new BusinessException("Klinik randevu süresi pozitif olmalı!");
+                throw new BusinessException(ClinicsMessages.AppointmentTimeCannotBeZeroOrNegative);
 
             return Task.CompletedTask;
         }

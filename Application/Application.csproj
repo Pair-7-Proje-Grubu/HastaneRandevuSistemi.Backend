@@ -20,6 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Appointments\Commands\Cancel\FromPatient\" />
+    <Folder Include="Features\Appointments\Commands\Cancel\FromAdmin\" />
     <Folder Include="Features\Appointments\Commands\Delete\" />
     <Folder Include="Features\FAQs\Command\Delete\" />
     <Folder Include="Features\FAQs\Command\Update\" />

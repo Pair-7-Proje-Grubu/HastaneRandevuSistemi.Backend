@@ -1,9 +1,12 @@
-﻿using Application.Features.Appointments.Dtos;
+﻿using Application.Features.Appointments.Constants;
+using Application.Features.Appointments.Dtos;
 using Application.Features.Clinics.Rules;
 using Application.Features.Doctors.Queries.GetListDoctor;
 using Application.Features.Doctors.Rules;
 using Application.Features.WorkingTimes.Rules;
 using Application.Repositories;
+using Application.Services.DoctorService;
+using Application.Services.WorkingTimeService;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
@@ -26,19 +29,15 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
         public class GetListAvailableAppointmentQueryHandler : IRequestHandler<GetListAvailableAppointmentQuery, GetListAvailableAppointmentResponse>
         {
 
-            private readonly IDoctorRepository _doctorRepository;
-            private readonly IWorkingTimeRepository _workingTimeRepository;
-            private readonly DoctorBusinessRules _doctorBusinessRules;
-            private readonly WorkingTimeBusinessRules _workingTimeBusinessRules;
+            private readonly IDoctorService _doctorService;
+            private readonly IWorkingTimeService _workingTimeService;
             private readonly ClinicBusinessRules _clinicBusinessRules;
 
-            public GetListAvailableAppointmentQueryHandler(IDoctorRepository doctorRepository, IMapper mapper, IWorkingTimeRepository workingTimeRepository, DoctorBusinessRules doctorBusinessRules, WorkingTimeBusinessRules workingTimeBusinessRules, ClinicBusinessRules clinicBusinessRules)
+            public GetListAvailableAppointmentQueryHandler(IWorkingTimeService workingTimeService, DoctorBusinessRules doctorBusinessRules, ClinicBusinessRules clinicBusinessRules, IDoctorService doctorService)
             {
-                _doctorRepository = doctorRepository;
-                _workingTimeRepository = workingTimeRepository;
-                _doctorBusinessRules = doctorBusinessRules;
-                _workingTimeBusinessRules = workingTimeBusinessRules;
+                _workingTimeService = workingTimeService;
                 _clinicBusinessRules = clinicBusinessRules;
+                _doctorService = doctorService;
             }
 
             public async Task<GetListAvailableAppointmentResponse> Handle(GetListAvailableAppointmentQuery request, CancellationToken cancellationToken)
@@ -47,51 +46,25 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                 //RANDEVU ALINAN VAKİTLERİ İSE KULLANICININ GÖREBİLMESİ UYGUN GÖRÜLMÜŞTÜR.
                 //BUNDAN KAYNAKLI ALINAN RANDEVULAR ÇALIŞMA ZAMANINI ETKİLEMEZ YALNIZCA FRONTEND'E GÖNDERİLİR Kİ ALINDIĞI BELLİ OLSUN.
 
-                await _doctorBusinessRules.DoctorIdShouldExistWhenSelected(request.DoctorId);
-                await _workingTimeBusinessRules.MostRecentWorkingTimeShouldExistWhenSelected();
 
-
-                int dayLimit = 15;
-
-                Doctor doctor = (await _doctorRepository.GetAsync(
-                    d => d.Id == request.DoctorId,
-                    include: d =>
-                        d.Include(d => d.Clinic)
-                        .Include(d => d.Appointments.Where(a => a.DateTime > DateTime.Now && a.DateTime < DateTime.Now.AddDays(dayLimit)))
-                        .Include(d => d.DoctorNoWorkHours.Where(nwh => nwh.NoWorkHour.StartDate.Date >= DateTime.Now.Date && nwh.NoWorkHour.EndDate.Date <= DateTime.Now.AddDays(dayLimit).Date))
-                            .ThenInclude(d => d.NoWorkHour), asNoTracking: true))!;
+                WorkingTime workingTime = await _workingTimeService.GetLatestAsync();
+                Doctor doctor = await _doctorService.GetDoctorWithAppointmentsAndNoWorkHoursById(request.DoctorId, AppointmentsValues.availableAppointmentsDayLimit);
 
                 await _clinicBusinessRules.ClinicShouldExistWhenSelected(doctor.Clinic);
                 await _clinicBusinessRules.AppointmentDurationShouldBePositiveWhenSelected(doctor.Clinic.AppointmentDuration);
-
-                WorkingTime workingTime = (await _workingTimeRepository.GetMostRecentAsync(true))!;
-
 
 
                 GetListAvailableAppointmentResponse response = new GetListAvailableAppointmentResponse();
                 response.AppointmentDates = new List<AppointmentDate>();
                 response.AppointmentDuration = doctor.Clinic.AppointmentDuration;
 
-                for (int i = 0; i < dayLimit; i++)
+                for (int i = 0; i < AppointmentsValues.availableAppointmentsDayLimit; i++)
                 {
                     TimeSpan startTime, endTime;
                     startTime = workingTime.StartTime;
                     endTime = workingTime.EndTime;
 
                     DateTime currentDate = DateTime.Now.AddDays(i).Date;
-
-                    //Doktorun o günkü tüm müsait olmadığı vakitlerin küsüratını kaldırıp randevu vaktine çekiyoruz.
-                    //Örneğin doktor 15 dakikalık randevular veriyorsa ve müsait olmadığı vakit 14:42 ise 14:45'e çekiyoruz.
-                    List<NoWorkHour>? noWorkHours = doctor.DoctorNoWorkHours.Select(d=>d.NoWorkHour).Where(nwh => nwh.StartDate.Date == currentDate)
-                        .Select(nwh =>
-                        {
-                            nwh.StartDate = RoundUpToNextAppointmentTimeDateTime(nwh.StartDate,doctor.Clinic.AppointmentDuration);
-                            nwh.EndDate = RoundUpToNextAppointmentTimeDateTime(nwh.EndDate, doctor.Clinic.AppointmentDuration);
-                            return nwh;
-                        }).ToList();
-                    
-                    //İş yerinin mola vaktinide varsayılan olarak ekliyoruz.
-                    noWorkHours.Add(new NoWorkHour() { StartDate = currentDate.Add(workingTime.StartBreakTime), EndDate = currentDate.Add(workingTime.EndBreakTime) });
 
 
                     //Bugüne ait geçmiş randevuları getirmemesi için çalışma zaman aralığını düzenliyoruz.
@@ -110,8 +83,25 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
 
                     //Çalışma saat aralığını randevu saatine uygun hale getiriyoruz. (Dakikadaki küsüratları yuvarlıyoruz.)
                     startTime = RoundUpToNextAppointmentTimeTimeSpan(startTime, doctor.Clinic.AppointmentDuration);
-                    endTime = RoundUpToNextAppointmentTimeTimeSpan(endTime, doctor.Clinic.AppointmentDuration);
+                    //Mesai bitiş saatini ileri atmasını istemiyoruz.
+                    //endTime = RoundUpToNextAppointmentTimeTimeSpan(endTime, doctor.Clinic.AppointmentDuration);
+                    
+                    //Doktorun Bugün için müsait olmadığı vaktileri getir.
+                    List<NoWorkHour>? noWorkHours = doctor.DoctorNoWorkHours.Select(d => d.NoWorkHour).Where(nwh => nwh.StartDate.Date == currentDate).ToList();
 
+                    //İş yerinin mola vaktinide doktorun müsait olmadığı vakit olarak gösteriyoruz.
+                    noWorkHours.Add(new NoWorkHour() { StartDate = currentDate.Add(workingTime.StartBreakTime), EndDate = currentDate.Add(workingTime.EndBreakTime) });
+
+                    //Doktorun o günkü tüm müsait olmadığı vakitlerin küsüratını kaldırıp randevu vaktine çekiyoruz.
+                    //Örneğin doktor 15 dakikalık randevular veriyorsa ve müsait olmadığı vakit 14:42 ise 14:45'e çekiyoruz.
+                    noWorkHours = noWorkHours.Select(nwh =>
+                    {
+                        nwh.StartDate = RoundUpToNextAppointmentTimeDateTime(nwh.StartDate,doctor.Clinic.AppointmentDuration);
+                        nwh.EndDate = RoundUpToNextAppointmentTimeDateTime(nwh.EndDate, doctor.Clinic.AppointmentDuration);
+                        return nwh;
+                    }).ToList();
+                    
+            
                     List<DateTimeRange> availableRangesOfDay = CalculateAvailableDateTimeRanges(startTime, endTime, noWorkHours);
                     if (availableRangesOfDay.Any())
                     {
