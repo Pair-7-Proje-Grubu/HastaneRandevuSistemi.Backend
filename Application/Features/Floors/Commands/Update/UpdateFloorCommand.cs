@@ -2,6 +2,7 @@
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -34,10 +35,15 @@ namespace Application.Features.Floors.Commands.Update
 
             public async Task<UpdateFloorResponse> Handle(UpdateFloorCommand request, CancellationToken cancellationToken)
             {
-                //Floor? floor = await _floorRepository.GetAsync(p => p.Id == request.Id);
+                Floor? floor = await _floorRepository.GetAsync(p => p.Id == request.Id);
+                if (floor is null)
+                    throw new BusinessException("Böyle bir veri bulunamadı.");
 
-                //if (floor is null)
-                //    throw new ValidationException("Böyle bir veri bulunamadı.");
+                Floor? floorWithSameNo = await _floorRepository.GetAsync(p => p.No == request.No);
+                if (floorWithSameNo is not null)
+                {
+                    throw new BusinessException("Kat No daha önceden sisteme kaydedilmiş");
+                }
 
                 Floor mappedFloor = _mapper.Map<Floor>(request);
 

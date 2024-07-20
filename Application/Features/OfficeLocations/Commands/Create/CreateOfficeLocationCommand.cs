@@ -4,6 +4,7 @@ using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,11 @@ namespace Application.Features.OfficeLocations.Commands.Create
             }
             public async Task<CreateOfficeLocationResponse> Handle(CreateOfficeLocationCommand request, CancellationToken cancellationToken)
             {
+                bool exists = await _officeLocationRepository.ExistsAsync(request.BlockId, request.FloorId, request.RoomId);
+                if (exists)
+                {
+                    throw new BusinessException("Ofis konumu zaten mevcut.");
+                }
                 OfficeLocation officeLocation = _mapper.Map<OfficeLocation>(request);
                 await _officeLocationRepository.AddAsync(officeLocation);
 

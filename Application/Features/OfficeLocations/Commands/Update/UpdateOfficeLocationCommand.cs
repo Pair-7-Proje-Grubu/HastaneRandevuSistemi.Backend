@@ -2,6 +2,7 @@
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -35,6 +36,11 @@ namespace Application.Features.OfficeLocations.Commands.Update
 
             public async Task<UpdateOfficeLocationResponse> Handle(UpdateOfficeLocationCommand request, CancellationToken cancellationToken)
             {
+                bool exists = await _officeLocationRepository.ExistsAsync(request.BlockId, request.FloorId, request.RoomId);
+                if (exists)
+                {
+                    throw new BusinessException("Ofis konumu zaten mevcut.");
+                }
                 OfficeLocation officeLocation = _mapper.Map<OfficeLocation>(request);
 
                 await _officeLocationRepository.UpdateAsync(officeLocation);

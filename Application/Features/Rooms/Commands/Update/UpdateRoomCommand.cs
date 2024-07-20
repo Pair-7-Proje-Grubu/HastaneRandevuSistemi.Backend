@@ -40,6 +40,10 @@ namespace Application.Features.Rooms.Commands.Update
                 if (room is null)
                     throw new BusinessException("Böyle bir veri bulunamadı.");
 
+                Room? roomWithSameNo = await _roomRepository.GetAsync(p => p.No == request.No);
+                if (roomWithSameNo is not null)
+                    throw new BusinessException("Aynı No da 2. kayıt eklenemez.");
+
                 Room mappedRoom = _mapper.Map<Room>(request);
 
                 await _roomRepository.UpdateAsync(mappedRoom);
