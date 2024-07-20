@@ -44,17 +44,7 @@ namespace Application.Features.Appointments.Queries.GetListAppointment
                     .Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(u => u.Room)
                     )).OrderByDescending(a=> a.DateTime).ToList();
 
-                List<GetListAppointmentResponse> response = activeAppointments.Select(a => new GetListAppointmentResponse
-                {
-                    DateTime = a.DateTime,
-                    Doctor = a.Doctor.User.FirstName + " " + a.Doctor.User.LastName,
-                    Clinic = a.Doctor.Clinic.Name,
-                    CancelStatus = a.isCancelStatus,
-                    OfficeLocation = $"Blok: '{a.Doctor.OfficeLocation.Block.No}', Kat: '{a.Doctor.OfficeLocation.Floor.No}', Oda: '{a.Doctor.OfficeLocation.Room.No}'"
-                    
-                }).ToList();
-
-                
+                List<GetListAppointmentResponse> response = _mapper.Map<List<GetListAppointmentResponse>>(activeAppointments);
                 return response;
             }
         }

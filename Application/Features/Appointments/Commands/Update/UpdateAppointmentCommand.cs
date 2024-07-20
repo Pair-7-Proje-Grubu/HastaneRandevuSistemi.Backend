@@ -6,6 +6,6 @@ namespace Application.Features.Appointments.Commands.Update
     {
         public int PatientId { get; set; }
         public int DoctorId { get; set; }
-        public CancelStatus isCancelStatus { get; set; }
+        public AppointmentStatus Status { get; set; }
     }
 }

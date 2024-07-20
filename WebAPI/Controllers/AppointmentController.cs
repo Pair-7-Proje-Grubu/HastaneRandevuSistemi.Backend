@@ -1,4 +1,5 @@
 ﻿using Application.Features.Appointments.Commands.Book;
+using Application.Features.Appointments.Commands.CancelByPatient;
 using Application.Features.Appointments.Queries.GetListActiveAppointment;
 using Application.Features.Appointments.Queries.GetListAppointment;
 using Application.Features.Appointments.Queries.GetListAvailableAppointment;
@@ -17,6 +18,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Book([FromBody] BookAppointmentCommand command)
         {
             BookAppointmentResponse response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("CancelByPatient")]
+        public async Task<IActionResult> CancelByPatient([FromBody] CancelAppointmentByPatientCommand command)
+        {
+            CancelAppointmentByPatientResponse response = await _mediator.Send(command);
             return Ok(response);
         }
 

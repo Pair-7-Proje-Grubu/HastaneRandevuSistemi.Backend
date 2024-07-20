@@ -23,6 +23,32 @@ namespace Application.Features.Appointments.Rules
             _doctorService = doctorService;
         }
 
+        
+        public Task UserShouldBePatientWhenCancelled(Appointment appointment, int userId)
+        {
+            if (appointment.PatientId != userId)
+                throw new BusinessException(AppointmentsMessages.UserAndPatientIsNotEqual);
+
+            return Task.CompletedTask;
+        }
+
+        public Task AppointmentShouldExistWhenSelected(Appointment? appointment)
+        {
+            if (appointment is null)
+                throw new BusinessException(AppointmentsMessages.AppointmentNotFound);
+
+            return Task.CompletedTask;
+        }
+
+        public Task AppointmentShouldNoCancelWhenCancelled(Appointment appointment)
+        {
+            if (appointment.Status != Domain.Enums.AppointmentStatus.Scheduled)
+                throw new BusinessException(AppointmentsMessages.AppointmentHasAlreadyBeenCancelled);
+
+            return Task.CompletedTask;
+        }
+
+
         public async Task AppointmentCanNotDuplicatedWhenBooked(int patientId,int doctorId, DateTime dateTime)
         {
             Appointment? appointment = await _appointmentRepository.GetAsync(a => a.PatientId == patientId && a.DoctorId == doctorId  && a.DateTime == dateTime, asNoTracking: true);
@@ -54,7 +80,7 @@ namespace Application.Features.Appointments.Rules
             }
 
             // Randevu zamanının mola saatleri içerisinde olup olmadığını kontrol et
-            if (appointmentTime >= workingTime.StartBreakTime && appointmentTime <= workingTime.EndBreakTime)
+            if (appointmentTime >= workingTime.StartBreakTime && appointmentTime < workingTime.EndBreakTime)
             {
                 throw new BusinessException(AppointmentsMessages.AppointmentTimeIsDuringBreakHours);
             }
@@ -62,7 +88,7 @@ namespace Application.Features.Appointments.Rules
             // Randevu zamanının doktorun müsait olmadığı zamanlar içerisinde olup olmadığını kontrol et
             foreach (var doctorNoWorkHour in doctor.DoctorNoWorkHours)
             {
-                if (appointmentDateTime >= doctorNoWorkHour.NoWorkHour.StartDate && appointmentDateTime <= doctorNoWorkHour.NoWorkHour.EndDate)
+                if (appointmentDateTime >= doctorNoWorkHour.NoWorkHour.StartDate && appointmentDateTime < doctorNoWorkHour.NoWorkHour.EndDate)
                 {
                     throw new BusinessException(AppointmentsMessages.AppointmentTimeIsDuringNoWorkHours(doctorNoWorkHour.NoWorkHour.Title));
                 }

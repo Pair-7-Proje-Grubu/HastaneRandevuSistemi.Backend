@@ -69,7 +69,7 @@ namespace Application.Features.Appointments.Commands.Book
 
                 Appointment appointment = _mapper.Map<Appointment>(request);
                 appointment.PatientId = userId;
-                appointment.isCancelStatus = CancelStatus.NoCancel;
+                appointment.Status = AppointmentStatus.Scheduled;
 
                 await _appointmentRepository.AddAsync(appointment);
 
