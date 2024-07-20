@@ -1,23 +1,16 @@
 ﻿using Application.Features.Appointments.Rules;
 using Application.Features.Doctors.Rules;
 using Application.Features.Users.Rules;
-using Application.Features.WorkingTimes.Rules;
 using Application.Repositories;
 using AutoMapper;
-using Core.Application.Pipelines.Authorization;
 using Core.Utilities.Extensions;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Appointments.Commands.Book
 {

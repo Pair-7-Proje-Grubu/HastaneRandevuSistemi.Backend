@@ -1,9 +1,5 @@
 ﻿using Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Enums;
 
 namespace Domain.Entities
 {
@@ -18,10 +14,5 @@ namespace Domain.Entities
        
 
     }
-    public enum CancelStatus
-    {
-        NoCancel = 0,
-        FromDoctor = 1,
-        FromPatient = 2,
-    }
+ 
 }
