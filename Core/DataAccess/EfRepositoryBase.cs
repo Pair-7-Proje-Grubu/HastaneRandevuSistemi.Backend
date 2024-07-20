@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace Core.DataAccess
@@ -58,17 +59,60 @@ namespace Core.DataAccess
             await context.SaveChangesAsync();
         }
 
-        public TEntity Get(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+        public TEntity? Get(Expression<Func<TEntity, bool>>? predicate = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+            bool asNoTracking = false)
         {
-            IQueryable<TEntity> data = context.Set<TEntity>();
+            IQueryable<TEntity> queryable = context.Set<TEntity>();
+
+            if (asNoTracking)
+                queryable = queryable.AsNoTracking();
 
             if (include != null)
-                data = include(data);
+                queryable = include(queryable);
 
-            return data.FirstOrDefault(filter);
+            if (orderBy != null)
+                queryable = orderBy(queryable);
+
+            if (predicate != null)
+            {
+                return queryable.FirstOrDefault(predicate);
+            }
+            else
+            {
+                return queryable.FirstOrDefault();
+            }
         }
 
-     
+        public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>>? predicate = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+            bool asNoTracking = false)
+        {
+            IQueryable<TEntity> queryable = context.Set<TEntity>();
+
+            if (asNoTracking)
+                queryable = queryable.AsNoTracking();
+
+            if (include != null)
+                queryable = include(queryable);
+
+
+            if (orderBy != null)
+                queryable = orderBy(queryable);
+
+            if (predicate != null)
+            {
+                return await queryable.FirstOrDefaultAsync(predicate);
+            }
+            else
+            {
+                return await queryable.FirstOrDefaultAsync();
+            }
+        }
+
+
         public List<TEntity> GetList(Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
         {
             IQueryable<TEntity> data = context.Set<TEntity>();
@@ -81,18 +125,7 @@ namespace Core.DataAccess
             return data.ToList();
         }
 
-        public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, bool asNoTracking = false)
-        {
-            IQueryable<TEntity> data = context.Set<TEntity>();
-
-            if (include != null)
-                data = include(data);
-
-            if (asNoTracking) data.AsNoTracking();
-
-            return await data.FirstOrDefaultAsync(predicate);
-        }
-
+  
         public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, bool asNoTracking = false)
         {
             IQueryable<TEntity> data = context.Set<TEntity>();
@@ -117,8 +150,6 @@ namespace Core.DataAccess
         {
             context.Update(entity);
 
-            var entries = context.ChangeTracker.Entries();
-            
             await context.SaveChangesAsync();
         }
 

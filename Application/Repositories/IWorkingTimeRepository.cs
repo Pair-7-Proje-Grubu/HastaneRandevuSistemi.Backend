@@ -10,6 +10,5 @@ namespace Application.Repositories
 {
     public interface IWorkingTimeRepository : IAsyncRepository<WorkingTime>, IRepository<WorkingTime>
     {
-        public Task<WorkingTime?> GetMostRecentAsync(bool asNoTracking = false);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.Repositories;
+﻿using Application.Features.WorkingTimes.Constants;
+using Application.Repositories;
 using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
@@ -12,18 +13,17 @@ namespace Application.Features.WorkingTimes.Rules
 {
     public class WorkingTimeBusinessRules : BaseBusinessRules
     {
-        private readonly IWorkingTimeRepository _workingTimeRepository;
 
-        public WorkingTimeBusinessRules(IWorkingTimeRepository workingTimeRepository)
+        public WorkingTimeBusinessRules()
         {
-            _workingTimeRepository = workingTimeRepository;
         }
 
-        public async Task MostRecentWorkingTimeShouldExistWhenSelected()
+        public Task WorkingTimeShouldExistWhenSelected(WorkingTime? workingTime)
         {
-            WorkingTime? workingTime = await _workingTimeRepository.GetMostRecentAsync(true);
             if (workingTime is null)
-                throw new BusinessException("Mesai saati bulunamadı!");
+                throw new BusinessException(WorkingTimesMessages.WorkingTimeNotFound);
+
+            return Task.CompletedTask;
         }
     }
 }

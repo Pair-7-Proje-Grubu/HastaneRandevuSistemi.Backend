@@ -1,5 +1,7 @@
 ﻿using Application.Features.Appointments.Rules;
+using Application.Services.DoctorService;
 using Application.Services.UserService;
+using Application.Services.WorkingTimeService;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Validation;
 using Core.Application.Rules;
@@ -33,6 +35,8 @@ namespace Application
 
 
             services.AddScoped<IUserService, UserManager>();
+            services.AddScoped<IWorkingTimeService, WorkingTimeManager>();
+            services.AddScoped<IDoctorService, DoctorManager>();
 
 
             return services;

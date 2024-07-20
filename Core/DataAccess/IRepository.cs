@@ -13,9 +13,12 @@ namespace Core.DataAccess
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);
-
-        T Get(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
-        List<T> GetList(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
+        T? Get(Expression<Func<T, bool>>? predicate = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
+            bool asNoTracking = false);
+        List<T> GetList(Expression<Func<T, bool>>? filter = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
 
     }
 }

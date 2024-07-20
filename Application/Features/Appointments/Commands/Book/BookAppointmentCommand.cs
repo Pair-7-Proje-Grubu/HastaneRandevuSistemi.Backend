@@ -31,22 +31,18 @@ namespace Application.Features.Appointments.Commands.Book
         public class BookAppointmentCommandHandler : IRequestHandler<BookAppointmentCommand, BookAppointmentResponse>
         {
             IMapper _mapper;
-            IAppointmentRepository _appointmentRepository;
             IHttpContextAccessor _httpContextAccessor;
-            IDoctorRepository _doctorRepository;
+            IAppointmentRepository _appointmentRepository;
             AppointmentBusinessRules _appointmentBusinessRules;
             DoctorBusinessRules _doctorBusinessRules;
-            WorkingTimeBusinessRules _workingTimeBusinessRules;
             UserBusinessRules _userBusinessRules;
-            public BookAppointmentCommandHandler(IMapper mapper, IAppointmentRepository appointmentRepository, IHttpContextAccessor httpContextAccessor, AppointmentBusinessRules appointmentBusinessRules, IDoctorRepository doctorRepository, DoctorBusinessRules doctorBusinessRules, WorkingTimeBusinessRules workingTimeBusinessRules, UserBusinessRules userBusinessRules)
+            public BookAppointmentCommandHandler(IMapper mapper, IAppointmentRepository appointmentRepository, IHttpContextAccessor httpContextAccessor, AppointmentBusinessRules appointmentBusinessRules, DoctorBusinessRules doctorBusinessRules, UserBusinessRules userBusinessRules)
             {
                 _mapper = mapper;
                 _appointmentRepository = appointmentRepository;
                 _httpContextAccessor = httpContextAccessor;
-                _doctorRepository = doctorRepository;
                 _appointmentBusinessRules = appointmentBusinessRules;
                 _doctorBusinessRules = doctorBusinessRules;
-                _workingTimeBusinessRules = workingTimeBusinessRules;
                 _userBusinessRules = userBusinessRules;
             }
 
@@ -67,12 +63,11 @@ namespace Application.Features.Appointments.Commands.Book
 
             public async Task<BookAppointmentResponse> Handle(BookAppointmentCommand request, CancellationToken cancellationToken)
             {
-                int userId = _httpContextAccessor.HttpContext.User.GetUserId();
-                string userEmail = _httpContextAccessor.HttpContext.User.GetUserEmail();
+                int userId = _httpContextAccessor.HttpContext!.User.GetUserId();
+                string userEmail = _httpContextAccessor.HttpContext.User.GetUserEmail()!;
 
                 await _userBusinessRules.UserIdShouldExistWhenSelected(userId);
                 await _userBusinessRules.UserEmailShouldExistWhenSelected(userEmail);
-                await _workingTimeBusinessRules.MostRecentWorkingTimeShouldExistWhenSelected();
                 await _doctorBusinessRules.DoctorIdShouldExistWhenSelected(request.DoctorId);
                 await _appointmentBusinessRules.AppointmentCanNotDuplicatedWhenBooked(userId, request.DoctorId,request.DateTime);
                 await _appointmentBusinessRules.AppointmentTimeShouldBeValidWhenBooked(request.DoctorId, request.DateTime);
