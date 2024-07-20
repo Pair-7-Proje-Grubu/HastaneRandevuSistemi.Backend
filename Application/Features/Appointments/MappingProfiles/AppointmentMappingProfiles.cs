@@ -1,14 +1,12 @@
 ﻿using Application.Features.Appointments.Commands.Book;
-using Application.Features.Appointments.Commands.CancelByPatient;
+using Application.Features.Appointments.Commands.Cancel.ByPatient;
+using Application.Features.Appointments.Commands.Cancel.ByDoctor;
 using Application.Features.Appointments.Queries.GetListActiveAppointment;
 using Application.Features.Appointments.Queries.GetListAppointment;
 using AutoMapper;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Enums;
+
 
 namespace Application.Features.Appointments.MappingProfiles
 {
@@ -20,6 +18,13 @@ namespace Application.Features.Appointments.MappingProfiles
             CreateMap<Appointment, BookAppointmentResponse>().ReverseMap();
             CreateMap<Appointment, CancelAppointmentByPatientResponse>().ReverseMap();
             CreateMap<Appointment, GetListActiveAppointmentByDoctorResponse>().ReverseMap();
+            CreateMap<Appointment, CancelAppointmentByDoctorCommand>().ReverseMap();
+            CreateMap<Appointment, CancelAppointmentByDoctorResponse>()
+                .ForMember(dest => dest.Patient, opt => opt.MapFrom(src => src.Patient.FirstName + " " + src.Patient.LastName))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => AppointmentStatus.CancelByDoctor))
+                .ReverseMap()
+                .ForPath(dest => dest.Patient.FirstName, opt => opt.Ignore())
+                .ForPath(dest => dest.Patient.LastName, opt => opt.Ignore());
             CreateMap<Appointment, GetListAppointmentResponse>()
             .ForMember(dest => dest.DateTime, opt => opt.MapFrom(src => src.DateTime))
             .ForMember(dest => dest.Doctor, opt => opt.MapFrom(src => src.Doctor.User.FirstName + " " + src.Doctor.User.LastName))

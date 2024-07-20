@@ -13,7 +13,7 @@ using SendGrid;
 using Core.Utilities.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.Appointments.Commands.CancelByPatient
+namespace Application.Features.Appointments.Commands.Cancel.ByPatient
 {
     public class CancelAppointmentByPatientCommand : IRequest<CancelAppointmentByPatientResponse>
     {
@@ -42,7 +42,7 @@ namespace Application.Features.Appointments.Commands.CancelByPatient
 
                 await _userBusinessRules.UserIdShouldExistWhenSelected(userId);
                 await _userBusinessRules.UserEmailShouldExistWhenSelected(userEmail);
-          
+
                 Appointment? appointment = await _appointmentRepository.GetAsync(
                     a => a.Id == request.AppointmentId,
                     include: source => source
@@ -56,11 +56,11 @@ namespace Application.Features.Appointments.Commands.CancelByPatient
                     );
 
                 await _appointmentBusinessRules.AppointmentShouldExistWhenSelected(appointment);
-                await _appointmentBusinessRules.UserShouldBePatientWhenCancelled(appointment!,userId);
+                await _appointmentBusinessRules.UserShouldBePatientWhenCancelled(appointment!, userId);
                 await _appointmentBusinessRules.AppointmentShouldNoCancelWhenCancelled(appointment!);
 
-                appointment!.Status = AppointmentStatus.CancelFromPatient;
-                
+                appointment!.Status = AppointmentStatus.CancelByPatient;
+
                 await _appointmentRepository.UpdateAsync(appointment);
 
                 CancelAppointmentByPatientResponse response = _mapper.Map<CancelAppointmentByPatientResponse>(appointment);

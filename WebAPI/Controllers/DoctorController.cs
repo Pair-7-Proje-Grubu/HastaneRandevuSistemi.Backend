@@ -1,8 +1,10 @@
 ﻿using Application.Features.Doctors.Commands.CreateDoctor;
 using Application.Features.Doctors.Commands.UpdateDoctor;
+using Application.Features.Doctors.Commands.UpdateDoctorOfficeLocation;
 using Application.Features.Doctors.Queries.GetByClinicIdDoctor;
 using Application.Features.Doctors.Queries.GetByIdDoctor;
 using Application.Features.Doctors.Queries.GetListDoctor;
+using Application.Features.Doctors.Queries.GetListDoctorOfficeLocation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +59,21 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetList([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             return await PagedQuery<GetListDoctorQuery, GetListDoctorResponse>(page, pageSize);
+        }
+
+        [HttpGet("GetListDoctorOfficeLocation")]
+        public async Task<IActionResult> GetDoctorOfficeLocationList()
+        {
+            var query = new GetDoctorListQuery();
+            var response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpPost("UpdateDoctorOfficeLocation")]
+        public async Task<IActionResult> UpdateDoctorOfficeLocation([FromBody] UpdateDoctorOfficeLocationCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
     }
 }

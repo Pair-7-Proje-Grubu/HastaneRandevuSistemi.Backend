@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Appointments\Commands\Cancel\FromAdmin\**" />
+    <Compile Remove="Features\Appointments\Commands\Delete\**" />
+    <EmbeddedResource Remove="Features\Appointments\Commands\Cancel\FromAdmin\**" />
+    <EmbeddedResource Remove="Features\Appointments\Commands\Delete\**" />
+    <None Remove="Features\Appointments\Commands\Cancel\FromAdmin\**" />
+    <None Remove="Features\Appointments\Commands\Delete\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
@@ -20,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Appointments\Commands\Delete\" />
     <Folder Include="Features\FAQs\Command\Delete\" />
     <Folder Include="Features\FAQs\Command\Update\" />
     <Folder Include="Features\FAQs\Queries\" />

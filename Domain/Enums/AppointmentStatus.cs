@@ -4,7 +4,7 @@
     {
         Scheduled = 0,
         Completed = 1,
-        CancelFromDoctor = 2,
-        CancelFromPatient = 3,
+        CancelByDoctor = 2,
+        CancelByPatient = 3,
     }
 }

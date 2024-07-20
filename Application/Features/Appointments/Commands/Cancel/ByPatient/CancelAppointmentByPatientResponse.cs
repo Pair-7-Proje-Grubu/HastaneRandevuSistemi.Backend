@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Appointments.Commands.CancelByPatient
+namespace Application.Features.Appointments.Commands.Cancel.ByPatient
 {
     public class CancelAppointmentByPatientResponse
     {

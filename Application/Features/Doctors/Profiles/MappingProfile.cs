@@ -1,7 +1,9 @@
 ﻿using Application.Features.Doctors.Commands.CreateDoctor;
 using Application.Features.Doctors.Commands.UpdateDoctor;
+using Application.Features.Doctors.Commands.UpdateDoctorOfficeLocation;
 using Application.Features.Doctors.Queries.GetByClinicIdDoctor;
 using Application.Features.Doctors.Queries.GetByIdDoctor;
+using Application.Features.Doctors.Queries.GetListDoctorOfficeLocation;
 using Application.Features.Floors.Queries.GetById;
 using AutoMapper;
 using Domain.Entities;
@@ -25,6 +27,9 @@ namespace Application.Features.Doctors.Profiles
              .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
              .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
              .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.User.Gender));
+            CreateMap<Doctor, DoctorOfficeLocationListResponse>();
+            CreateMap<Doctor, UpdateDoctorOfficeLocationResponse>();
+
         }
     }
 }

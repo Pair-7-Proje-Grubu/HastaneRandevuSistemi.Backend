@@ -1,5 +1,4 @@
 ﻿using Application.Features.Appointments.Commands.Book;
-using Application.Features.Appointments.Commands.CancelByPatient;
 using Application.Features.Appointments.Queries.GetListActiveAppointment;
 using Application.Features.Appointments.Queries.GetListAppointment;
 using Application.Features.Appointments.Queries.GetListAvailableAppointment;
@@ -7,6 +6,8 @@ using Application.Features.Appointments.Queries.GetListPastAppointmentByDoctor;
 using Application.Features.Appointments.Queries.GetListPatientByDoctor;
 using Application.Services.Common;
 using Microsoft.AspNetCore.Mvc;
+using Application.Features.Appointments.Commands.Cancel.ByDoctor;
+using Application.Features.Appointments.Commands.Cancel.ByPatient;
 
 namespace WebAPI.Controllers
 {
@@ -18,6 +19,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Book([FromBody] BookAppointmentCommand command)
         {
             BookAppointmentResponse response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> CancelByDoctor([FromRoute] int id)
+        {
+            CancelAppointmentByDoctorCommand command = new() { Id = id };
+            CancelAppointmentByDoctorResponse response = await _mediator.Send(command);
             return Ok(response);
         }
 

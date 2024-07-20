@@ -2,6 +2,7 @@
 using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.Utilities.Extensions;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -15,14 +16,12 @@ using System.Threading.Tasks;
 
 namespace Application.Features.NoWorkHours.Commands.Create
 {
-    public class CreateNoWorkHourCommand : IRequest<CreateNoWorkHourResponse>
+    public class CreateNoWorkHourCommand : IRequest<CreateNoWorkHourResponse>, ISecuredRequest
     {
-        public int DoctorId { get; set; }
+        //public int DoctorId { get; set; }
         public List<NoWorkHourDto> NoWorkHours { get; set; }
 
-        //string[] ISecuredRequest.RequiredRoles => RequiredRoles;
-
-        //public string[] RequiredRoles { get; } = { "Doctor" };
+        public string[] RequiredRoles { get; } = { "Doctor" };
 
         public class CreateNoWorkHourCommandHandler : IRequestHandler<CreateNoWorkHourCommand, CreateNoWorkHourResponse>
         {
@@ -41,6 +40,7 @@ namespace Application.Features.NoWorkHours.Commands.Create
     
             public async Task<CreateNoWorkHourResponse> Handle(CreateNoWorkHourCommand request, CancellationToken cancellationToken)
             {
+                int userId = _httpContextAccessor.HttpContext.User.GetUserId();
 
                 List<NoWorkHour> noWorkHours = _mapper.Map<List<NoWorkHour>>(request.NoWorkHours);
                 foreach (var noWorkHour in noWorkHours)
@@ -54,7 +54,7 @@ namespace Application.Features.NoWorkHours.Commands.Create
                 List<DoctorNoWorkHour> doctorNoWorkHours = new List<DoctorNoWorkHour> { };
                 foreach (var noWorkHour in noWorkHours)
                 {
-                    DoctorNoWorkHour doctorNoWorkHour = new DoctorNoWorkHour() { DoctorId = request.DoctorId, NoWorkHourId = noWorkHour.Id };
+                    DoctorNoWorkHour doctorNoWorkHour = new DoctorNoWorkHour() { DoctorId = userId, NoWorkHourId = noWorkHour.Id };
                     doctorNoWorkHours.Add(doctorNoWorkHour);
                 }
                 await _doctorNoWorkHourRepository.AddRangeAsync(doctorNoWorkHours);
