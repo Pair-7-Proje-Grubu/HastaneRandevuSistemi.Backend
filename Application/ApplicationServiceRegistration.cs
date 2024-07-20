@@ -1,5 +1,6 @@
 ﻿using Application.Features.Appointments.Rules;
 using Application.Services.DoctorService;
+using Application.Services.EmailService;
 using Application.Services.UserService;
 using Application.Services.WorkingTimeService;
 using Core.Application.Pipelines.Authorization;
@@ -38,6 +39,14 @@ namespace Application
             services.AddScoped<IWorkingTimeService, WorkingTimeManager>();
             services.AddScoped<IDoctorService, DoctorManager>();
 
+            var sendGridApiKey = "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";
+            var fromEmail = "noreply-hrs@ahmetyuksel.com";
+            
+            var sendGridApiKeyFeedbackUser = "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";
+            var fromEmailFeedbackUser = "iletisim-hrs@ahmetyuksel.com";
+
+            services.AddScoped<IEmailService>(provider => 
+                new EmailService(sendGridApiKey, fromEmail, sendGridApiKeyFeedbackUser, fromEmailFeedbackUser));
 
             return services;
         }
