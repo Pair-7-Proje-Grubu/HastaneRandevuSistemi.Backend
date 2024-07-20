@@ -66,19 +66,6 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
 
                     DateTime currentDate = DateTime.Now.AddDays(i).Date;
 
-                    //Doktorun o günkü tüm müsait olmadığı vakitlerin küsüratını kaldırıp randevu vaktine çekiyoruz.
-                    //Örneğin doktor 15 dakikalık randevular veriyorsa ve müsait olmadığı vakit 14:42 ise 14:45'e çekiyoruz.
-                    List<NoWorkHour>? noWorkHours = doctor.DoctorNoWorkHours.Select(d=>d.NoWorkHour).Where(nwh => nwh.StartDate.Date == currentDate)
-                        .Select(nwh =>
-                        {
-                            nwh.StartDate = RoundUpToNextAppointmentTimeDateTime(nwh.StartDate,doctor.Clinic.AppointmentDuration);
-                            nwh.EndDate = RoundUpToNextAppointmentTimeDateTime(nwh.EndDate, doctor.Clinic.AppointmentDuration);
-                            return nwh;
-                        }).ToList();
-                    
-                    //İş yerinin mola vaktinide varsayılan olarak ekliyoruz.
-                    noWorkHours.Add(new NoWorkHour() { StartDate = currentDate.Add(workingTime.StartBreakTime), EndDate = currentDate.Add(workingTime.EndBreakTime) });
-
 
                     //Bugüne ait geçmiş randevuları getirmemesi için çalışma zaman aralığını düzenliyoruz.
                     if (currentDate == DateTime.Now.Date)
@@ -96,8 +83,25 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
 
                     //Çalışma saat aralığını randevu saatine uygun hale getiriyoruz. (Dakikadaki küsüratları yuvarlıyoruz.)
                     startTime = RoundUpToNextAppointmentTimeTimeSpan(startTime, doctor.Clinic.AppointmentDuration);
-                    endTime = RoundUpToNextAppointmentTimeTimeSpan(endTime, doctor.Clinic.AppointmentDuration);
+                    //Mesai bitiş saatini ileri atmasını istemiyoruz.
+                    //endTime = RoundUpToNextAppointmentTimeTimeSpan(endTime, doctor.Clinic.AppointmentDuration);
+                    
+                    //Doktorun Bugün için müsait olmadığı vaktileri getir.
+                    List<NoWorkHour>? noWorkHours = doctor.DoctorNoWorkHours.Select(d => d.NoWorkHour).Where(nwh => nwh.StartDate.Date == currentDate).ToList();
 
+                    //İş yerinin mola vaktinide doktorun müsait olmadığı vakit olarak gösteriyoruz.
+                    noWorkHours.Add(new NoWorkHour() { StartDate = currentDate.Add(workingTime.StartBreakTime), EndDate = currentDate.Add(workingTime.EndBreakTime) });
+
+                    //Doktorun o günkü tüm müsait olmadığı vakitlerin küsüratını kaldırıp randevu vaktine çekiyoruz.
+                    //Örneğin doktor 15 dakikalık randevular veriyorsa ve müsait olmadığı vakit 14:42 ise 14:45'e çekiyoruz.
+                    noWorkHours = noWorkHours.Select(nwh =>
+                    {
+                        nwh.StartDate = RoundUpToNextAppointmentTimeDateTime(nwh.StartDate,doctor.Clinic.AppointmentDuration);
+                        nwh.EndDate = RoundUpToNextAppointmentTimeDateTime(nwh.EndDate, doctor.Clinic.AppointmentDuration);
+                        return nwh;
+                    }).ToList();
+                    
+            
                     List<DateTimeRange> availableRangesOfDay = CalculateAvailableDateTimeRanges(startTime, endTime, noWorkHours);
                     if (availableRangesOfDay.Any())
                     {
