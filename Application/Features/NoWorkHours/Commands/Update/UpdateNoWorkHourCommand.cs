@@ -1,6 +1,7 @@
 ﻿using Application.Features.NoWorkHours.Dtos;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
@@ -12,12 +13,13 @@ using System.Threading.Tasks;
 
 namespace Application.Features.NoWorkHours.Commands.Update
 {
-    public class UpdateNoWorkHourCommand : IRequest<UpdateNoWorkHourResponse>
+    public class UpdateNoWorkHourCommand : IRequest<UpdateNoWorkHourResponse>, ISecuredRequest
     {
         public int Id { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Title { get; set; }
+        public string[] RequiredRoles => ["Doctor"];
 
         public class UpdateNoWorkHourCommandHandler : IRequestHandler<UpdateNoWorkHourCommand, UpdateNoWorkHourResponse>
         {
