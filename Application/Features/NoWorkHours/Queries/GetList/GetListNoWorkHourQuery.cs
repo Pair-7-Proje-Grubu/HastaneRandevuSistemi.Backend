@@ -14,8 +14,6 @@ namespace Application.Features.NoWorkHours.Queries.GetList
 {
     public class GetListNoWorkHourQuery : IRequest<List<GetListNoWorkHourResponse>>, ISecuredRequest
     {
-        //public int Page { get; set; }
-        //public int PageSize { get; set; }
         public int? DoctorId { get; set; }
         string[] ISecuredRequest.RequiredRoles => RequiredRoles;
         public string[] RequiredRoles { get; } = { "Doctor", "Admin" };

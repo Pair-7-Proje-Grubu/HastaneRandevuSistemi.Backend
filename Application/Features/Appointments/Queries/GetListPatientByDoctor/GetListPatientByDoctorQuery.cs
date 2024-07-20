@@ -38,7 +38,7 @@ namespace Application.Features.Appointments.Queries.GetListPatientByDoctor
             {
                 int userId = _httpContextAccessor.HttpContext.User.GetUserId();
 
-                List<Appointment> appointments = await _appointmentRepository.GetListAsync(a => a.DoctorId == userId, include: a => a.Include(p => p.Patient));
+                List<Appointment> appointments = await _appointmentRepository.GetListAsync(a => a.DoctorId == userId, include: a => a.Include(p => p.Patient), asNoTracking: true);
 
                 IEnumerable<GetListPatientByDoctorResponse> query = appointments
                     .Select(a => a.Patient)

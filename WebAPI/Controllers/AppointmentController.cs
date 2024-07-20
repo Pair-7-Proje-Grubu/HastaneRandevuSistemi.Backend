@@ -1,4 +1,5 @@
 ﻿using Application.Features.Appointments.Commands.Book;
+using Application.Features.Appointments.Commands.Cancel.FromDoctor;
 using Application.Features.Appointments.Queries.GetListActiveAppointment;
 using Application.Features.Appointments.Queries.GetListAppointment;
 using Application.Features.Appointments.Queries.GetListAvailableAppointment;
@@ -17,6 +18,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Book([FromBody] BookAppointmentCommand command)
         {
             BookAppointmentResponse response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> CancelFromDoctor([FromRoute] int id)
+        {
+            CancelAppointmentFromDoctorCommand command = new() { Id = id };
+            CancelAppointmentFromDoctorResponse response = await _mediator.Send(command);
             return Ok(response);
         }
 

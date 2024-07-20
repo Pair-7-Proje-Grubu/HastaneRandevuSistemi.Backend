@@ -4,6 +4,7 @@ using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Utilities.Extensions;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -35,10 +36,11 @@ namespace Application.Features.Appointments.Queries.GetListActiveAppointment
             {
                 int userId = _httpContextAccessor.HttpContext.User.GetUserId();
 
-                List<Appointment> activeAppointments = (await _appointmentRepository.GetListAsync(a => a.DoctorId == userId, include: q => q.Include(a => a.Patient))).Where(a => a.DateTime > DateTime.Now).ToList();
+                List<Appointment> activeAppointments = (await _appointmentRepository.GetListAsync(a => a.DoctorId == userId && a.isCancelStatus == CancelStatus.NoCancel, include: q => q.Include(a => a.Patient))).Where(a => a.DateTime > DateTime.Now).ToList();
                 
                 List<GetListActiveAppointmentByDoctorResponse> response = activeAppointments.Select(a => new GetListActiveAppointmentByDoctorResponse
                 {
+                    Id = a.Id,
                     FirstName = a.Patient.FirstName,
                     LastName = a.Patient.LastName,
                     AppointmentDate = a.DateTime
