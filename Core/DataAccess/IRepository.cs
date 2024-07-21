@@ -18,7 +18,9 @@ namespace Core.DataAccess
             Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
             bool asNoTracking = false);
         List<T> GetList(Expression<Func<T, bool>>? filter = null,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
+            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
+            bool asNoTracking = false);
 
     }
 }
