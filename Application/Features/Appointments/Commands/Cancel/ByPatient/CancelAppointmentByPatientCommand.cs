@@ -12,12 +12,16 @@ using SendGrid.Helpers.Mail;
 using SendGrid;
 using Core.Utilities.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Core.Application.Pipelines.Authorization;
+using Application.Services.EmailService;
 
 namespace Application.Features.Appointments.Commands.Cancel.ByPatient
 {
-    public class CancelAppointmentByPatientCommand : IRequest<CancelAppointmentByPatientResponse>
+    public class CancelAppointmentByPatientCommand : IRequest<CancelAppointmentByPatientResponse>/*, ISecuredRequest*/
     {
-        public int AppointmentId { get; set; }
+        public int Id { get; set; }
+
+        //public string[] RequiredRoles => ["Patient"];
 
         public class CancelAppointmentByPatientCommandHandler : IRequestHandler<CancelAppointmentByPatientCommand, CancelAppointmentByPatientResponse>
         {
@@ -26,13 +30,15 @@ namespace Application.Features.Appointments.Commands.Cancel.ByPatient
             private readonly IAppointmentRepository _appointmentRepository;
             private readonly AppointmentBusinessRules _appointmentBusinessRules;
             private readonly UserBusinessRules _userBusinessRules;
-            public CancelAppointmentByPatientCommandHandler(IMapper mapper, IHttpContextAccessor httpContextAccessor, IAppointmentRepository appointmentRepository, AppointmentBusinessRules appointmentBusinessRules, UserBusinessRules userBusinessRules)
+            private readonly IEmailService _emailService;
+            public CancelAppointmentByPatientCommandHandler(IMapper mapper, IHttpContextAccessor httpContextAccessor, IAppointmentRepository appointmentRepository, AppointmentBusinessRules appointmentBusinessRules, UserBusinessRules userBusinessRules, IEmailService emailService)
             {
                 _mapper = mapper;
                 _httpContextAccessor = httpContextAccessor;
                 _appointmentRepository = appointmentRepository;
                 _appointmentBusinessRules = appointmentBusinessRules;
                 _userBusinessRules = userBusinessRules;
+                _emailService = emailService;
             }
 
             public async Task<CancelAppointmentByPatientResponse> Handle(CancelAppointmentByPatientCommand request, CancellationToken cancellationToken)
@@ -44,7 +50,7 @@ namespace Application.Features.Appointments.Commands.Cancel.ByPatient
                 await _userBusinessRules.UserEmailShouldExistWhenSelected(userEmail);
 
                 Appointment? appointment = await _appointmentRepository.GetAsync(
-                    a => a.Id == request.AppointmentId,
+                    a => a.Id == request.Id,
                     include: source => source
                     .Include(a => a.Doctor)
                         .ThenInclude(d => d.Clinic)
@@ -62,6 +68,8 @@ namespace Application.Features.Appointments.Commands.Cancel.ByPatient
                 appointment!.Status = AppointmentStatus.CancelByPatient;
 
                 await _appointmentRepository.UpdateAsync(appointment);
+
+                await _emailService.SendCancelAppointmentByPatientInformationEmailAsync(appointment.Doctor.User.Email, appointment);
 
                 CancelAppointmentByPatientResponse response = _mapper.Map<CancelAppointmentByPatientResponse>(appointment);
 

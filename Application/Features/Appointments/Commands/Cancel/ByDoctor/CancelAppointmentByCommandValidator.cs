@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Application.Features.Appointments.Commands.Cancel.ByPatient;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ namespace Application.Features.Appointments.Commands.Cancel.ByDoctor
 {
     public class CancelAppointmentByDoctorCommandValidator : AbstractValidator<CancelAppointmentByDoctorCommand>
     {
-        public CancelAppointmentByDoctorCommandValidator() { }
+        public CancelAppointmentByDoctorCommandValidator()
+        {
+            RuleFor(a => a.Id).NotEmpty();
+        }
     }
 }

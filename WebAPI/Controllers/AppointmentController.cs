@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("CancelByDoctor/{id}")]
         public async Task<IActionResult> CancelByDoctor([FromRoute] int id)
         {
             CancelAppointmentByDoctorCommand command = new() { Id = id };
@@ -30,8 +30,8 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("CancelByPatient")]
-        public async Task<IActionResult> CancelByPatient([FromBody] CancelAppointmentByPatientCommand command)
+        [HttpPut("CancelByPatient/{id}")]
+        public async Task<IActionResult> CancelByPatient([FromRoute] CancelAppointmentByPatientCommand command)
         {
             CancelAppointmentByPatientResponse response = await _mediator.Send(command);
             return Ok(response);
