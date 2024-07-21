@@ -12,13 +12,16 @@ using SendGrid.Helpers.Mail;
 using SendGrid;
 using Core.Utilities.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Core.Application.Pipelines.Authorization;
 using Application.Services.EmailService;
 
 namespace Application.Features.Appointments.Commands.Cancel.ByPatient
 {
-    public class CancelAppointmentByPatientCommand : IRequest<CancelAppointmentByPatientResponse>
+    public class CancelAppointmentByPatientCommand : IRequest<CancelAppointmentByPatientResponse>/*, ISecuredRequest*/
     {
-        public int AppointmentId { get; set; }
+        public int Id { get; set; }
+
+        //public string[] RequiredRoles => ["Patient"];
 
         public class CancelAppointmentByPatientCommandHandler : IRequestHandler<CancelAppointmentByPatientCommand, CancelAppointmentByPatientResponse>
         {
@@ -47,7 +50,7 @@ namespace Application.Features.Appointments.Commands.Cancel.ByPatient
                 await _userBusinessRules.UserEmailShouldExistWhenSelected(userEmail);
 
                 Appointment? appointment = await _appointmentRepository.GetAsync(
-                    a => a.Id == request.AppointmentId,
+                    a => a.Id == request.Id,
                     include: source => source
                     .Include(a => a.Doctor)
                         .ThenInclude(d => d.Clinic)

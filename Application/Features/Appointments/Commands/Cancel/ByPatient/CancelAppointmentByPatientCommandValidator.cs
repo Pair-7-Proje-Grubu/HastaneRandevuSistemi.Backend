@@ -13,7 +13,7 @@ namespace Application.Features.Appointments.Commands.Cancel.ByPatient
     {
         public CancelAppointmentByPatientCommandValidator()
         {
-            RuleFor(a => a.AppointmentId).NotEmpty();
+            RuleFor(a => a.Id).NotEmpty();
         }
     }
 }
