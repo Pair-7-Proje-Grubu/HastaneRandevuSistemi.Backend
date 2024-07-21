@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("CancelByDoctor/{id}")]
         public async Task<IActionResult> CancelByDoctor([FromRoute] int id)
         {
             CancelAppointmentByDoctorCommand command = new() { Id = id };
