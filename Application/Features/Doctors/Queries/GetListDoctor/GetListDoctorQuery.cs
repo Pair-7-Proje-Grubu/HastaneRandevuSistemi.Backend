@@ -37,11 +37,12 @@ namespace Application.Features.Doctors.Queries.GetListDoctor
 
                 IEnumerable<GetListDoctorResponse> query = doctors.Select(d => new GetListDoctorResponse
                 {
+                    Id = d.Id,  
                     FirstName = d.User.FirstName,
                     LastName = d.User.LastName,
                     ClinicName = d.Clinic.Name,
                     Title = d.Title.TitleName,
-                    Phone = d.User.Phone,
+                    Phone = d.User.Phone 
                 });
 
                 return query.ToPagedResponse(request);

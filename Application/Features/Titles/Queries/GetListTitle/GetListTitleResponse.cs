@@ -10,7 +10,8 @@ namespace Application.Features.Titles.Queries.GetListTitle
 {
     public class GetListTitleResponse
     {
-        public List<Title> Titles { get; set; }
+        public int Id { get; set; }
+        public string TitleName { get; set; }
 
     }
 }

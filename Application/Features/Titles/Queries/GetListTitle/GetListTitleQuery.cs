@@ -10,23 +10,26 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Titles.Queries.GetListTitle
 {
-    public class GetListTitleQuery : IRequest<GetListTitleResponse>
+    public class GetListTitleQuery : IRequest<List<GetListTitleResponse>>
     { 
-        public class GetListTitleQueryHandler : IRequestHandler<GetListTitleQuery, GetListTitleResponse>
+        public class GetListTitleQueryHandler : IRequestHandler<GetListTitleQuery, List<GetListTitleResponse>>
         {
 
             private readonly ITitleRepository _titleRepository;
+            private readonly IMapper _mapper;
 
             public GetListTitleQueryHandler(ITitleRepository titleRepository, IMapper mapper)
             {
                 _titleRepository = titleRepository;
+                _mapper = mapper;
             }
 
 
-            public async Task<GetListTitleResponse> Handle(GetListTitleQuery request, CancellationToken cancellationToken)
+            public async Task<List<GetListTitleResponse>> Handle(GetListTitleQuery request, CancellationToken cancellationToken)
             {
-                GetListTitleResponse response = new GetListTitleResponse();
-                response.Titles = await _titleRepository.GetListAsync();
+                List<Title> titles = await _titleRepository.GetListAsync();
+
+                List<GetListTitleResponse> response = _mapper.Map<List<GetListTitleResponse>>(titles);
                 return response;
             }
         }
