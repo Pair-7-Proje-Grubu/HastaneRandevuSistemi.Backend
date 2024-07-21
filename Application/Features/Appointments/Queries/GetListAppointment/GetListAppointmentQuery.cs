@@ -3,6 +3,7 @@ using Application.Repositories;
 using AutoMapper;
 using Core.Utilities.Extensions;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -36,15 +37,23 @@ namespace Application.Features.Appointments.Queries.GetListAppointment
 
                 int userId = _httpContextAccessor.HttpContext.User.GetUserId();
 
-                List<Appointment> activeAppointments = (await _appointmentRepository.GetListAsync(a => a.PatientId == userId && a.DateTime > DateTime.Now,
+                List<Appointment> allAppointments = (await _appointmentRepository.GetListAsync(a => a.PatientId == userId,
                     include: a => a.Include(a => a.Doctor).ThenInclude(d => d.User)
                     .Include(u => u.Doctor).ThenInclude(d => d.Clinic)
                     .Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(u => u.Block)
-                    .Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(o => o.Floor)    
+                    .Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(o => o.Floor)
                     .Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(u => u.Room)
-                    )).OrderByDescending(a=> a.DateTime).ToList();
+                    ));/*.OrderByDescending(a=> a.DateTime).OrderBy(a => a.Status).ToList();*/
 
-                List<GetListAppointmentResponse> response = _mapper.Map<List<GetListAppointmentResponse>>(activeAppointments);
+                var sortedAppointments = allAppointments
+                    .OrderBy(a => a.DateTime > DateTime.Now ? 0 : 1) // Önce aktif randevular
+                    .ThenBy(a => a.Status != AppointmentStatus.Scheduled ? 1 : 0) // Sonra iptal edilmemiş randevular
+                    .ThenBy(a => a.DateTime > DateTime.Now ? a.DateTime : DateTime.MaxValue) // Aktif randevular için küçükten büyüğe
+                    .ThenByDescending(a => a.DateTime <= DateTime.Now ? a.DateTime : DateTime.MinValue) // Geçmiş randevular için büyükten küçüğe
+                    .ToList();
+
+
+                List<GetListAppointmentResponse> response = _mapper.Map<List<GetListAppointmentResponse>>(sortedAppointments);
                 return response;
             }
         }
