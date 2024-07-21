@@ -39,6 +39,32 @@ namespace Application.Services.EmailService
             var response = await _client.SendEmailAsync(msg);
         }
 
+        public async Task SendCancelAppointmentByDoctorInformationEmailAsync(string email, Appointment appointment)
+        {
+            var subject = "HRS Randevunuzun İptali";
+            var to = new EmailAddress(email);
+
+            var plainTextContent = $"Sayın {appointment.Patient.FirstName + ' ' + appointment.Patient.LastName},\n\nHRS randevunuz doktorunuz {appointment.Doctor.User.FirstName} {appointment.Doctor.User.LastName} tarafından iptal edildi.\n\nİptal edilen randevunun bilgileri:\n\nRandevu Tarihi: {appointment.DateTime},\nKlinik Adı: {appointment.Doctor.Clinic.Name}\nHekim Adı: {appointment.Doctor.Title.TitleName} {appointment.Doctor.User.FirstName} {appointment.Doctor.User.LastName}\n\nGörüş, öneri, şikayet ve tüm sorularınız için iletisim-hrs@ahmetyuksel.com adresine e-posta gönderebilirsiniz.\n\nLütfen bu e-postayı yanıtlamayınız.\n\n© Telif Hakkı 2024 HRS Hastane Randevu Sistemi - Tüm hakları saklıdır.";
+
+            var htmlContent = $"<strong>Sayın {appointment.Patient.FirstName + ' ' + appointment.Patient.LastName},</strong><br/><br/>HRS randevunuz doktorunuz {appointment.Doctor.User.FirstName} {appointment.Doctor.User.LastName} tarafından iptal edildi.<br/><br/>İptal edilen randevunun bilgileri aşağıdaki gibidir:<br/><br/>Randevu Tarihi: {appointment.DateTime},<br/>Klinik Adı: {appointment.Doctor.Clinic.Name}<br/>Hekim Adı: {appointment.Doctor.Title.TitleName} {appointment.Doctor.User.FirstName} {appointment.Doctor.User.LastName}<br/><br/>Görüş, öneri, şikayet ve tüm sorularınız için <strong><a href='mailto:iletisim-hrs@ahmetyuksel.com' style='text-decoration:none'>iletisim-hrs@ahmetyuksel.com</a></strong> adresine e-posta gönderebilirsiniz.<br/><br/><hr/><br/>Lütfen bu e-postayı yanıtlamayınız.<br/><br/>© Telif Hakkı 2024 HRS Hastane Randevu Sistemi - Tüm hakları saklıdır.";
+
+            var msg = MailHelper.CreateSingleEmail(_fromAddress, to, subject, plainTextContent, htmlContent);
+            var response = await _client.SendEmailAsync(msg);
+        }
+
+        public async Task SendCancelAppointmentByPatientInformationEmailAsync(string email, Appointment appointment)
+        {
+            var subject = "HRS Hasta Randevusu İptali";
+            var to = new EmailAddress(email);
+
+            var plainTextContent = $"Sayın {appointment.Doctor.User.FirstName} {appointment.Doctor.User.LastName},\n\nHRS sisteminde hastanız {appointment.Patient.FirstName + ' ' + appointment.Patient.LastName} tarafından randevu iptali gerçekleştirildi.\n\nİptal edilen randevunun bilgileri:\n\nRandevu Tarihi: {appointment.DateTime},\nKlinik Adı: {appointment.Doctor.Clinic.Name}\nHekim Adı: {appointment.Doctor.Title.TitleName} {appointment.Doctor.User.FirstName} {appointment.Doctor.User.LastName},\nDoktor Ofisi: {appointment.Doctor.OfficeLocation.Block.No + " Blok, " + appointment.Doctor.OfficeLocation.Floor.No + " Kat, Oda: " + appointment.Doctor.OfficeLocation.Room.No}\n\nGörüş, öneri, şikayet ve tüm sorularınız için iletisim-hrs@ahmetyuksel.com adresine e-posta gönderebilirsiniz.\n\nLütfen bu e-postayı yanıtlamayınız.\n\n© Telif Hakkı 2024 HRS Hastane Randevu Sistemi - Tüm hakları saklıdır.";
+
+            var htmlContent = $"<strong>Sayın {appointment.Doctor.User.FirstName} {appointment.Doctor.User.LastName},</strong><br/><br/>HRS sisteminde hastanız {appointment.Patient.FirstName + ' ' + appointment.Patient.LastName} tarafından randevu iptali gerçekleştirildi.<br/><br/>İptal edilen randevunun bilgileri aşağıdaki gibidir:<br/><br/>Randevu Tarihi: {appointment.DateTime},<br/>Klinik Adı: {appointment.Doctor.Clinic.Name}<br/>Hekim Adı: {appointment.Doctor.Title.TitleName} {appointment.Doctor.User.FirstName} {appointment.Doctor.User.LastName},<br/>Doktor Ofisi: {appointment.Doctor.OfficeLocation.Block.No + " Blok, " + appointment.Doctor.OfficeLocation.Floor.No + " Kat, Oda: " + appointment.Doctor.OfficeLocation.Room.No}<br/><br/>Görüş, öneri, şikayet ve tüm sorularınız için <strong><a href='mailto:iletisim-hrs@ahmetyuksel.com' style='text-decoration:none'>iletisim-hrs@ahmetyuksel.com</a></strong> adresine e-posta gönderebilirsiniz.<br/><br/><hr/><br/>Lütfen bu e-postayı yanıtlamayınız.<br/><br/>© Telif Hakkı 2024 HRS Hastane Randevu Sistemi - Tüm hakları saklıdır.";
+
+            var msg = MailHelper.CreateSingleEmail(_fromAddress, to, subject, plainTextContent, htmlContent);
+            var response = await _client.SendEmailAsync(msg);
+        }
+
         public async Task SendFeedbackRequestEmailAsync(string userEmail, string userFeedback)
         {
             // iletisim - hrs  

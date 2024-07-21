@@ -1,5 +1,6 @@
 ﻿using Application.Features.Users.Rules;
 using Application.Repositories;
+using Application.Services.EmailService;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions.Types;
@@ -28,22 +29,35 @@ namespace Application.Features.Appointments.Commands.Cancel.ByDoctor
             private readonly IAppointmentRepository _appointmentRepository;
             private readonly IHttpContextAccessor _httpContextAccessor;
             private readonly UserBusinessRules _userBusinessRules;
+            private readonly IEmailService _emailService;
 
-            public CancelAppointmentByDoctorCommandHandler(IMapper mapper, IAppointmentRepository appointmentRepository, IHttpContextAccessor httpContextAccessor, UserBusinessRules userBusinessRules)
+            public CancelAppointmentByDoctorCommandHandler(IMapper mapper, IAppointmentRepository appointmentRepository, IHttpContextAccessor httpContextAccessor, UserBusinessRules userBusinessRules, IEmailService emailService)
             {
                 _mapper = mapper;
                 _appointmentRepository = appointmentRepository;
                 _httpContextAccessor = httpContextAccessor;
                 _userBusinessRules = userBusinessRules;
+                _emailService = emailService;
             }
 
             public async Task<CancelAppointmentByDoctorResponse> Handle(CancelAppointmentByDoctorCommand request, CancellationToken cancellationToken)
             {
                 int userId = _httpContextAccessor.HttpContext.User.GetUserId();
+                string userEmail = _httpContextAccessor.HttpContext.User.GetUserEmail()!;
 
                 await _userBusinessRules.UserIdShouldExistWhenSelected(userId);
 
-                Appointment? appointment = await _appointmentRepository.GetAsync(a => a.Id == request.Id && a.DoctorId == userId, include: a => a.Include(p => p.Patient));
+                Appointment? appointment = await _appointmentRepository.GetAsync(a => a.Id == request.Id && a.DoctorId == userId, include: a => a
+                    .Include(p => p.Patient)
+                    .Include(a => a.Doctor)
+                        .ThenInclude(d => d.Clinic)
+                    .Include(a => a.Doctor)
+                        .ThenInclude(d => d.Title)
+                    .Include(d => d.Doctor)
+                        .ThenInclude(d => d.User)
+                    );
+
+                string patientEmail = appointment.Patient.Email;
 
                 if (appointment == null)
                 {
@@ -60,6 +74,8 @@ namespace Application.Features.Appointments.Commands.Cancel.ByDoctor
                 _mapper.Map(request, appointment);
 
                 await _appointmentRepository.UpdateAsync(appointment);
+
+                await _emailService.SendCancelAppointmentByDoctorInformationEmailAsync(patientEmail, appointment);
 
                 CancelAppointmentByDoctorResponse response = _mapper.Map<CancelAppointmentByDoctorResponse>(appointment);
 
