@@ -42,9 +42,11 @@ namespace Core.DataAccess
             await context.SaveChangesAsync();
         }
 
+
         public void Delete(TEntity entity)
         {
-            throw new NotImplementedException();
+            context.Remove(entity);
+            context.SaveChanges();
         }
 
         public async Task DeleteAsync(TEntity entity)
@@ -58,6 +60,8 @@ namespace Core.DataAccess
             context.RemoveRange(entity);
             await context.SaveChangesAsync();
         }
+
+
 
         public TEntity? Get(Expression<Func<TEntity, bool>>? predicate = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
@@ -113,45 +117,64 @@ namespace Core.DataAccess
         }
 
 
-        public List<TEntity> GetList(Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+        public List<TEntity> GetList(Expression<Func<TEntity, bool>>? filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+            bool asNoTracking = false)
         {
-            IQueryable<TEntity> data = context.Set<TEntity>();
+            IQueryable<TEntity> queryable = context.Set<TEntity>();
+
+            if (asNoTracking)
+                queryable = queryable.AsNoTracking();
 
             if (filter != null)
-                data = data.Where(filter);
-            if (include != null)
-                data = include(data);
+                queryable = queryable.Where(filter);
 
-            return data.ToList();
+            if (include != null)
+                queryable = include(queryable);
+
+            if (orderBy != null)
+                queryable = orderBy(queryable);
+
+            return queryable.ToList();
         }
 
   
-        public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, bool asNoTracking = false)
+        public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? predicate = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+            bool asNoTracking = false)
         {
-            IQueryable<TEntity> data = context.Set<TEntity>();
+            IQueryable<TEntity> queryable = context.Set<TEntity>();
+
+
+            if (asNoTracking)
+                queryable = queryable.AsNoTracking();
 
             if (predicate != null)
-                data = data.Where(predicate);
+                queryable = queryable.Where(predicate);
 
             if (include != null)
-                data = include(data);
+                queryable = include(queryable);
 
-            if (asNoTracking) data.AsNoTracking();
+            if (orderBy != null)
+                queryable = orderBy(queryable);
 
-            return await data.ToListAsync();
+            return await queryable.ToListAsync();
         }
 
         public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            context.Update(entity);
+            context.SaveChanges();
         }
 
         public async Task UpdateAsync(TEntity entity)
         {
             context.Update(entity);
-
             await context.SaveChangesAsync();
         }
+
 
     }
 }
