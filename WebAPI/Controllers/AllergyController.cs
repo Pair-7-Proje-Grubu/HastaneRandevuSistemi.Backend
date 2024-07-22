@@ -38,14 +38,14 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("Delete")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> Delete([FromBody] DeleteAllergyCommand command)
         {
             await _mediator.Send(command);
             return Ok();
         }
 
-        [HttpPost("Update")]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] UpdateAllergyCommand command)
         {
             await _mediator.Send(command);
