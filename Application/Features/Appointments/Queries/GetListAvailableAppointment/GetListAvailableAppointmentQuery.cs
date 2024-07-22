@@ -28,7 +28,7 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
 
         public class GetListAvailableAppointmentQueryHandler : IRequestHandler<GetListAvailableAppointmentQuery, GetListAvailableAppointmentResponse>
         {
-
+             
             private readonly IDoctorService _doctorService;
             private readonly IWorkingTimeService _workingTimeService;
             private readonly ClinicBusinessRules _clinicBusinessRules;
