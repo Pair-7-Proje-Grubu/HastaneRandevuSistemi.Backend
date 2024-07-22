@@ -6,6 +6,7 @@ using Application.Features.Appointments.Queries.GetListAppointment;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
+using Application.Features.Appointments.Queries.GetListAppointmentByAdmin;
 
 
 namespace Application.Features.Appointments.MappingProfiles
@@ -30,6 +31,8 @@ namespace Application.Features.Appointments.MappingProfiles
             .ForMember(dest => dest.Doctor, opt => opt.MapFrom(src => src.Doctor.User.FirstName + " " + src.Doctor.User.LastName))
             .ForMember(dest => dest.Clinic, opt => opt.MapFrom(src => src.Doctor.Clinic.Name))
             .ForMember(dest => dest.OfficeLocation, opt => opt.MapFrom(src => $"Blok: '{src.Doctor.OfficeLocation.Block.No}', Kat: '{src.Doctor.OfficeLocation.Floor.No}', Oda: '{src.Doctor.OfficeLocation.Room.No}'"));
+            CreateMap<Appointment, GetListAppointmentByAdminQuery>().ReverseMap();
+            CreateMap<Appointment, GetListAppointmentByAdminResponse>().ReverseMap();
         }
     }
 }
