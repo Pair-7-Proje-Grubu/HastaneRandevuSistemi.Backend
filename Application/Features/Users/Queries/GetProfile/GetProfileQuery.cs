@@ -5,11 +5,13 @@ using Domain.Entities;
 using SendGrid.Helpers.Errors.Model;
 using Microsoft.AspNetCore.Http;
 using Core.Utilities.Extensions;
+using Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Users.Queries.GetProfile
 {
-    public class GetProfileQuery : IRequest<GetProfileResponse>
+    public class GetProfileQuery : IRequest<GetProfileResponse>, ISecuredRequest
     {
+        public string[] RequiredRoles => ["Patient"];
         public class GetProfileQueryHandler : IRequestHandler<GetProfileQuery, GetProfileResponse>
         {
             private readonly IPatientRepository _patientRepository;

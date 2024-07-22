@@ -1,15 +1,17 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Users.Commands.Update.ChangePhoneNumber
 {
-    public class ChangePhoneNumberCommand : IRequest<ChangePhoneNumberResponse>
+    public class ChangePhoneNumberCommand : IRequest<ChangePhoneNumberResponse>, ISecuredRequest
     {
         public string Email { get; set; }
         public string NewPhone { get; set; }
+        public string[] RequiredRoles => ["Patient"];
 
         public class ChangePhoneNumberCommandHandler : IRequestHandler<ChangePhoneNumberCommand, ChangePhoneNumberResponse>
         {

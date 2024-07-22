@@ -1,13 +1,15 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.NoWorkHours.Commands.Delete
 {
-    public class DeleteNoWorkHourCommand : IRequest
+    public class DeleteNoWorkHourCommand : IRequest, ISecuredRequest
     {
         public int Id { get; set; }
+        public string[] RequiredRoles => ["Doctor"];
 
         public class DeleteNoWorkHourCommandHandler : IRequestHandler<DeleteNoWorkHourCommand>
         {

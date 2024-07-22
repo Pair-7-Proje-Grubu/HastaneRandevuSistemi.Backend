@@ -1,5 +1,6 @@
 ﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Utilities;
 using Domain.Entities;
@@ -7,11 +8,12 @@ using MediatR;
 
 namespace Application.Features.Users.Commands.Update.ChangePassword
 {
-    public class ChangePasswordCommand : IRequest<ChangePasswordResponse>
+    public class ChangePasswordCommand : IRequest<ChangePasswordResponse>, ISecuredRequest
     {
         public string Email { get; set; }
         public string CurrentPassword { get; set; }
         public string NewPassword { get; set; }
+        public string[] RequiredRoles => ["Patient"];
 
         public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ChangePasswordResponse>
         {

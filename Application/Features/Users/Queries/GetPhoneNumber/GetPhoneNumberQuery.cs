@@ -3,12 +3,14 @@ using AutoMapper;
 using Application.Repositories;
 using Domain.Entities;
 using SendGrid.Helpers.Errors.Model;
+using Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Users.Queries.GetPhoneNumber
 {
-    public class GetPhoneNumberQuery : IRequest<GetPhoneNumberResponse>
+    public class GetPhoneNumberQuery : IRequest<GetPhoneNumberResponse>, ISecuredRequest
     {
         public string Email { get; set; }
+        public string[] RequiredRoles => ["Patient"];
 
         public class GetPhoneNumberQueryHandler : IRequestHandler<GetPhoneNumberQuery, GetPhoneNumberResponse>
         {

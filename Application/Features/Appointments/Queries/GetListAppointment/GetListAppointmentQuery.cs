@@ -12,8 +12,9 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Features.Appointments.Queries.GetListAppointment
 {
 
-    public class GetListAppointmentQuery : PaginationParams, IRequest<PagedResponse<List<GetListAppointmentResponse>>>
+    public class GetListAppointmentQuery : PaginationParams, IRequest<PagedResponse<List<GetListAppointmentResponse>>>, ISecuredRequest
     {
+        public string[] RequiredRoles => ["Patient"];
         public class GetListAppointmentQueryHandler : IRequestHandler<GetListAppointmentQuery, PagedResponse<List<GetListAppointmentResponse>>>
         {
 
@@ -26,8 +27,6 @@ namespace Application.Features.Appointments.Queries.GetListAppointment
                 _mapper = mapper;
                 _httpContextAccessor = contextAccessor;
             }
-
-            public string[] RequiredRoles => ["Patient"];
 
 
             public async Task<PagedResponse<List<GetListAppointmentResponse>>> Handle(GetListAppointmentQuery request, CancellationToken cancellationToken)
