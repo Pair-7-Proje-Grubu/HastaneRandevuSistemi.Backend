@@ -1,6 +1,5 @@
 ﻿using Application.Repositories;
 using AutoMapper;
-using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

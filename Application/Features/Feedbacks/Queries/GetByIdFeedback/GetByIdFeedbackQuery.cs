@@ -1,11 +1,6 @@
 ﻿using Application.Repositories;
 using MediatR;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Entities;
 
 namespace Application.Features.Feedbacks.Queries.GetByIdFeedback

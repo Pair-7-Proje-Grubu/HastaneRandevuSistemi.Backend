@@ -1,34 +1,24 @@
 ﻿using Application.Features.Appointments.Constants;
-using Application.Features.Appointments.Dtos;
 using Application.Features.Clinics.Rules;
-using Application.Features.Doctors.Queries.GetListDoctor;
 using Application.Features.Doctors.Rules;
-using Application.Features.WorkingTimes.Rules;
-using Application.Repositories;
 using Application.Services.DoctorService;
 using Application.Services.WorkingTimeService;
-using AutoMapper;
-using Core.CrossCuttingConcerns.Exceptions.Types;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
 {
 
-    public class GetListAvailableAppointmentQuery : IRequest<GetListAvailableAppointmentResponse>
+    public class GetListAvailableAppointmentQuery : IRequest<GetListAvailableAppointmentResponse>, ISecuredRequest
     {
         public int DoctorId { get; set; }
 
+        public string[] RequiredRoles => ["Patient"];
+
         public class GetListAvailableAppointmentQueryHandler : IRequestHandler<GetListAvailableAppointmentQuery, GetListAvailableAppointmentResponse>
         {
-
+             
             private readonly IDoctorService _doctorService;
             private readonly IWorkingTimeService _workingTimeService;
             private readonly ClinicBusinessRules _clinicBusinessRules;
@@ -46,7 +36,6 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                 //RANDEVU ALINAN VAKİTLERİ İSE KULLANICININ GÖREBİLMESİ UYGUN GÖRÜLMÜŞTÜR.
                 //BUNDAN KAYNAKLI ALINAN RANDEVULAR ÇALIŞMA ZAMANINI ETKİLEMEZ YALNIZCA FRONTEND'E GÖNDERİLİR Kİ ALINDIĞI BELLİ OLSUN.
 
-
                 WorkingTime workingTime = await _workingTimeService.GetLatestAsync();
                 Doctor doctor = await _doctorService.GetDoctorWithAppointmentsAndNoWorkHoursById(request.DoctorId, AppointmentsValues.availableAppointmentsDayLimit);
 
@@ -54,7 +43,7 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                 await _clinicBusinessRules.AppointmentDurationShouldBePositiveWhenSelected(doctor.Clinic.AppointmentDuration);
 
 
-                GetListAvailableAppointmentResponse response = new GetListAvailableAppointmentResponse();
+                GetListAvailableAppointmentResponse response = new();
                 response.AppointmentDates = new List<AppointmentDate>();
                 response.AppointmentDuration = doctor.Clinic.AppointmentDuration;
 
@@ -105,7 +94,6 @@ namespace Application.Features.Appointments.Queries.GetListAvailableAppointment
                     List<DateTimeRange> availableRangesOfDay = CalculateAvailableDateTimeRanges(startTime, endTime, noWorkHours);
                     if (availableRangesOfDay.Any())
                     {
-                        //List<DateTimeRange> availableRangesOfDay = CalculateAvailableDateTimeRanges(startTime, endTime, noWorkHours).Select(x => new DateRange() { StartTime = x.Start.TimeOfDay, EndTime = x.End.TimeOfDay }).ToList();
                         response.AppointmentDates.Add(new AppointmentDate()
                         {
                             //Önceden alınmış randevular

@@ -3,8 +3,6 @@ using Application.Features.NoWorkHours.Commands.Delete;
 using Application.Features.NoWorkHours.Commands.Update;
 using Application.Features.NoWorkHours.Queries.GetById;
 using Application.Features.NoWorkHours.Queries.GetList;
-using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -25,7 +23,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             DeleteNoWorkHourCommand command = new () { Id = id };

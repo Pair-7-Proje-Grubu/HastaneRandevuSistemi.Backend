@@ -1,20 +1,10 @@
-﻿using Application.Features.Appointments.Commands.Book;
-using Application.Repositories;
+﻿using Application.Repositories;
 using Application.Services.EmailService;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Core.Utilities;
 using Domain.Entities;
-using FluentValidation;
 using MediatR;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Auth.Register
 {
@@ -59,7 +49,7 @@ namespace Application.Features.Auth.Register
                 newPatient.PasswordSalt = passwordSalt;
                 newPatient.PasswordHash = passwordHash;
                 newPatient.UserOperationClaims = new List<UserOperationClaim>() {
-                    new UserOperationClaim() { OperationClaimId = 1, UserId = newPatient.Id }
+                    new() { OperationClaimId = 1, UserId = newPatient.Id }
                 };
                 await _patientRepository.AddAsync(newPatient);
 

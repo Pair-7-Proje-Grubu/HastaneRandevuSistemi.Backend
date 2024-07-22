@@ -6,12 +6,6 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Application.Services.PatientService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Application.Services.Common;
 
 namespace Application.Features.Appointments.Queries.GetListPastAppointmentByDoctor

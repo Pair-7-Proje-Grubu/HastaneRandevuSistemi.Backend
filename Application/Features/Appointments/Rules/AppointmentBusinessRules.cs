@@ -5,7 +5,6 @@ using Application.Services.WorkingTimeService;
 using Core.Application.Rules;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace Application.Features.Appointments.Rules
@@ -51,7 +50,7 @@ namespace Application.Features.Appointments.Rules
 
         public async Task AppointmentCanNotDuplicatedWhenBooked(int patientId,int doctorId, DateTime dateTime)
         {
-            Appointment? appointment = await _appointmentRepository.GetAsync(a => a.PatientId == patientId && a.DoctorId == doctorId  && a.DateTime == dateTime, asNoTracking: true);
+            Appointment? appointment = await _appointmentRepository.GetAsync(a => a.PatientId == patientId && a.DoctorId == doctorId  && a.DateTime == dateTime && a.Status == Domain.Enums.AppointmentStatus.Scheduled, asNoTracking: true);
 
             if (appointment is not null)
                 throw new BusinessException(AppointmentsMessages.AppointmentHasAlreadyBeenBooked);

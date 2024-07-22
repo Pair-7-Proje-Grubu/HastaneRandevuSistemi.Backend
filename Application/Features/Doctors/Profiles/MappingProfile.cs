@@ -4,14 +4,8 @@ using Application.Features.Doctors.Commands.UpdateDoctorOfficeLocation;
 using Application.Features.Doctors.Queries.GetByClinicIdDoctor;
 using Application.Features.Doctors.Queries.GetByIdDoctor;
 using Application.Features.Doctors.Queries.GetListDoctorOfficeLocation;
-using Application.Features.Floors.Queries.GetById;
 using AutoMapper;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Doctors.Profiles
 {

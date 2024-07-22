@@ -1,13 +1,7 @@
-﻿using Application.Features.Titles.Commands.Update;
-using Application.Repositories;
+﻿using Application.Repositories;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Titles.Commands.Update
 {

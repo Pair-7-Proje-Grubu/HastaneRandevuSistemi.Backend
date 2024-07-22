@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using Domain.Entities;
 using Application.Repositories;
@@ -15,10 +10,9 @@ namespace Application.Features.Allergies.Commands.Create
     {
         public string Name { get; set; }
 
-        public string[] RequiredRoles => ["Admin"];  // ???
+        public string[] RequiredRoles => ["Admin"];  
     
     }
-
 
     public class CreateAllergyCommandHandler : IRequestHandler<CreateAllergyCommand, CreateAllergyResponse>
     {

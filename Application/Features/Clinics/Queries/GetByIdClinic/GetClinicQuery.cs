@@ -1,6 +1,4 @@
-﻿
-using Application.Features.Clinics.Queries.GetByIdClinic;
-using Application.Repositories;
+﻿using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.Utilities.Extensions;
@@ -8,11 +6,6 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 
@@ -43,7 +36,7 @@ namespace Application.Features.Clinics.Queries.GetByIdClinic
 
                 Doctor? doctor = await _doctorRepository.GetAsync(d => d.Id == userId, include: d => d.Include(c => c.Clinic));
 
-                GetClinicResponse response = new GetClinicResponse
+                GetClinicResponse response = new()
                 {
                     Name = doctor.Clinic.Name,
                     PhoneNumber = doctor.Clinic.PhoneNumber,

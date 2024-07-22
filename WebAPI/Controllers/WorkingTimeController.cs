@@ -3,7 +3,6 @@ using Application.Features.WorkingTimes.Commands.Delete;
 using Application.Features.WorkingTimes.Commands.Update;
 using Application.Features.WorkingTimes.Queries.GetById;
 using Application.Features.WorkingTimes.Queries.GetList;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -15,7 +14,7 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
-            GetByIdWorkingTimeQuery query = new GetByIdWorkingTimeQuery() { Id = id };
+            GetByIdWorkingTimeQuery query = new() { Id = id };
             var result = await _mediator.Send(query);
             return Ok(result);
         }
@@ -34,10 +33,10 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            DeleteWorkingTimeCommand command = new DeleteWorkingTimeCommand() { Id = id };
+            DeleteWorkingTimeCommand command = new() { Id = id };
             await _mediator.Send(command);
             return Ok("Silme işlemi başarılı");
         }

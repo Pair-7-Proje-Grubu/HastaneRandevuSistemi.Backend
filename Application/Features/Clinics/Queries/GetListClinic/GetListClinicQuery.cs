@@ -2,12 +2,6 @@
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Features.Clinics.Queries.GetListClinic;
 using Application.Features.Clinics.Dtos;
 
 namespace Application.Features.Clinics.Queries.GetListClinic

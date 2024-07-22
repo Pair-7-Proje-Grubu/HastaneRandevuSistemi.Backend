@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Features.Floors.Commands.Update
+﻿namespace Application.Features.Floors.Commands.Update
 {
     public class UpdateFloorResponse
     {

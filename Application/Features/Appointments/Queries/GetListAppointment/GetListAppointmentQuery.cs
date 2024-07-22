@@ -1,18 +1,13 @@
-﻿using Application.Features.Doctors.Queries.GetListDoctor;
-using Application.Repositories;
+﻿using Application.Repositories;
 using Application.Services.Common;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Utilities.Extensions;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Appointments.Queries.GetListAppointment
 {
@@ -32,6 +27,8 @@ namespace Application.Features.Appointments.Queries.GetListAppointment
                 _httpContextAccessor = contextAccessor;
             }
 
+            public string[] RequiredRoles => ["Patient"];
+
 
             public async Task<PagedResponse<List<GetListAppointmentResponse>>> Handle(GetListAppointmentQuery request, CancellationToken cancellationToken)
             {
@@ -44,7 +41,7 @@ namespace Application.Features.Appointments.Queries.GetListAppointment
                     .Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(u => u.Block)
                     .Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(o => o.Floor)
                     .Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(u => u.Room)
-                    ));/*.OrderByDescending(a=> a.DateTime).OrderBy(a => a.Status).ToList();*/
+                    ));
 
                 IEnumerable<GetListAppointmentResponse> query = allAppointments
                 .OrderBy(a => a.DateTime > DateTime.Now ? 0 : 1)

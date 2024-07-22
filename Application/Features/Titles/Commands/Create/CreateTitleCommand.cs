@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using Domain.Entities;
 using Application.Repositories;
@@ -14,7 +9,7 @@ namespace Application.Features.Titles.Commands.Create
     public class CreateTitleCommand : IRequest<CreateTitleResponse>, ISecuredRequest
     {
         public string TitleName { get; set; }
-        public string[] RequiredRoles => ["Admin"];  //???
+        public string[] RequiredRoles => ["Admin"]; 
 
 
         public class CreateTitleCommandHandler : IRequestHandler<CreateTitleCommand, CreateTitleResponse>

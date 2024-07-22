@@ -1,5 +1,4 @@
 ﻿using Application.Features.FAQs.Command.Create;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers

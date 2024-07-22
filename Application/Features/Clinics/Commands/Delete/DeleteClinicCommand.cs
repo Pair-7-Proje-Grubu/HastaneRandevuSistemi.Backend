@@ -2,11 +2,6 @@
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Clinics.Commands.Delete
 {
@@ -16,7 +11,7 @@ namespace Application.Features.Clinics.Commands.Delete
 
         public class DeleteClinicCommandHandler : IRequestHandler<DeleteClinicCommand>
         {
-            private IClinicRepository _clinicRepository;
+            private readonly IClinicRepository _clinicRepository;
             private readonly IMapper _mapper;
 
             public DeleteClinicCommandHandler(IClinicRepository clinicRepository, IMapper mapper)

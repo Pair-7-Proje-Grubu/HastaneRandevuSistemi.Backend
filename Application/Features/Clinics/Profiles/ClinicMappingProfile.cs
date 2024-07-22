@@ -2,14 +2,8 @@
 using Application.Features.Clinics.Commands.Update;
 using Application.Features.Clinics.Dtos;
 using Application.Features.Clinics.Queries.GetByIdClinic;
-using Application.Features.Clinics.Queries.GetListClinic;
 using AutoMapper;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Clinics.Profiles
 {

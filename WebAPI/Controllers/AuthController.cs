@@ -1,6 +1,5 @@
 ﻿using Application.Features.Auth.Login;
 using Application.Features.Auth.Register;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers

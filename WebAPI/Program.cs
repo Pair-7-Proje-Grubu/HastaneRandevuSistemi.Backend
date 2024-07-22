@@ -1,19 +1,13 @@
 using Application;
 using Core;
-//using Core.CrossCuttingConcerns.Converters;
-using Core.CrossCuttingConcerns.Exceptions;
 using Core.CrossCuttingConcerns.Exceptions.Extensions;
 using Core.Utilities.Encryption;
 using Core.Utilities.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Persistence;
-using Swashbuckle.AspNetCore.Filters;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Text.Json;
-using System;
+using Core.CrossCuttingConcerns.Converters;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,21 +25,16 @@ builder.Services.AddCors(options =>
     );
 });
 
-// Add services to the container.
-
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new TimeSpanToStringConverter());
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 
 TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
 builder.Services.AddHttpContextAccessor();
-
-
-//string? securityKey = builder.Configuration.GetSection("TokenOptions").GetValue<string>("SecurityKey");
 builder.Services.AddApplicationServices();
 builder.Services.AddPersistenceServices();
 builder.Services.AddCoreServices(tokenOptions);
@@ -104,7 +93,6 @@ builder.Services.AddControllers()
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -115,32 +103,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.ConfigureExceptionMiddlewareExtensions();
-
-//app.UseMiddleware<ExceptionMiddleware>();
-
 app.UseHttpsRedirection();
-
 app.UseCors(MyAllowSpecificOrigins);
-
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
-
-public class TimeSpanToStringConverter : JsonConverter<TimeSpan>
-{
-    public override TimeSpan Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        return TimeSpan.Parse(reader.GetString());
-    }
-
-    public override void Write(Utf8JsonWriter writer, TimeSpan value, JsonSerializerOptions options)
-    {
-        writer.WriteStringValue(value.ToString(@"hh\:mm\:ss"));
-    }
-
-}

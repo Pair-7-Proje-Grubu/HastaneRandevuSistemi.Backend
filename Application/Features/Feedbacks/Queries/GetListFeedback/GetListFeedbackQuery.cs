@@ -1,15 +1,8 @@
-﻿using Application.Features.Clinics.Dtos;
-using Application.Repositories;
+﻿using Application.Repositories;
 using Application.Services.Common;
 using AutoMapper;
 using Domain.Entities;
-using EllipticCurve;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Feedbacks.Queries.GetListFeedback
 {

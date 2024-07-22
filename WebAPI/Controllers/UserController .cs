@@ -10,14 +10,14 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UserController : BaseController
     {
-        [HttpPost("ChangePassword")]
+        [HttpPut("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
-        [HttpPost("ChangePhoneNumber")]
+        [HttpPut("ChangePhoneNumber")]
         public async Task<IActionResult> ChangePhoneNumber([FromBody] ChangePhoneNumberCommand command)
         {
             var result = await _mediator.Send(command);

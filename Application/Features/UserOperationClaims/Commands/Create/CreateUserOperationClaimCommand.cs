@@ -1,15 +1,4 @@
-﻿using Application.Features.Users.Rules;
-using Application.Repositories;
-using AutoMapper;
-using Domain.Entities;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Features.UserOperationClaims.Commands.Create
+﻿namespace Application.Features.UserOperationClaims.Commands.Create
 {
     public class CreateUserOperationClaimCommand : IRequest<CreateUserOperationClaimResponse>
     {

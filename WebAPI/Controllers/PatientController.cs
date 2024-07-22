@@ -1,9 +1,5 @@
-﻿using Application.Features.Appointments.Queries.GetListActiveAppointment;
-using Application.Features.Appointments.Queries.GetListPatientByDoctor;
-using Application.Features.Doctors.Commands.UpdateDoctor;
-using Application.Features.Patients.Commands.Update;
+﻿using Application.Features.Patients.Commands.Update;
 using Application.Features.Patients.Queries;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers

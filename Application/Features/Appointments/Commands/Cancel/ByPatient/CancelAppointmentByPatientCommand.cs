@@ -1,6 +1,4 @@
-﻿using Application.Features.Appointments.Commands.Book;
-using Application.Features.Appointments.Rules;
-using Application.Features.Doctors.Rules;
+﻿using Application.Features.Appointments.Rules;
 using Application.Features.Users.Rules;
 using Application.Repositories;
 using AutoMapper;
@@ -8,8 +6,6 @@ using Domain.Entities;
 using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using SendGrid.Helpers.Mail;
-using SendGrid;
 using Core.Utilities.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Core.Application.Pipelines.Authorization;
@@ -17,11 +13,11 @@ using Application.Services.EmailService;
 
 namespace Application.Features.Appointments.Commands.Cancel.ByPatient
 {
-    public class CancelAppointmentByPatientCommand : IRequest<CancelAppointmentByPatientResponse>/*, ISecuredRequest*/
+    public class CancelAppointmentByPatientCommand : IRequest<CancelAppointmentByPatientResponse>, ISecuredRequest
     {
         public int Id { get; set; }
 
-        //public string[] RequiredRoles => ["Patient"];
+        public string[] RequiredRoles => ["Patient"];
 
         public class CancelAppointmentByPatientCommandHandler : IRequestHandler<CancelAppointmentByPatientCommand, CancelAppointmentByPatientResponse>
         {

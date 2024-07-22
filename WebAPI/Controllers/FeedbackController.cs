@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Application.Features.Feedbacks.Queries.GetByIdFeedback;
 using Application.Features.Feedbacks.Queries.GetListFeedback;
 using Application.Features.Feedbacks.Commands.Create;
-using MediatR;
 
 namespace WebAPI.Controllers
 {

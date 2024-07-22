@@ -3,9 +3,6 @@ using Application.Features.Blocks.Commands.Delete;
 using Application.Features.Blocks.Commands.Update;
 using Application.Features.Blocks.Queries.GetById;
 using Application.Features.Blocks.Queries.GetList;
-using Application.Features.Floors.Queries.GetList;
-using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -21,12 +18,12 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             DeleteBlockCommand command = new() { Id = id };
             await _mediator.Send(command);
-            return Ok(); // Refactor
+            return Ok();
         }
 
         [HttpPut("Update")]
@@ -39,7 +36,7 @@ namespace WebAPI.Controllers
         [HttpGet("GetList")]
         public async Task<IActionResult> GetList()
         {
-            GetListBlockQuery query = new GetListBlockQuery();
+            GetListBlockQuery query = new();
             var result = await _mediator.Send(query);
             return Ok(result);
         }

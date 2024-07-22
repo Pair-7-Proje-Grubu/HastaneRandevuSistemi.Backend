@@ -4,11 +4,6 @@ using Application.Features.Titles.Queries.GetByIdTitle;
 using Application.Features.Titles.Queries.GetListTitle;
 using AutoMapper;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Titles.Profiles
 {
