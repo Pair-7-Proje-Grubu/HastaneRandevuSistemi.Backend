@@ -1,4 +1,10 @@
-﻿namespace Application.Features.UserOperationClaims.Commands.Create
+﻿using Application.Features.Users.Rules;
+using Application.Repositories;
+using AutoMapper;
+using Domain.Entities;
+using MediatR;
+
+namespace Application.Features.UserOperationClaims.Commands.Create
 {
     public class CreateUserOperationClaimCommand : IRequest<CreateUserOperationClaimResponse>
     {
