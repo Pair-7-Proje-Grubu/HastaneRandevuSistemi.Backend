@@ -27,15 +27,17 @@ namespace Application.Features.Appointments.Queries.GetListAppointmentByAdmin
 
             public async Task<PagedResponse<List<GetListAppointmentByAdminResponse>>> Handle(GetListAppointmentByAdminQuery request, CancellationToken cancellationToken)
             {
-                List<Appointment> appointments = await _appointmentRepository.GetListAsync(include: 
+                List<Appointment> appointments = await _appointmentRepository.GetListAsync(include:
                     a => a.Include(p => p.Patient)
-                    .Include(d => d.Doctor).ThenInclude(u => u.User));
+                    .Include(d => d.Doctor.Clinic)
+                    .Include(d => d.Doctor.User));
 
                 IEnumerable<GetListAppointmentByAdminResponse> query = appointments.Select(a => new GetListAppointmentByAdminResponse
                 {
                     Id = a.Id,
                     PatientName = a.Patient.FirstName + ' ' + a.Patient.LastName,
                     DoctorName = a.Doctor.User.FirstName + ' ' + a.Doctor.User.LastName,
+                    ClinicName = a.Doctor.Clinic.Name,  
                     DateTime = a.DateTime,
                     Status = a.Status,
                 });
