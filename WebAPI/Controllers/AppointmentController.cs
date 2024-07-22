@@ -8,6 +8,7 @@ using Application.Services.Common;
 using Microsoft.AspNetCore.Mvc;
 using Application.Features.Appointments.Commands.Cancel.ByDoctor;
 using Application.Features.Appointments.Commands.Cancel.ByPatient;
+using Application.Features.Appointments.Queries.GetListAppointmentByAdmin;
 
 namespace WebAPI.Controllers
 {
@@ -70,6 +71,12 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetListPatient([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             return await PagedQuery<GetListPatientByDoctorQuery, GetListPatientByDoctorResponse>(page, pageSize);
+        }
+
+        [HttpGet("GetListAppointmentByAdmin")]
+        public async Task<IActionResult> GetListAppointment([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            return await PagedQuery<GetListAppointmentByAdminQuery, GetListAppointmentByAdminResponse>(page, pageSize);
         }
     }
 }

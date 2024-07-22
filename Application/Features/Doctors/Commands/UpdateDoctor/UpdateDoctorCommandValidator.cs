@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,13 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Doctors.Commands.UpdateDoctor
 {
-    internal class UpdateDoctorCommandValidator
+    public class UpdateDoctorCommandValidator : AbstractValidator<UpdateDoctorCommand>
     {
+        public UpdateDoctorCommandValidator()
+        {
+            RuleFor(d => d.Id).NotEmpty();
+            RuleFor(d => d.ClinicId).NotEmpty();
+            RuleFor(d => d.TitleId).NotEmpty();
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost("Update")]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] UpdateDoctorCommand command)
         {
             await _mediator.Send(command);
