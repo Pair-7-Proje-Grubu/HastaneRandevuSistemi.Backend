@@ -1,6 +1,7 @@
 ﻿using Application.Features.Users.Rules;
 using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Patients.Commands.Update
 {
-    public class UpdatePatientCommand : IRequest<UpdatePatientResponse>
+    public class UpdatePatientCommand : IRequest<UpdatePatientResponse>, ISecuredRequest
     {
         public int Id { get; set; }
         public string Email { get; set; }
@@ -22,6 +23,8 @@ namespace Application.Features.Patients.Commands.Update
         public char Gender { get; set; }
         public BloodType? BloodType { get; set; }
         public string? EmergencyContact { get; set; }
+
+        public string[] RequiredRoles => ["Admin"];
 
         public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand, UpdatePatientResponse>
         {

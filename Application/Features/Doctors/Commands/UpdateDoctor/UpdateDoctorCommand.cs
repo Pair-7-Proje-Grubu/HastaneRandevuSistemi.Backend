@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Doctors.Commands.UpdateDoctor
 {
-    public class UpdateDoctorCommand :  IRequest<UpdateDoctorResponse>/*, ISecuredRequest*/
+    public class UpdateDoctorCommand :  IRequest<UpdateDoctorResponse>, ISecuredRequest
     {
         public int Id { get; set; }
         public int ClinicId { get; set; }
         public int TitleId { get; set; }
 
-        //public string[] RequiredRoles => ["Admin"];
+        public string[] RequiredRoles => ["Admin"];
 
         public class UpdateDoctorCommandHandler : IRequestHandler<UpdateDoctorCommand, UpdateDoctorResponse>
         {
