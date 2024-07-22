@@ -38,7 +38,6 @@
     <Folder Include="Features\OperationClaims\Commands\Update\" />
     <Folder Include="Features\UserOperationClaims\Commands\Delete\" />
     <Folder Include="Features\UserOperationClaims\Commands\Update\" />
-    <Folder Include="Features\UserOperationClaims\MappingProfiles\" />
     <Folder Include="Features\UserOperationClaims\Queries\" />
   </ItemGroup>
 

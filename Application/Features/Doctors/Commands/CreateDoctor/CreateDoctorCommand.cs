@@ -9,6 +9,7 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using SendGrid;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +62,9 @@ namespace Application.Features.Doctors.Commands.CreateDoctor
                
                 await _doctorRepository.AddAsync(doctor);
 
-                return new CreateDoctorResponse();
+                CreateDoctorResponse response = _mapper.Map<CreateDoctorResponse>(doctor);
+
+                return response;
             }
         }
 

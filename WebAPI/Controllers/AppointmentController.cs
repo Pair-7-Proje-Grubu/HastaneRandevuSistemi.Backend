@@ -39,11 +39,10 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost("List")]
-        public async Task<IActionResult> GetList([FromBody] GetListAppointmentQuery command)
+        [HttpGet("List")]
+        public async Task<IActionResult> GetList([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            List<GetListAppointmentResponse> response = await _mediator.Send(command);
-            return Ok(response);
+            return await PagedQuery<GetListAppointmentQuery, GetListAppointmentResponse>(page, pageSize);
         }
 
         [HttpPost("GetListAvailableAppointments")] //GetListAvailableAppointments

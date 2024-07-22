@@ -1,5 +1,6 @@
 ﻿using Application.Features.Doctors.Queries.GetListDoctor;
 using Application.Repositories;
+using Application.Services.Common;
 using AutoMapper;
 using Core.Utilities.Extensions;
 using Domain.Entities;
@@ -16,9 +17,9 @@ using System.Threading.Tasks;
 namespace Application.Features.Appointments.Queries.GetListAppointment
 {
 
-    public class GetListAppointmentQuery : IRequest<List<GetListAppointmentResponse>>
+    public class GetListAppointmentQuery : PaginationParams, IRequest<PagedResponse<List<GetListAppointmentResponse>>>
     {
-        public class GetListAppointmentQueryHandler : IRequestHandler<GetListAppointmentQuery, List<GetListAppointmentResponse>>
+        public class GetListAppointmentQueryHandler : IRequestHandler<GetListAppointmentQuery, PagedResponse<List<GetListAppointmentResponse>>>
         {
 
             private readonly IAppointmentRepository _appointmentRepository;
@@ -32,7 +33,7 @@ namespace Application.Features.Appointments.Queries.GetListAppointment
             }
 
 
-            public async Task<List<GetListAppointmentResponse>> Handle(GetListAppointmentQuery request, CancellationToken cancellationToken)
+            public async Task<PagedResponse<List<GetListAppointmentResponse>>> Handle(GetListAppointmentQuery request, CancellationToken cancellationToken)
             {
 
                 int userId = _httpContextAccessor.HttpContext.User.GetUserId();
@@ -45,16 +46,14 @@ namespace Application.Features.Appointments.Queries.GetListAppointment
                     .Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(u => u.Room)
                     ));/*.OrderByDescending(a=> a.DateTime).OrderBy(a => a.Status).ToList();*/
 
-                var sortedAppointments = allAppointments
-                    .OrderBy(a => a.DateTime > DateTime.Now ? 0 : 1) // Önce aktif randevular
-                    .ThenBy(a => a.Status != AppointmentStatus.Scheduled ? 1 : 0) // Sonra iptal edilmemiş randevular
-                    .ThenBy(a => a.DateTime > DateTime.Now ? a.DateTime : DateTime.MaxValue) // Aktif randevular için küçükten büyüğe
-                    .ThenByDescending(a => a.DateTime <= DateTime.Now ? a.DateTime : DateTime.MinValue) // Geçmiş randevular için büyükten küçüğe
-                    .ToList();
+                IEnumerable<GetListAppointmentResponse> query = allAppointments
+                .OrderBy(a => a.DateTime > DateTime.Now ? 0 : 1)
+                .ThenBy(a => a.Status != AppointmentStatus.Scheduled ? 1 : 0)
+                .ThenBy(a => a.DateTime > DateTime.Now ? a.DateTime : DateTime.MaxValue)
+                .ThenByDescending(a => a.DateTime <= DateTime.Now ? a.DateTime : DateTime.MinValue)
+                .Select(a => _mapper.Map<GetListAppointmentResponse>(a));
 
-
-                List<GetListAppointmentResponse> response = _mapper.Map<List<GetListAppointmentResponse>>(sortedAppointments);
-                return response;
+                return query.ToPagedResponse(request);
             }
         }
     }

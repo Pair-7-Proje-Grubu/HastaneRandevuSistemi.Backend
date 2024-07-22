@@ -20,6 +20,7 @@ namespace Application.Features.Doctors.Profiles
         public MappingProfile() 
         {
             CreateMap<Doctor, CreateDoctorCommand>().ReverseMap();
+            CreateMap<Doctor, CreateDoctorResponse>().ReverseMap();
             CreateMap<Doctor, UpdateDoctorCommand>().ReverseMap();
             CreateMap<Doctor, GetByIdDoctorResponse>().ReverseMap();
             CreateMap<Doctor, GetByClinicIdDoctorResponse>()

@@ -1,6 +1,7 @@
 ﻿using Application.Repositories;
 using Application.Services.Common;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +13,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Appointments.Queries.GetListAppointmentByAdmin
 {
-    public class GetListAppointmentByAdminQuery : PaginationParams, IRequest<PagedResponse<List<GetListAppointmentByAdminResponse>>>
+    public class GetListAppointmentByAdminQuery : PaginationParams, IRequest<PagedResponse<List<GetListAppointmentByAdminResponse>>>, ISecuredRequest
     {
+        public string[] RequiredRoles => ["Admin"];
+
         public class GetListAppointmentByAdminQueryHandler : IRequestHandler<GetListAppointmentByAdminQuery, PagedResponse<List<GetListAppointmentByAdminResponse>>>
         {
             private readonly IMapper _mapper;
