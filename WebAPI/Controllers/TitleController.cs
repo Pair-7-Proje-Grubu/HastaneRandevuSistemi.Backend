@@ -24,9 +24,10 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        [HttpPost("GetList")]
-        public async Task<IActionResult> GetList([FromBody] GetListTitleQuery query)
+        [HttpGet("GetList")]
+        public async Task<IActionResult> GetList()
         {
+            GetListTitleQuery query = new GetListTitleQuery();
             List<GetListTitleResponse> result = await _mediator.Send(query);
             return Ok(result);
 
@@ -40,14 +41,15 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost("Delete")]
-        public async Task<IActionResult> Delete([FromBody] DeleteTitleCommand command)
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            DeleteTitleCommand command = new DeleteTitleCommand() { Id = id};
             await _mediator.Send(command);
             return Ok();
         }
 
-        [HttpPost("Update")]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] UpdateTitleCommand command)
         {
             await _mediator.Send(command);

@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             DeleteNoWorkHourCommand command = new () { Id = id };

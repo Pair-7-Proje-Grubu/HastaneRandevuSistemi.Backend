@@ -1,4 +1,5 @@
 ﻿using Application.Features.Doctors.Commands.CreateDoctor;
+using Application.Features.Doctors.Commands.DeleteDoctor;
 using Application.Features.Doctors.Commands.UpdateDoctor;
 using Application.Features.Doctors.Commands.UpdateDoctorOfficeLocation;
 using Application.Features.Doctors.Queries.GetByClinicIdDoctor;
@@ -25,9 +26,10 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost("Delete")]
-        public async Task<IActionResult> Delete([FromBody] CreateDoctorCommand command)
+        [HttpPost("Delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            DeleteDoctorCommand command = new() { Id = id};
             await _mediator.Send(command);
             return Ok();
         }
@@ -69,7 +71,7 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("UpdateDoctorOfficeLocation")]
+        [HttpPut("UpdateDoctorOfficeLocation")]
         public async Task<IActionResult> UpdateDoctorOfficeLocation([FromBody] UpdateDoctorOfficeLocationCommand command)
         {
             var response = await _mediator.Send(command);

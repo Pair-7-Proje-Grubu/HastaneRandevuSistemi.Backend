@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             DeleteFloorCommand command = new() { Id = id };

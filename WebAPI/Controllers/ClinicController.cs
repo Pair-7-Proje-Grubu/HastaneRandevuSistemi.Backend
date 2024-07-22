@@ -9,6 +9,7 @@ using Application.Features.Clinics.Queries.GetByIdClinic;
 using Application.Features.Clinics.Queries.GetListClinic;
 using Application.Features.Clinics.Commands.Update;
 using Application.Features.Clinics.Dtos;
+using Application.Features.Blocks.Commands.Delete;
 namespace WebAPI.Controllers
 
 {
@@ -17,9 +18,10 @@ namespace WebAPI.Controllers
     public class ClinicController : BaseController
     {
 
-        [HttpPost("GetClinic")]
-        public async Task<IActionResult> GetClinic([FromRoute] GetClinicQuery getClinicQuery)
+        [HttpGet("GetClinic")]
+        public async Task<IActionResult> GetClinic()
         {
+            GetClinicQuery getClinicQuery = new GetClinicQuery();
             GetClinicResponse result = await _mediator.Send(getClinicQuery);
             return Ok(result);
         }
@@ -39,18 +41,19 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("Delete")]
-        public async Task<IActionResult> Delete([FromBody] DeleteClinicCommand command)
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            DeleteClinicCommand command = new() { Id = id };
             await _mediator.Send(command);
             return Ok();
         }
 
-        [HttpPost("Update")]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] UpdateClinicCommand command)
         {
-            await _mediator.Send(command);
-            return Ok();
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
     }

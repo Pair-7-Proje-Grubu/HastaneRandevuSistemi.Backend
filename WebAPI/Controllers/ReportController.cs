@@ -1,4 +1,6 @@
-﻿using Application.Features.Reports.Commands.Create;
+﻿using Application.Features.Clinics.Commands.Delete;
+using Application.Features.Reports.Commands.Create;
+using Application.Features.Reports.Commands.Delete;
 using Application.Features.Reports.Queries.GetById;
 using Application.Features.Reports.Queries.GetList;
 using MediatR;
@@ -25,14 +27,15 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPost("Delete")]
-        public async Task<IActionResult> Delete([FromBody] CreateReportCommand command)
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            DeleteReportCommand command = new() { Id = id };
             await _mediator.Send(command);
             return Ok();
         }
 
-        [HttpPost("Update")]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] CreateReportCommand command)
         {
             await _mediator.Send(command);

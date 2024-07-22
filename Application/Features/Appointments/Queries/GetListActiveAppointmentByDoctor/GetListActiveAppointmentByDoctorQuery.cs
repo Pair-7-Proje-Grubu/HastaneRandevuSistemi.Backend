@@ -19,7 +19,7 @@ namespace Application.Features.Appointments.Queries.GetListActiveAppointment
 {
     public class GetListActiveAppointmentByDoctorQuery : IRequest<List<GetListActiveAppointmentByDoctorResponse>>, ISecuredRequest
     {
-        public string[] RequiredRoles => [ "Doctor" ];
+        public string[] RequiredRoles => ["Doctor"];
 
         public class GetListActiveAppointmentByDoctorQueryHandler : IRequestHandler<GetListActiveAppointmentByDoctorQuery, List<GetListActiveAppointmentByDoctorResponse>>
         {

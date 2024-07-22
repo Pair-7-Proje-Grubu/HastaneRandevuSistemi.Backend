@@ -54,9 +54,10 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("GetListActiveAppointmentByDoctor")]
-        public async Task<IActionResult> GetListActive([FromBody] GetListActiveAppointmentByDoctorQuery query)
+        [HttpGet("GetListActiveAppointmentByDoctor")]
+        public async Task<IActionResult> GetListActive()
         {
+            GetListActiveAppointmentByDoctorQuery query = new GetListActiveAppointmentByDoctorQuery();
             List<GetListActiveAppointmentByDoctorResponse> response = await _mediator.Send(query);
             return Ok(response);
         }
