@@ -5,11 +5,6 @@ using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Patients.Commands.Update
 {
@@ -49,7 +44,7 @@ namespace Application.Features.Patients.Commands.Update
 
                 await _patientRepository.UpdateAsync(patient);
 
-                UpdatePatientResponse response = new UpdatePatientResponse();
+                UpdatePatientResponse response = new();
 
                 return response;
             }

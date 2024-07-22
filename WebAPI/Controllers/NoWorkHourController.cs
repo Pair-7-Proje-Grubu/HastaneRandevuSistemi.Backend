@@ -3,8 +3,6 @@ using Application.Features.NoWorkHours.Commands.Delete;
 using Application.Features.NoWorkHours.Commands.Update;
 using Application.Features.NoWorkHours.Queries.GetById;
 using Application.Features.NoWorkHours.Queries.GetList;
-using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Domain.Entities;
-using Application.Features.Users.Commands.Update;
 using Application.Features.Users.Queries.GetProfile;
 using Application.Features.Users.Commands.Update.ChangePhoneNumber;
 using Application.Features.Users.Commands.Update.ChangePassword;

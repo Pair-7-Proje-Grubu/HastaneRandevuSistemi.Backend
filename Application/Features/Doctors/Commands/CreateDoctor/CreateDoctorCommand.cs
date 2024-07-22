@@ -1,29 +1,20 @@
-﻿using Application.Features.Auth.Register;
-using Application.Repositories;
+﻿using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions.Types;
-using Core.DataAccess;
-using Core.Utilities;
 using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Application.Features.Doctors.Commands.CreateDoctor
 {
-    public class CreateDoctorCommand : IRequest<CreateDoctorResponse>
+    public class CreateDoctorCommand : IRequest<CreateDoctorResponse>, ISecuredRequest
     {
         public string Email { get; set; }
         public int TitleId { get; set; }
         public int ClinicId { get; set; }
         public int OfficeLocationId { get; set; }
+
+        public string[] RequiredRoles => ["Admin"];
 
         public class CreateDoctorCommandHandler : IRequestHandler<CreateDoctorCommand, CreateDoctorResponse>
         {
@@ -41,7 +32,7 @@ namespace Application.Features.Doctors.Commands.CreateDoctor
 
             public async Task<CreateDoctorResponse> Handle(CreateDoctorCommand request, CancellationToken cancellationToken)
             {
-                //// Email kontrolü ve kullanıcıyı bulma
+                // Email kontrolü ve kullanıcıyı bulma
                 User? user = await _userRepository.GetAsync(p => p.Email == request.Email);
                 if (user == null)
                 {
@@ -49,7 +40,7 @@ namespace Application.Features.Doctors.Commands.CreateDoctor
                 }
 
                 // Doctor entity'sini oluşturma ve kaydetme
-                Doctor doctor = new Doctor
+                Doctor doctor = new()
                 {
                     Id = user.Id, // User ID'si Doctor ID olarak kullanılır
                     TitleId = request.TitleId,

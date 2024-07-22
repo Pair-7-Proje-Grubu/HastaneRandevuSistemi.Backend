@@ -4,33 +4,31 @@ using Application.Features.Users.Rules;
 using Application.Repositories;
 using Application.Services.EmailService;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Utilities.Extensions;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 
 namespace Application.Features.Appointments.Commands.Book
 {
-    public class BookAppointmentCommand : IRequest<BookAppointmentResponse>/*, ISecuredRequest*/
+    public class BookAppointmentCommand : IRequest<BookAppointmentResponse>, ISecuredRequest
     {
         public int DoctorId { get; set; }
         public DateTime DateTime { get; set; }
 
-        //public string[] RequiredRoles => ["Patient"];
+        public string[] RequiredRoles => ["Patient"];
 
         public class BookAppointmentCommandHandler : IRequestHandler<BookAppointmentCommand, BookAppointmentResponse>
         {
-            IMapper _mapper;
-            IHttpContextAccessor _httpContextAccessor;
-            IAppointmentRepository _appointmentRepository;
-            AppointmentBusinessRules _appointmentBusinessRules;
-            DoctorBusinessRules _doctorBusinessRules;
-            UserBusinessRules _userBusinessRules;
-
+            private readonly IMapper _mapper;
+            private readonly IHttpContextAccessor _httpContextAccessor;
+            private readonly IAppointmentRepository _appointmentRepository;
+            private readonly AppointmentBusinessRules _appointmentBusinessRules;
+            private readonly DoctorBusinessRules _doctorBusinessRules;
+            private readonly UserBusinessRules _userBusinessRules;
             private readonly IEmailService _emailService;
 
             public BookAppointmentCommandHandler(IMapper mapper, IAppointmentRepository appointmentRepository, IHttpContextAccessor httpContextAccessor, AppointmentBusinessRules appointmentBusinessRules, DoctorBusinessRules doctorBusinessRules, UserBusinessRules userBusinessRules, IEmailService emailService)

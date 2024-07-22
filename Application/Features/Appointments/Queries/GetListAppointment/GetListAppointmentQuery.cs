@@ -1,24 +1,19 @@
-﻿using Application.Features.Doctors.Queries.GetListDoctor;
-using Application.Repositories;
+﻿using Application.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Utilities.Extensions;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Appointments.Queries.GetListAppointment
 {
 
     public class GetListAppointmentQuery : IRequest<List<GetListAppointmentResponse>>
     {
-        public class GetListAppointmentQueryHandler : IRequestHandler<GetListAppointmentQuery, List<GetListAppointmentResponse>>
+        public class GetListAppointmentQueryHandler : IRequestHandler<GetListAppointmentQuery, List<GetListAppointmentResponse>>, ISecuredRequest
         {
 
             private readonly IAppointmentRepository _appointmentRepository;
@@ -30,6 +25,8 @@ namespace Application.Features.Appointments.Queries.GetListAppointment
                 _mapper = mapper;
                 _httpContextAccessor = contextAccessor;
             }
+
+            public string[] RequiredRoles => ["Patient"];
 
 
             public async Task<List<GetListAppointmentResponse>> Handle(GetListAppointmentQuery request, CancellationToken cancellationToken)
@@ -43,7 +40,7 @@ namespace Application.Features.Appointments.Queries.GetListAppointment
                     .Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(u => u.Block)
                     .Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(o => o.Floor)
                     .Include(a => a.Doctor).ThenInclude(d => d.OfficeLocation).ThenInclude(u => u.Room)
-                    ));/*.OrderByDescending(a=> a.DateTime).OrderBy(a => a.Status).ToList();*/
+                    ));
 
                 var sortedAppointments = allAppointments
                     .OrderBy(a => a.DateTime > DateTime.Now ? 0 : 1) // Önce aktif randevular

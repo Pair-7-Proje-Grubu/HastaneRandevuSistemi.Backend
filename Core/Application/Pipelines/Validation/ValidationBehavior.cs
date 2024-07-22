@@ -1,11 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
 using ValidationException = Core.CrossCuttingConcerns.Exceptions.Types.ValidationException;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.Application.Pipelines.Validation
 {
@@ -19,7 +14,7 @@ namespace Core.Application.Pipelines.Validation
         }
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            ValidationContext<object> context = new ValidationContext<object>(request);
+            ValidationContext<object> context = new(request);
 
             var errors = _validators.Select(validator => validator.Validate(context))
                 .SelectMany(result => result.Errors)

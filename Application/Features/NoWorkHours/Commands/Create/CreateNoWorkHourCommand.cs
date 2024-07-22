@@ -6,19 +6,11 @@ using Core.Utilities.Extensions;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.NoWorkHours.Commands.Create
 {
     public class CreateNoWorkHourCommand : IRequest<CreateNoWorkHourResponse>, ISecuredRequest
     {
-        //public int DoctorId { get; set; }
         public List<NoWorkHourDto> NoWorkHours { get; set; }
 
         public string[] RequiredRoles { get; } = { "Doctor" };
@@ -51,10 +43,10 @@ namespace Application.Features.NoWorkHours.Commands.Create
 
                 await _noWorkHourRepository.AddRangeAsync(noWorkHours);
 
-                List<DoctorNoWorkHour> doctorNoWorkHours = new List<DoctorNoWorkHour> { };
+                List<DoctorNoWorkHour> doctorNoWorkHours = new() { };
                 foreach (var noWorkHour in noWorkHours)
                 {
-                    DoctorNoWorkHour doctorNoWorkHour = new DoctorNoWorkHour() { DoctorId = userId, NoWorkHourId = noWorkHour.Id };
+                    DoctorNoWorkHour doctorNoWorkHour = new() { DoctorId = userId, NoWorkHourId = noWorkHour.Id };
                     doctorNoWorkHours.Add(doctorNoWorkHour);
                 }
                 await _doctorNoWorkHourRepository.AddRangeAsync(doctorNoWorkHours);

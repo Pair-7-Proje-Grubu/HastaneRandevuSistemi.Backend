@@ -1,5 +1,4 @@
-﻿using Application.Features.Appointments.Rules;
-using Application.Services.DoctorService;
+﻿using Application.Services.DoctorService;
 using Application.Services.EmailService;
 using Application.Services.UserService;
 using Application.Services.WorkingTimeService;
@@ -8,12 +7,7 @@ using Core.Application.Pipelines.Validation;
 using Core.Application.Rules;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application
 {

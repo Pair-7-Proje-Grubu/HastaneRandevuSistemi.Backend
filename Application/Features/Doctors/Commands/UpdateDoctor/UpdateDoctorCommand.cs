@@ -4,12 +4,6 @@ using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Doctors.Commands.UpdateDoctor
 {
@@ -45,7 +39,7 @@ namespace Application.Features.Doctors.Commands.UpdateDoctor
 
                 await _doctorRepository.UpdateAsync(doctor);
 
-                UpdateDoctorResponse response = new UpdateDoctorResponse();
+                UpdateDoctorResponse response = new();
                 return response;
             }
         }

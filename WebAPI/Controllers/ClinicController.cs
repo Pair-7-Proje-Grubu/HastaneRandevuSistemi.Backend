@@ -1,15 +1,10 @@
 ﻿using Application.Features.Clinics.Commands.Create;
 using Application.Features.Clinics.Commands.Delete;
-using Application.Repositories;
-using Core.DataAccess;
-using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Application.Features.Clinics.Queries.GetByIdClinic;
 using Application.Features.Clinics.Queries.GetListClinic;
 using Application.Features.Clinics.Commands.Update;
 using Application.Features.Clinics.Dtos;
-using Application.Features.Blocks.Commands.Delete;
 namespace WebAPI.Controllers
 
 {
@@ -21,7 +16,7 @@ namespace WebAPI.Controllers
         [HttpGet("GetClinic")]
         public async Task<IActionResult> GetClinic()
         {
-            GetClinicQuery getClinicQuery = new GetClinicQuery();
+            GetClinicQuery getClinicQuery = new();
             GetClinicResponse result = await _mediator.Send(getClinicQuery);
             return Ok(result);
         }
@@ -29,7 +24,7 @@ namespace WebAPI.Controllers
         [HttpGet("GetList")]
         public async Task<IActionResult> GetList()
         {
-            GetListClinicQuery getListClinicQuery = new GetListClinicQuery();
+            GetListClinicQuery getListClinicQuery = new();
             List<GetListClinicDto> result = await _mediator.Send(getListClinicQuery);
             return Ok(result);
         }

@@ -1,16 +1,9 @@
-﻿using Application.Features.Doctors.Commands.UpdateDoctor;
-using Application.Repositories;
+﻿using Application.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
-using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.OfficeLocations.Commands.Update
 {

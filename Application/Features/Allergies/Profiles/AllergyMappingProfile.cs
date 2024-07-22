@@ -4,11 +4,6 @@ using Application.Features.Allergies.Queries.GetByIdAllergy;
 using Application.Features.Allergies.Queries.GetListAllergy;
 using AutoMapper;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Allergies.Profiles
 {

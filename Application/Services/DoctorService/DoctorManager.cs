@@ -1,14 +1,7 @@
 ﻿using Application.Features.Doctors.Rules;
 using Application.Repositories;
-using Core.CrossCuttingConcerns.Exceptions.Types;
 using Domain.Entities;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services.DoctorService
 {
@@ -30,7 +23,7 @@ namespace Application.Services.DoctorService
                   d => d.Id == doctorId,
                   include: d =>
                       d.Include(d => d.Clinic)
-                      .Include(d => d.Appointments.Where(a => a.DateTime > DateTime.Now && a.DateTime < DateTime.Now.AddDays(dayCount)))
+                      .Include(d => d.Appointments.Where(a => a.DateTime > DateTime.Now && a.DateTime < DateTime.Now.AddDays(dayCount) && a.Status == Domain.Enums.AppointmentStatus.Scheduled))
                       .Include(d => d.DoctorNoWorkHours.Where(nwh => nwh.NoWorkHour.StartDate.Date >= DateTime.Now.Date && nwh.NoWorkHour.EndDate.Date <= DateTime.Now.AddDays(dayCount).Date))
                           .ThenInclude(d => d.NoWorkHour), asNoTracking: true);
 

@@ -4,7 +4,6 @@ using Application.Features.Appointments.Queries.GetListAppointment;
 using Application.Features.Appointments.Queries.GetListAvailableAppointment;
 using Application.Features.Appointments.Queries.GetListPastAppointmentByDoctor;
 using Application.Features.Appointments.Queries.GetListPatientByDoctor;
-using Application.Services.Common;
 using Microsoft.AspNetCore.Mvc;
 using Application.Features.Appointments.Commands.Cancel.ByDoctor;
 using Application.Features.Appointments.Commands.Cancel.ByPatient;
@@ -42,12 +41,12 @@ namespace WebAPI.Controllers
         [HttpGet("List")]
         public async Task<IActionResult> GetList()
         {
-            GetListAppointmentQuery command = new GetListAppointmentQuery();
+            GetListAppointmentQuery command = new();
             List<GetListAppointmentResponse> response = await _mediator.Send(command);
             return Ok(response);
         }
 
-        [HttpGet("GetListAvailableAppointments")] //GetListAvailableAppointments
+        [HttpGet("GetListAvailableAppointments")]
         public async Task<IActionResult> GetListAvailable([FromQuery] GetListAvailableAppointmentQuery query)
         {
             GetListAvailableAppointmentResponse response = await _mediator.Send(query);
@@ -57,7 +56,7 @@ namespace WebAPI.Controllers
         [HttpGet("GetListActiveAppointmentByDoctor")]
         public async Task<IActionResult> GetListActive()
         {
-            GetListActiveAppointmentByDoctorQuery query = new GetListActiveAppointmentByDoctorQuery();
+            GetListActiveAppointmentByDoctorQuery query = new();
             List<GetListActiveAppointmentByDoctorResponse> response = await _mediator.Send(query);
             return Ok(response);
         }

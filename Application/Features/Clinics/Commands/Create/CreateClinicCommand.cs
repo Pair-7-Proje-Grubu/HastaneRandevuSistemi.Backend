@@ -3,20 +3,15 @@ using AutoMapper;
 using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Clinics.Commands.Create
 {
-    public class CreateClinicCommand : IRequest<CreateClinicResponse>/*, ISecuredRequest*/
+    public class CreateClinicCommand : IRequest<CreateClinicResponse>, ISecuredRequest
     {
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
         public int AppointmentDuration { get; set; }
-        //public string[] RequiredRoles => ["Admin"];  // ???
+        public string[] RequiredRoles => ["Admin"];
 
 
         public class CreateClinicCommandHandler : IRequestHandler<CreateClinicCommand, CreateClinicResponse>

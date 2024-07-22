@@ -1,13 +1,6 @@
-﻿using Azure.Core;
-using Core.Entities;
-using Core.Utilities;
+﻿using Core.Utilities;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Contexts
 {
@@ -88,7 +81,7 @@ namespace Persistence.Contexts
             ];
 
 
-            WorkingTime workingTime = new WorkingTime()
+            WorkingTime workingTime = new()
             {
                 Id = 1, 
                 StartTime= new TimeSpan(08,30,0), EndTime= new TimeSpan(17,0,0),
@@ -100,7 +93,7 @@ namespace Persistence.Contexts
 
             HashingHelper.CreatePasswordHash("123456", out passwordSalt, out passwordHash);
 
-            Patient admin = new Patient() { 
+            Patient admin = new() { 
                 Id = 1,
                 FirstName = "Test",
                 LastName = "Admin",
@@ -114,14 +107,15 @@ namespace Persistence.Contexts
 
                 
             };
-            Admin AdminData = new Admin()
+
+            Admin AdminData = new()
             {
                 CreatedDate = DateTime.Now,
                 Id = 1,
             };
 
 
-            Patient doctor = new Patient()
+            Patient doctor = new()
             {
                 Id = 2,
                 FirstName = "Test",
@@ -137,7 +131,7 @@ namespace Persistence.Contexts
 
             };
           
-            Doctor doctorData = new Doctor()
+            Doctor doctorData = new()
             {
                 Id = 2,
                 ClinicId = 17,   
@@ -146,7 +140,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Patient patient = new Patient()
+            Patient patient = new()
             {
                 Id = 3,
                 FirstName = "Test",
@@ -162,9 +156,7 @@ namespace Persistence.Contexts
 
             };
 
-            ///
-
-            Patient doctorPatient1 = new Patient()
+            Patient doctorPatient1 = new()
             {
                 Id = 4,
                 FirstName = "Ahmet",
@@ -178,7 +170,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Patient doctorPatient2 = new Patient()
+            Patient doctorPatient2 = new()
             {
                 Id = 5,
                 FirstName = "Emine",
@@ -192,7 +184,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Patient doctorPatient3 = new Patient()
+            Patient doctorPatient3 = new()
             {
                 Id = 6,
                 FirstName = "Mustafa",
@@ -206,7 +198,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Patient doctorPatient4 = new Patient()
+            Patient doctorPatient4 = new()
             {
                 Id = 7,
                 FirstName = "Hacer",
@@ -220,7 +212,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Patient doctorPatient5 = new Patient()
+            Patient doctorPatient5 = new()
             {
                 Id = 8,
                 FirstName = "İbrahim",
@@ -234,7 +226,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Patient doctorPatient6 = new Patient()
+            Patient doctorPatient6 = new()
             {
                 Id = 14,
                 FirstName = "Seda",
@@ -248,7 +240,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Patient doctorPatient7 = new Patient()
+            Patient doctorPatient7 = new()
             {
                 Id = 15,
                 FirstName = "Okan",
@@ -262,7 +254,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Patient doctorPatient8 = new Patient()
+            Patient doctorPatient8 = new()
             {
                 Id = 16,
                 FirstName = "Sevgi",
@@ -276,9 +268,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-
-            // 
-            Doctor doctor1 = new Doctor()
+            Doctor doctor1 = new()
             {
                 Id = 4,
                 ClinicId = 1,
@@ -287,7 +277,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Doctor doctor2 = new Doctor()
+            Doctor doctor2 = new()
             {
                 Id = 5,
                 ClinicId = 3,
@@ -296,7 +286,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Doctor doctor3 = new Doctor()
+            Doctor doctor3 = new()
             {
                 Id = 6,
                 ClinicId = 5,
@@ -305,7 +295,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Doctor doctor4 = new Doctor()
+            Doctor doctor4 = new()
             {
                 Id = 7,
                 ClinicId = 7,
@@ -314,7 +304,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Doctor doctor5 = new Doctor()
+            Doctor doctor5 = new()
             {
                 Id = 8,
                 ClinicId = 9,
@@ -323,7 +313,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Doctor doctor6 = new Doctor()
+            Doctor doctor6 = new()
             {
                 Id = 14,
                 ClinicId = 3, 
@@ -332,7 +322,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Doctor doctor7 = new Doctor()
+            Doctor doctor7 = new()
             {
                 Id = 15,
                 ClinicId = 3, 
@@ -341,7 +331,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Doctor doctor8 = new Doctor()
+            Doctor doctor8 = new()
             {
                 Id = 16,
                 ClinicId = 3, 
@@ -350,8 +340,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            // 
-            Patient patient4 = new Patient()
+            Patient patient4 = new()
             {
                 Id = 9,
                 FirstName = "Ayşe",
@@ -365,7 +354,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Patient patient5 = new Patient()
+            Patient patient5 = new()
             {
                 Id = 10,
                 FirstName = "Mehmet",
@@ -379,7 +368,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Patient patient6 = new Patient()
+            Patient patient6 = new()
             {
                 Id = 11,
                 FirstName = "Fatma",
@@ -393,7 +382,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Patient patient7 = new Patient()
+            Patient patient7 = new()
             {
                 Id = 12,
                 FirstName = "Ali",
@@ -407,7 +396,7 @@ namespace Persistence.Contexts
                 CreatedDate = DateTime.Now,
             };
 
-            Patient patient8 = new Patient()
+            Patient patient8 = new()
             {
                 Id = 13,
                 FirstName = "Zeynep",
@@ -438,7 +427,6 @@ namespace Persistence.Contexts
                new UserOperationClaim(){Id=3, UserId = 2, OperationClaimId = 1},
                new UserOperationClaim(){Id=4, UserId = 2, OperationClaimId = 2},
                new UserOperationClaim(){Id=5, UserId = 3, OperationClaimId = 1},
-               ///
                new UserOperationClaim(){Id=6, UserId = 4, OperationClaimId = 1},
                new UserOperationClaim(){Id=7, UserId = 4, OperationClaimId = 2},
                new UserOperationClaim(){Id=8, UserId = 5, OperationClaimId = 1},

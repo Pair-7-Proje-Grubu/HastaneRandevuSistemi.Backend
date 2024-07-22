@@ -1,10 +1,6 @@
 ﻿using Application.Features.Titles.Queries.GetByIdTitle;
 using Application.Features.Titles.Commands.Delete;
 using Application.Features.Titles.Commands.Create;
-using Application.Repositories;
-using Core.DataAccess;
-using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Application.Features.Titles.Queries.GetListTitle;
 using Application.Features.Titles.Commands.Update;
@@ -27,7 +23,7 @@ namespace WebAPI.Controllers
         [HttpGet("GetList")]
         public async Task<IActionResult> GetList()
         {
-            GetListTitleQuery query = new GetListTitleQuery();
+            GetListTitleQuery query = new();
             List<GetListTitleResponse> result = await _mediator.Send(query);
             return Ok(result);
 
@@ -44,7 +40,7 @@ namespace WebAPI.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            DeleteTitleCommand command = new DeleteTitleCommand() { Id = id};
+            DeleteTitleCommand command = new() { Id = id};
             await _mediator.Send(command);
             return Ok();
         }

@@ -6,8 +6,6 @@ using Application.Features.Doctors.Queries.GetByClinicIdDoctor;
 using Application.Features.Doctors.Queries.GetByIdDoctor;
 using Application.Features.Doctors.Queries.GetListDoctor;
 using Application.Features.Doctors.Queries.GetListDoctorOfficeLocation;
-using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers

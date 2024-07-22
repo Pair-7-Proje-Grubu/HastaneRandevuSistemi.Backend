@@ -1,6 +1,5 @@
 ﻿using Application.Services.Common;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers

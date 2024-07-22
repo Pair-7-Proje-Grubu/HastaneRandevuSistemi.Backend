@@ -5,11 +5,6 @@ using Application.Features.NoWorkHours.Queries.GetById;
 using Application.Features.NoWorkHours.Queries.GetList;
 using AutoMapper;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.NoWorkHours.MappingProfiles
 {

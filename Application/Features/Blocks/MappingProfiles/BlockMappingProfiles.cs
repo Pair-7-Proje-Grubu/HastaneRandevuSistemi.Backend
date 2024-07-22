@@ -4,11 +4,6 @@ using Application.Features.Blocks.Queries.GetById;
 using Application.Features.Blocks.Queries.GetList;
 using AutoMapper;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Blocks.MappingProfiles
 {

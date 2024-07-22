@@ -1,11 +1,8 @@
-﻿using Application.Features.Floors.Queries.GetList;
-using Application.Features.OfficeLocations.Commands.Create;
+﻿using Application.Features.OfficeLocations.Commands.Create;
 using Application.Features.OfficeLocations.Commands.Delete;
 using Application.Features.OfficeLocations.Commands.Update;
 using Application.Features.OfficeLocations.Queries.GetById;
 using Application.Features.OfficeLocations.Queries.GetList;
-using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -39,7 +36,7 @@ namespace WebAPI.Controllers
         [HttpGet("GetList")]
         public async Task<IActionResult> GetList()
         {
-            GetListOfficeLocationQuery query = new GetListOfficeLocationQuery();
+            GetListOfficeLocationQuery query = new();
             var result = await _mediator.Send(query);
             return Ok(result);
         }

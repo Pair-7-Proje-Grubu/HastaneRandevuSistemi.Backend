@@ -1,12 +1,7 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions.HttpProblemDetails;
 using Core.CrossCuttingConcerns.Exceptions.Types;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Core.CrossCuttingConcerns.Exceptions
 {
@@ -34,13 +29,13 @@ namespace Core.CrossCuttingConcerns.Exceptions
                 {
                     ValidationException validationException = ex as ValidationException;
 
-                    ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails(validationException.Errors.ToList());
+                    ValidationProblemDetails validationProblemDetails = new(validationException.Errors.ToList());
 
                     await context.Response.WriteAsync(JsonSerializer.Serialize(validationProblemDetails));
                 }
                 else if (ex is BusinessException)
                 {
-                    ProblemDetails problemDetails = new ProblemDetails();
+                    ProblemDetails problemDetails = new();
                     problemDetails.Title = "Business Rule Violation";
                     problemDetails.Detail = ex.Message;
                     problemDetails.Type = "BusinessException";
@@ -49,9 +44,6 @@ namespace Core.CrossCuttingConcerns.Exceptions
                 else
                 {
                     await context.Response.WriteAsync(ex.Message);
-
-                    //STATUS CODE DEĞİŞTİRMEK HATA DOĞURUYOR!
-                    //context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 }
             }
         }
